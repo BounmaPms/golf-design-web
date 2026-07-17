@@ -170,7 +170,7 @@ textarea {
   border-radius: 13px;
   font-size: 17px;
   font-weight: 800;
-  box-shadow: 0 10px 23px rgba(11, 92, 255, 0.22);
+  /*box-shadow: 0 10px 23px rgba(11, 92, 255, 0.22);*/
 }
 
 .brand strong,
