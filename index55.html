@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golf Design - โรงงานผลิตเสื้อพิมพ์ลาย</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,'Noto Sans Thai',sans-serif}
+    body{background:#f7f7f7;color:#222}
+    header{background:white;position:sticky;top:0;z-index:99;box-shadow:0 2px 10px #0001}
+    .nav{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:15px 20px}
+    .logo{font-size:26px;font-weight:800;color:#0a6cff}
+    .menu a{margin-left:22px;text-decoration:none;color:#222;font-weight:600}
+    .menu a:hover{color:#0a6cff}
+
+    .hero{background:linear-gradient(120deg,#061936,#0a6cff);color:white;padding:80px 20px;text-align:center}
+    .hero h1{font-size:42px;margin-bottom:15px}
+    .hero p{font-size:20px;max-width:850px;margin:auto;line-height:1.7}
+    .btn{display:inline-block;margin-top:25px;background:#ffcc00;color:#111;padding:14px 28px;border-radius:40px;text-decoration:none;font-weight:800}
+
+    section{max-width:1200px;margin:auto;padding:55px 20px}
+    .title{text-align:center;font-size:32px;margin-bottom:15px}
+    .sub{text-align:center;color:#666;margin-bottom:35px}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
+    .card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 8px 25px #0001}
+    .card img{width:100%;height:230px;object-fit:cover;background:#ddd}
+    .card .info{padding:22px}
+    .card h3{margin-bottom:10px;color:#0a6cff}
+    .card p{line-height:1.6;color:#555}
+
+    .promo{background:#111;color:white;border-radius:22px;padding:40px;text-align:center}
+    .promo h2{font-size:34px;color:#ffcc00;margin-bottom:10px}
+
+    .review{background:white;padding:25px;border-radius:18px;box-shadow:0 8px 25px #0001}
+    .review b{color:#0a6cff}
+
+    .contact{background:#0a6cff;color:white;border-radius:22px;text-align:center;padding:45px}
+    .contact h2{font-size:32px;margin-bottom:15px}
+    .contact p{font-size:18px;line-height:1.8}
+
+    footer{background:#061936;color:white;text-align:center;padding:25px}
+    @media(max-width:700px){
+      .menu{display:none}
+      .hero h1{font-size:30px}
+      .hero p{font-size:17px}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">GOLF DESIGN</div>
+    <div class="menu">
+      <a href="#">ໜ້າຫຼັກ</a>
+      <a href="#about">ກ່ຽວກັບພວກເຮົາ</a>
+      <a href="#products">ຮູບແບບເສື້ອ</a>
+      <a href="#promo">ປະໂຫຍດ</a>
+      <a href="#contact">ຕິດຕໍ່ພວກເຮົາ</a>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>ໂຮງງານຜະລິດເສື້ອພິມລາຍຄົບວົງຈອນ</h1>
+  <p>ຮັບຜະລິດເສື້ອກິລາ ເສື້ອທີມ ເສື້ອບໍລິສັດ ເສື້ອກິດຈະກຳ ງານພິມລາຍຄຸນະພາບສູງ ສີສົດ ຕົມຊັດ ອອກແບບຟຣີ ເລິ່ມຕົ້ນຂັ້ນຕ່ຳພຽງ 10 ໂຕ</p>
+  <a class="btn" href="#contact">ສັ່ງຜະລິດ / ຂໍລາຄາ</a>
+</div>
+
+<section id="about">
+  <h2 class="title">ກ່ຽວກັບພວກເຮົາ</h2>
+  <p class="sub">ພວກເຮົາຜະລິດເສື້ອພິມລາຍ ງານສະກຣີນ ງານປັກ ແລະ ອອກແບບລາຍເສື້ອສຳລັບທີມ ອົງກອນ ຮ້ານຄ້າ ແລະ ກິດຈະກຳຕ່າງໆเรา</p>
+</section>
+
+<section id="products">
+  <h2 class="title">ແບບເສື້ອ</h2>
+  <p class="sub">ເລືອກປະເພດເສື້ອທີ່ຕ້ອງການ</p>
+
+  <div class="grid">
+    <div class="card">
+      <img src="/img/0001.png">
+      <div class="info">
+        <h3>ເສື້ອກິລາ</h3>
+        <p>ເສື້ອເຕະບານ ເສື້ອແລນ ເສື້ອທີມ</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="/img/427.png">
+      <div class="info">
+        <h3>ເສື້ອອົງກອນ</h3>
+        <p>ເສື້ອບໍລິສັດ ເສື້ອພະນັກງານ ເສື້ອກິດຈະກຳ</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://via.placeholder.com/600x400?text=Polo+Shirt">
+      <div class="info">
+        <h3>ເສື້ອທີມງານ</h3>
+        <p>ເສື້ອບັ່ງໄຟ ເສື້ອໄກ່ຕີ</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://via.placeholder.com/600x400?text=Custom+Design">
+      <div class="info">
+        <h3>ออกแบบลายฟรี</h3>
+        <p>มีทีมออกแบบช่วยทำแบบก่อนผลิตจริง ปรับได้ตามต้องการ</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="promo">
+  <div class="promo">
+    <h2>ໂປຣໂມຊັ່ນພິເສດ</h2>
+    <p>ເລິ່ມຕົນພຽງ 175,000 ກີບ / ໂຕ ສັ່ງຂັ້ນຕ່ຳ 10 ໂຕ ອອກແບບຟຣີ ບໍ່ຈຳກັດສີ</p>
+    <a class="btn" href="#contact">ຕິດຕໍ່ພວກເຮົາທາງ WhatsApp</a>
+  </div>
+</section>
+
+<section>
+  <h2 class="title">รีวิวจากลูกค้า</h2>
+  <div class="grid">
+    <div class="review"><b>ทีมฟุตบอล</b><br>งานสวย สีสด ใส่แล้วดูเป็นทีมมาก</div>
+    <div class="review"><b>บริษัท</b><br>เสื้อพนักงานคุณภาพดี ส่งตรงเวลา</div>
+    <div class="review"><b>ร้านค้า</b><br>ออกแบบให้ฟรี แก้แบบไวมาก</div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact">
+    <h2>เริ่มต้นสั่งผลิตเสื้อวันนี้</h2>
+    <p>
+      LINE: @yourline<br>
+      โทร: 020-0000-0000<br>
+      เปิดบริการทุกวัน
+    </p>
+    <a class="btn" href="https://line.me/" target="_blank">แชท LINE</a>
+  </div>
+</section>
+
+<footer>
+  Copyright © 2026 Golf Design. All Rights Reserved.
+</footer>
+
+</body>
+</html>
