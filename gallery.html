@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ແບບເສື້ອທັ້ງຫມົດ | GOLF DESIGN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-page="gallery">
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <p>ລະບົບແບບເສື້ອ GOLF DESIGN</p>
+      <div class="topbar-links"><a href="index.html">ໜ້າຫຼັກ</a><a href="upload.html">ເພິ່ມແບບເສື້ອ</a></div>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container navbar"><a class="brand" href="index.html"><span class="brand-mark"><img
+            src="/img/GOLF DESGIN LOGO NOTEXT@4x-8.png" alt="GOLF DESIGN"></span><span><strong>GOLF
+            DESIGN</strong><small>Custom Jersey Factory</small></span></a><input class="nav-toggle" type="checkbox"
+        id="nav-toggle"><label class="hamburger" for="nav-toggle"><span></span><span></span><span></span></label>
+      <nav class="nav-menu"><a href="index.html">ໜ້າຫຼັກ</a><a href="gallery.html">ແບບເສື້ອທັ້ງຫມົດ</a><a
+          href="upload.html">ອັບໂຫລດແບບເສື້ອ</a><a class="nav-contact" href="index.html#contact">ຕິດຕໍ່ພວກເຮົາ</a></nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero">
+      <div class="container"><span class="section-kicker light">SHIRT COLLECTION</span>
+        <h1>ແບບເສື້ອທັ້ງຫມົດ</h1>
+        <p>ຄົ້ນຫາ ແລະ ເລືອກເບິ່ງແບບເສື້ອຕາມໝວດໝູ່ ພ້ອມຂໍ້ມູນວັນທີ່ ແລະ ລະຫັດແບບ</p>
+      </div>
+    </section>
+    <section class="section gallery-page">
+      <div class="container">
+        <div class="gallery-toolbar">
+          <div class="search-box"><input id="gallerySearch" type="search"
+              placeholder="ຄົ້ນຫາຊື່ຮູບ ລະຫັດແບບ ຫຼື ຄຳອະທິບາຍ..."></div>
+          <select id="sortSelect" aria-label="ຮຽງລຳດັບ">
+            <option value="newest">ໃໝ່ລ່າສຸດ</option>
+            <option value="oldest">ເກົ່າທີ່ສຸດ</option>
+            <option value="name">ຮຽງລຳດັບຕາມຊື່</option>
+          </select>
+        </div>
+        <div class="category-tabs gallery-categories" id="categoryFilters">
+          <button class="active" data-category="all">ແບບເສື້ອທັ້ງໝົດ</button>
+          <button data-category="football">ເສື້ອກິລາເຕະບານ</button>
+          <button data-category="team">ເສື້ອທີມງານ</button>
+          <button data-category="company">ເສື້ອບໍລິສັດ</button>
+          <button data-category="meme">ເສື້ອມີມ</button>
+        </div>
+        <div class="gallery-summary">
+          <p>ພົບເຫັນ <strong id="resultCount">0</strong> ແບບ</p><a class="btn btn-primary" href="upload.html">+
+            ອັບໂຫລດແບບເສື້ອ</a>
+        </div>
+        <div class="shirt-gallery" id="shirtGallery"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <h3>ບໍ່ພົບເຫັນແບບເສື້ອ</h3>
+          <p>ລອງປ່ຽນໝວດໝູ່ ຫຼື ຄຳຄົ້ນຫາ</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer compact-footer">
+    <div class="container footer-bottom">
+      <p>Copyright © 2026 GOLF DESIGN. All Rights Reserved.</p>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+
+</html>

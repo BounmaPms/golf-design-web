@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ອັບໂຫລດແບບເສື້ອ | GOLF DESIGN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-page="upload">
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <p>ລະບົບແບບເສື້ອ GOLF DESIGN</p>
+      <div class="topbar-links"><a href="index.html">ໜ້າຫຼັກ</a><a href="upload.html">ເພິ່ມແບບເສື້ອ</a></div>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container navbar"><a class="brand" href="index.html"><span class="brand-mark"><img
+            src="/img/GOLF DESGIN LOGO NOTEXT@4x-8.png"></span><span><strong>GOLF DESIGN</strong><small>Custom Jersey
+            Factory</small></span></a><input class="nav-toggle" type="checkbox" id="nav-toggle"><label class="hamburger"
+        for="nav-toggle"><span></span><span></span><span></span></label>
+      <nav class="nav-menu"><a href="index.html">ໜ້າຫຼັກ</a><a href="gallery.html">ແບບເສື້ອທັ້ງໝົດ</a><a
+          href="upload.html">ອັບໂຫລດແບບເສື້ອ</a><a class="nav-contact" href="index.html#contact">ຕິດຕໍ່ພວກເຮົາ</a></nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero admin-hero">
+      <div class="container"><span class="section-kicker light">ADMIN UPLOAD</span>
+        <h1>ອັບໂຫລດແບບເສື້ອ</h1>
+        <p>ເພິ່ມລາຍລະອຽດຂອງແບບເສື້ອເພື່ອຄົ້ນຫາ ແລະ ຈັດໝວດໝູ່ໄດ້ງ່າຍ</p>
+      </div>
+    </section>
+    <section class="section upload-page">
+      <div class="container upload-layout">
+        <form class="upload-form-card" id="uploadForm">
+          <div class="form-heading">
+            <div><span class="section-kicker">ຂໍ້ມູນແບບເສື້ອ</span>
+              <h2>ເພິ່ມລາຍການໃໝ່</h2>
+            </div><span class="required-note">* ຈຳເປັນ</span>
+          </div>
+          <label class="upload-dropzone" id="dropzone">
+            <input id="shirtImage" name="shirtImage" type="file" accept="image/png,image/jpeg,image/webp" required>
+            <img id="previewImage" alt="ຕົວຢ່າງຮູບພາບ" hidden>
+            <div id="dropzoneText"><span class="upload-icon">↑</span><strong>ຄລິກ ຫຼື
+                ລາກຮູບພາບມາວາງ</strong><small>ຮອງບັບ
+                JPG, PNG, WEBP ບໍ່ເກິນ 5 MB</small></div>
+          </label>
+          <div class="form-row">
+            <label>ຊື່ຮູບ *<input id="shirtName" type="text" maxlength="80" placeholder="เช่น เสื้อฟุตบอลมังกรแดง"
+                required></label>
+            <label>ໝວດໝູ່ *<select id="shirtCategory" required>
+                <option value="">ເລືອກໝວດໝູ່</option>
+                <option value="football">ເສື້ອກິລາ</option>
+                <option value="team">ເສື້ອທີມງານ</option>
+                <option value="company">ເສື້ອບໍລິສັດ</option>
+                <option value="meme">ເສື້ອມີມ</option>
+              </select></label>
+          </div>
+          <div class="form-row">
+            <label>ວັນທີອັບໂຫລດ *<input id="uploadDate" type="date" required></label>
+            <label>ລະຫັດແບບ<input id="designCode" type="text" maxlength="30" placeholder="เช่น GD-FB-001"></label>
+          </div>
+          <div class="form-row">
+            <label>ສີຫຼັກ<input id="mainColor" type="text" maxlength="40" placeholder="เช่น น้ำเงินเข้ม / ทอง"></label>
+            <label>ສະຖານະ<select id="shirtStatus">
+                <option value="available">ພ້ອມຜະລິດ</option>
+                <option value="draft">ແບບຮ່າງ</option>
+                <option value="soldout">ປິດຮັບ</option>
+              </select></label>
+          </div>
+          <label>ແທັກຄົ້ນຫາ<input id="shirtTags" type="text" maxlength="120"
+              placeholder="ເຊັ່ນ ມັງກອນ, ສີແດງ, ບານເຕະ, ແຂນສັ້ນ"></label>
+          <label>ລາຍລະອຽດ<textarea id="shirtDescription" rows="4" maxlength="400"
+              placeholder="ອະທິບາຍລາຍເສື້ອ ເນື້ອຜ້າ ຫຼື ຈຸດເດັ່ນຂອງແບບ"></textarea></label>
+          <label class="checkbox-line"><input id="featured" type="checkbox"> ສະແດງເປັນແບບແນະນຳ</label>
+          <div class="form-actions"><button class="btn btn-primary" type="submit">บันทึกแบบเสื้อ</button><button
+              class="btn btn-secondary" type="reset">ล้างข้อมูล</button><a class="btn btn-ghost"
+              href="gallery.html">ดูแกลเลอรี</a></div>
+          <p class="form-message" id="formMessage" role="status"></p>
+        </form>
+        <aside class="upload-side-card">
+          <h3>ข้อมูลที่เพิ่มให้แล้ว</h3>
+          <ul class="check-list">
+            <li>ชื่อภาพและรหัสแบบ</li>
+            <li>หมวดหมู่และวันที่อัปโหลด</li>
+            <li>สีหลักและแท็กค้นหา</li>
+            <li>สถานะพร้อมผลิต / แบบร่าง</li>
+            <li>คำอธิบายและแบบแนะนำ</li>
+          </ul>
+          <div class="storage-note"><strong>หมายเหตุ</strong>
+            <p>เวอร์ชันนี้เก็บข้อมูลในเบราว์เซอร์ด้วย LocalStorage เหมาะสำหรับทดลองใช้งานบนเครื่องเดียว
+              หากต้องการใช้หลายเครื่อง ควรเชื่อมต่อฐานข้อมูลและระบบล็อกอินผู้ดูแล</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <footer class="footer compact-footer">
+    <div class="container footer-bottom">
+      <p>Copyright © 2026 GOLF DESIGN. All Rights Reserved.</p>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+
+</html>
