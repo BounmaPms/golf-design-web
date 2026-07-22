@@ -6,5 +6,8 @@
 window.CLOUDINARY_CONFIG = {
   cloudName: "ruvtg4ki",
   uploadPreset: "golf_design_unsigned",
-  folder: "golf-design-shirts"
+  folder: "golf-design-shirts",
+
+  deleteApiUrl:
+    "https://golf-design-delete.bounmastudent01.workers.dev"
 };

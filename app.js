@@ -1,5 +1,33 @@
 const STORAGE_KEY = "golfDesignShirts";
 const CLOUDINARY_LIST_TAG = "golf-design-shirts";
+const DELETED_IMAGES_KEY = "deletedCloudinaryImages";
+
+function getDeletedImageIds() {
+  try {
+    const saved = localStorage.getItem(DELETED_IMAGES_KEY);
+    const items = saved ? JSON.parse(saved) : [];
+
+    return Array.isArray(items) ? items : [];
+  } catch (error) {
+    console.error("อ่านรายการรูปที่ลบไม่สำเร็จ:", error);
+    return [];
+  }
+}
+
+function rememberDeletedImage(publicId) {
+  if (!publicId) return;
+
+  const deletedIds = getDeletedImageIds();
+
+  if (!deletedIds.includes(publicId)) {
+    deletedIds.push(publicId);
+  }
+
+  localStorage.setItem(
+    DELETED_IMAGES_KEY,
+    JSON.stringify(deletedIds)
+  );
+}
 
 const categoryNames = {
   football: "ເສື້ອກິລາ",
@@ -43,13 +71,13 @@ function saveShirts(items) {
 ===================================================== */
 
 function formatDate(dateString) {
-    if (!dateString) return "-";
+  if (!dateString) return "-";
 
-    return new Intl.DateTimeFormat("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-    }).format(new Date(dateString));
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  }).format(new Date(dateString));
 }
 
 function escapeHtml(text = "") {
@@ -111,10 +139,13 @@ async function getCloudinaryShirts() {
     `https://res.cloudinary.com/${encodeURIComponent(config.cloudName)}` +
     `/image/list/${encodeURIComponent(CLOUDINARY_LIST_TAG)}.json`;
 
-  const response = await fetch(listUrl, {
-    method: "GET",
-    cache: "no-store"
-  });
+  const response = await fetch(
+    `${listUrl}?t=${Date.now()}`,
+    {
+      method: "GET",
+      cache: "no-store"
+    }
+  );
 
   if (!response.ok) {
     if (response.status === 404) {
@@ -130,8 +161,12 @@ async function getCloudinaryShirts() {
   }
 
   const result = await response.json();
+  const deletedIds = getDeletedImageIds();
+
   const resources = Array.isArray(result.resources)
-    ? result.resources
+    ? result.resources.filter(resource =>
+      !deletedIds.includes(resource.public_id)
+    )
     : [];
 
   const localItems = getShirts();
@@ -891,6 +926,62 @@ function initUpload() {
   });
 }
 
+async function deleteCloudinaryImage(publicId, deletePassword) {
+  const config = window.CLOUDINARY_CONFIG || {};
+
+  const response = await fetch(config.deleteApiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      publicId,
+      deletePassword
+    })
+  });
+
+  const result = await response.json();
+
+  if (!response.ok || !result.success) {
+    throw new Error(result.message || "Delete failed");
+  }
+
+  return result;
+}
+
+async function deleteCloudinaryImage(publicId, deletePassword) {
+  const config = window.CLOUDINARY_CONFIG || {};
+
+  if (!config.deleteApiUrl) {
+    throw new Error("ບໍ່ພົບ deleteApiUrl");
+  }
+
+  if (!publicId) {
+    throw new Error("ບໍ່ພົບ Cloudinary Public ID");
+  }
+
+  const response = await fetch(config.deleteApiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      publicId,
+      deletePassword
+    })
+  });
+
+  const result = await response.json();
+
+  if (!response.ok || result.success !== true) {
+    throw new Error(
+      result.message || "ລົບຮູບຈາກ Cloudinary ບໍ່ສຳເລັດ"
+    );
+  }
+
+  return result;
+}
+
 /* =====================================================
    EDIT PAGE
 ===================================================== */
@@ -1109,28 +1200,71 @@ function initEdit() {
   });
 
   // ลบรายการ
-  deleteButton.addEventListener("click", () => {
+  // ลบรายการและลบรูปจาก Cloudinary
+  deleteButton.addEventListener("click", async () => {
     const confirmed = window.confirm(
-      "ຕ້ອງການລົບລາຍການນີ້ອອກຈາກໜ້າສະແດງແບບເສື້ອ ຫຼື ບໍ່?"
+      "ຕ້ອງການລົບຮູບນີ້ອອກຈາກ Cloudinary ແທ້ບໍ?"
     );
 
     if (!confirmed) {
       return;
     }
 
-    items = items.filter(
-      item => String(item.id) !== String(shirtId)
+    const deletePassword = window.prompt(
+      "ກະລຸນາໃສ່ລະຫັດລົບ"
     );
 
-    saveShirts(items);
+    if (deletePassword === null) {
+      return;
+    }
 
-    message.textContent = "ລົບລາຍການສຳເລັດ";
+    if (!deletePassword.trim()) {
+      window.alert("ກະລຸນາໃສ່ລະຫັດລົບ");
+      return;
+    }
 
-    setTimeout(() => {
-      window.location.href = "gallery.html";
-    }, 500);
+    const oldButtonText = deleteButton.textContent;
+
+    deleteButton.disabled = true;
+    deleteButton.textContent = "ກຳລັງລົບ...";
+    message.textContent = "ກຳລັງລົບຮູບຈາກ Cloudinary...";
+
+    try {
+      await deleteCloudinaryImage(
+        currentItem.cloudinaryPublicId,
+        deletePassword
+      );
+      
+      rememberDeletedImage(
+        currentItem.cloudinaryPublicId
+      );
+
+      items = items.filter(
+        item => String(item.id) !== String(shirtId)
+      );
+
+      saveShirts(items);
+
+      message.textContent = "ລົບຮູບ ແລະ ຂໍ້ມູນສຳເລັດ";
+
+      setTimeout(() => {
+        window.location.href =
+          `gallery.html?deleted=${Date.now()}`;
+      }, 700);
+
+    } catch (error) {
+      console.error(error);
+
+      message.textContent =
+        error.message || "ລົບຮູບບໍ່ສຳເລັດ";
+
+      deleteButton.disabled = false;
+      deleteButton.textContent = oldButtonText;
+    }
   });
-}
+
+};
+
 
 /* =====================================================
    START
