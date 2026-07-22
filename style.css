@@ -200,11 +200,11 @@ textarea {
   font-weight: 500;
 }
 
-.nav-menu > a:not(.nav-contact) {
+.nav-menu>a:not(.nav-contact) {
   position: relative;
 }
 
-.nav-menu > a:not(.nav-contact)::after {
+.nav-menu>a:not(.nav-contact)::after {
   content: "";
   position: absolute;
   left: 0;
@@ -215,7 +215,7 @@ textarea {
   transition: 0.25s ease;
 }
 
-.nav-menu > a:hover::after {
+.nav-menu>a:hover::after {
   right: 0;
 }
 
@@ -250,8 +250,8 @@ textarea {
   inset: 0;
   opacity: 0.13;
   background-image:
-    linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, .12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .12) 1px, transparent 1px);
   background-size: 46px 46px;
   mask-image: linear-gradient(to bottom, #000, transparent 90%);
 }
@@ -293,7 +293,7 @@ textarea {
   color: var(--yellow);
 }
 
-.hero-copy > p {
+.hero-copy>p {
   max-width: 630px;
   margin-top: 22px;
   color: rgba(255, 255, 255, 0.74);
@@ -411,7 +411,7 @@ textarea {
   padding: 24px;
 }
 
-.feature-card + .feature-card {
+.feature-card+.feature-card {
   border-left: 1px solid var(--border);
 }
 
@@ -479,7 +479,7 @@ textarea {
   position: relative;
 }
 
-.about-image > img {
+.about-image>img {
   height: 580px;
   object-fit: cover;
   border-radius: 28px;
@@ -514,7 +514,7 @@ textarea {
   font-size: 13px;
 }
 
-.about-copy > p {
+.about-copy>p {
   margin-top: 20px;
   color: var(--muted);
 }
@@ -633,7 +633,7 @@ textarea {
   padding: 21px;
 }
 
-.product-info > span {
+.product-info>span {
   color: var(--primary);
   font-size: 10px;
   font-weight: 700;
@@ -791,7 +791,7 @@ textarea {
   letter-spacing: 3px;
 }
 
-.review-card > p {
+.review-card>p {
   min-height: 88px;
   color: #485369;
 }
@@ -803,7 +803,7 @@ textarea {
   margin-top: 24px;
 }
 
-.reviewer > span {
+.reviewer>span {
   width: 45px;
   height: 45px;
   display: grid;
@@ -840,7 +840,7 @@ textarea {
   gap: 70px;
 }
 
-.contact-copy > p {
+.contact-copy>p {
   margin-top: 18px;
   color: rgba(255, 255, 255, 0.68);
 }
@@ -946,7 +946,7 @@ textarea {
   color: rgba(255, 255, 255, 0.48);
 }
 
-.footer-grid > div:first-child > p {
+.footer-grid>div:first-child>p {
   max-width: 360px;
   margin-top: 20px;
 }
@@ -957,7 +957,7 @@ textarea {
   font-size: 16px;
 }
 
-.footer-grid > div:not(:first-child) {
+.footer-grid>div:not(:first-child) {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1086,7 +1086,7 @@ textarea {
     border-bottom: 0 !important;
   }
 
-  .nav-toggle:checked ~ .nav-menu {
+  .nav-toggle:checked~.nav-menu {
     max-height: 490px;
     padding-top: 10px;
   }
@@ -1102,7 +1102,7 @@ textarea {
     text-align: center;
   }
 
-  .hero-copy > p {
+  .hero-copy>p {
     margin-inline: auto;
   }
 
@@ -1124,7 +1124,7 @@ textarea {
     margin-inline: auto;
   }
 
-  .about-image > img {
+  .about-image>img {
     height: 480px;
   }
 
@@ -1164,7 +1164,7 @@ textarea {
     font-size: 40px;
   }
 
-  .hero-copy > p {
+  .hero-copy>p {
     font-size: 16px;
   }
 
@@ -1208,12 +1208,12 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .feature-card + .feature-card {
+  .feature-card+.feature-card {
     border-left: 0;
     border-top: 1px solid var(--border);
   }
 
-  .about-image > img {
+  .about-image>img {
     height: 390px;
   }
 
@@ -1235,12 +1235,1951 @@ textarea {
   }
 }
 
-/* =========================
-   Gallery & Upload pages
-========================= */
-.page-hero{padding:75px 0;color:#fff;background:linear-gradient(135deg,var(--navy),var(--primary-dark));text-align:center}.page-hero h1{font-size:clamp(38px,6vw,62px);line-height:1.1}.page-hero p{max-width:680px;margin:15px auto 0;color:rgba(255,255,255,.72)}.admin-hero{background:linear-gradient(135deg,#071329,#113d8d)}
-.gallery-toolbar{display:grid;grid-template-columns:1fr 220px;gap:14px;margin-bottom:22px}.gallery-toolbar input,.gallery-toolbar select{width:100%;height:52px;padding:0 16px;border:1px solid var(--border);border-radius:14px;background:#fff;outline:none}.gallery-toolbar input:focus,.gallery-toolbar select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(11,92,255,.1)}
-.gallery-categories button{padding:10px 20px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--muted);font:inherit;cursor:pointer}.gallery-categories button.active,.gallery-categories button:hover{background:var(--primary);color:#fff;border-color:var(--primary)}.gallery-summary{display:flex;align-items:center;justify-content:space-between;margin-bottom:25px}.gallery-summary strong{color:var(--primary)}
-.shirt-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}.shirt-item{overflow:hidden;background:#fff;border:1px solid var(--border);border-radius:20px;transition:.25s}.shirt-item:hover{transform:translateY(-5px);box-shadow:var(--shadow)}.shirt-thumb{position:relative;overflow:hidden;background:#eef2f7;aspect-ratio:4/5}.shirt-thumb img{width:100%;height:100%;object-fit:cover}.shirt-category,.shirt-featured{position:absolute;top:12px;padding:6px 10px;border-radius:999px;font-size:11px;color:#fff;background:rgba(6,22,49,.82)}.shirt-category{left:12px}.shirt-featured{right:12px;background:#f39b00}.shirt-meta{padding:18px}.shirt-meta h3{font-size:18px;line-height:1.35}.shirt-code{margin-top:5px;color:var(--primary);font-size:12px}.shirt-description{min-height:42px;margin:8px 0 12px;color:var(--muted);font-size:12px}.shirt-details{display:flex;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}.status-pill{display:inline-block;margin-top:10px;padding:5px 9px;border-radius:999px;font-size:10px;background:#eaf8ef;color:#18864b}.status-pill.draft{background:#fff6dc;color:#9b6800}.status-pill.soldout{background:#feecec;color:#b42318}.empty-state{padding:65px 20px;text-align:center;border:1px dashed var(--border);border-radius:20px;color:var(--muted)}
-.upload-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);gap:28px;align-items:start}.upload-form-card,.upload-side-card{background:#fff;border:1px solid var(--border);border-radius:24px;box-shadow:0 15px 45px rgba(16,24,40,.06)}.upload-form-card{padding:34px}.upload-side-card{padding:28px;position:sticky;top:100px}.form-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:25px}.form-heading h2{font-size:30px}.required-note{font-size:12px;color:#d92d20}.upload-dropzone{min-height:300px;position:relative;display:grid;place-items:center;margin-bottom:24px;border:2px dashed #c9d5e7;border-radius:18px;background:#f8faff;overflow:hidden;cursor:pointer;text-align:center}.upload-dropzone.dragover{border-color:var(--primary);background:#eef4ff}.upload-dropzone input{position:absolute;inset:0;opacity:0;cursor:pointer}.upload-dropzone img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#eef2f7}.upload-icon{width:58px;height:58px;display:grid;place-items:center;margin:0 auto 12px;border-radius:50%;background:var(--primary);color:#fff;font-size:28px}.upload-dropzone strong,.upload-dropzone small{display:block}.upload-dropzone small{margin-top:7px;color:var(--muted)}.upload-form-card>label,.upload-form-card .form-row label{display:block;margin-bottom:16px;font-size:13px;font-weight:500}.upload-form-card input[type=text],.upload-form-card input[type=date],.upload-form-card select,.upload-form-card textarea{width:100%;margin-top:7px;padding:13px 14px;border:1px solid var(--border);border-radius:12px;background:#fafbfc;outline:none}.upload-form-card input:focus,.upload-form-card select:focus,.upload-form-card textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(11,92,255,.1)}.checkbox-line{display:flex!important;align-items:center;gap:9px}.checkbox-line input{width:18px;height:18px}.form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.btn-secondary{background:#eef2f7;color:var(--text)}.btn-ghost{border:1px solid var(--border);background:#fff;color:var(--text)}.form-message{min-height:24px;margin-top:14px;color:#18864b}.storage-note{margin-top:26px;padding:18px;border-radius:15px;background:#f5f8ff}.storage-note p{margin-top:7px;color:var(--muted);font-size:12px}.compact-footer .footer-bottom{border-top:0}.compact-footer{text-align:center}
-@media(max-width:1050px){.shirt-gallery{grid-template-columns:repeat(3,1fr)}}@media(max-width:820px){.shirt-gallery{grid-template-columns:repeat(2,1fr)}.upload-layout{grid-template-columns:1fr}.upload-side-card{position:static}.gallery-toolbar{grid-template-columns:1fr}}@media(max-width:560px){.shirt-gallery{grid-template-columns:1fr}.gallery-summary{align-items:flex-start;flex-direction:column;gap:13px}.upload-form-card{padding:22px}.upload-dropzone{min-height:240px}}
+/* =====================================================
+   UPLOAD & EDIT PAGE — ORIGINAL STYLE RESTORE
+===================================================== */
+
+/* พื้นหลังหน้าฟอร์ม */
+
+.upload-page,
+.edit-page {
+  background: var(--surface);
+}
+
+
+/* โครงสร้างหลัก ซ้ายเป็นฟอร์ม ขวาเป็นตัวอย่าง */
+
+.upload-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+  align-items: start;
+  gap: 28px;
+}
+
+
+/* =====================================================
+   การ์ดฟอร์ม
+===================================================== */
+
+.upload-form-card {
+  padding: 34px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 15px 45px rgba(16, 24, 40, 0.08);
+}
+
+.upload-form-card h2 {
+  margin-bottom: 6px;
+  font-size: 27px;
+  line-height: 1.3;
+}
+
+.upload-form-card>p {
+  margin-bottom: 28px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   ช่องกรอกข้อมูล
+===================================================== */
+
+.upload-form {
+  display: grid;
+  gap: 20px;
+}
+
+.upload-form-card .form-group,
+.upload-form-card label {
+  min-width: 0;
+}
+
+.upload-form .form-group {
+  display: grid;
+  gap: 8px;
+}
+
+.upload-form label {
+  display: block;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.upload-form label span {
+  color: #d92d20;
+}
+
+.upload-form input,
+.upload-form select,
+.upload-form textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 13px 15px;
+  color: var(--text);
+  background: #fafbfc;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.upload-form input,
+.upload-form select {
+  min-height: 50px;
+}
+
+.upload-form textarea {
+  min-height: 125px;
+  resize: vertical;
+}
+
+.upload-form input:focus,
+.upload-form select:focus,
+.upload-form textarea:focus {
+  background: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(11, 92, 255, 0.1);
+}
+
+.upload-form input::placeholder,
+.upload-form textarea::placeholder {
+  color: #98a2b3;
+}
+
+
+/* สองช่องต่อแถว */
+
+.upload-form .form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+
+/* ข้อความอธิบายใต้ช่อง */
+
+.field-note,
+.form-help,
+.upload-note {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+
+/* =====================================================
+   ช่องอัปโหลดรูป
+===================================================== */
+
+.image-upload-box,
+.upload-dropzone,
+.file-upload-area {
+  position: relative;
+  min-height: 210px;
+  display: grid;
+  place-items: center;
+  padding: 25px;
+  overflow: hidden;
+  text-align: center;
+  background: #f8faff;
+  border: 2px dashed #c7d7f9;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.image-upload-box:hover,
+.upload-dropzone:hover,
+.file-upload-area:hover {
+  background: #f0f5ff;
+  border-color: var(--primary);
+}
+
+.image-upload-box input[type="file"],
+.upload-dropzone input[type="file"],
+.file-upload-area input[type="file"] {
+  width: 100%;
+}
+
+.upload-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 13px;
+  color: var(--primary);
+  background: #e9f0ff;
+  border-radius: 50%;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.upload-placeholder strong {
+  display: block;
+  color: var(--text);
+  font-size: 15px;
+}
+
+.upload-placeholder p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   ตัวเลือกรูปแบบ checkbox
+===================================================== */
+
+.checkbox-row,
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.checkbox-item {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 13px;
+  background: #fafbfc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.checkbox-item input {
+  width: 17px;
+  min-height: auto;
+  height: 17px;
+  padding: 0;
+  accent-color: var(--primary);
+}
+
+
+/* =====================================================
+   ปุ่มในฟอร์ม
+===================================================== */
+
+.form-actions,
+.upload-actions,
+.edit-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.form-actions .btn,
+.upload-actions .btn,
+.edit-actions .btn {
+  min-width: 150px;
+}
+
+.btn-secondary,
+.btn-cancel {
+  color: var(--text);
+  background: #eef1f6;
+}
+
+.btn-secondary:hover,
+.btn-cancel:hover {
+  background: #e3e7ee;
+}
+
+.btn-danger,
+.delete-button,
+#deleteButton {
+  color: #fff;
+  background: #d92d20;
+  box-shadow: 0 10px 25px rgba(217, 45, 32, 0.2);
+}
+
+.btn-danger:hover,
+.delete-button:hover,
+#deleteButton:hover {
+  background: #b42318;
+}
+
+
+/* =====================================================
+   ข้อความสถานะ
+===================================================== */
+
+.form-message,
+#formMessage,
+#uploadMessage,
+#editMessage {
+  display: none;
+  padding: 12px 15px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.form-message.show,
+#formMessage.show,
+#uploadMessage.show,
+#editMessage.show {
+  display: block;
+}
+
+.form-message.success,
+.success-message {
+  color: #067647;
+  background: #ecfdf3;
+  border: 1px solid #abefc6;
+}
+
+.form-message.error,
+.error-message {
+  color: #b42318;
+  background: #fef3f2;
+  border: 1px solid #fecdca;
+}
+
+
+/* =====================================================
+   การ์ดด้านขวา
+===================================================== */
+
+.upload-side-card {
+  position: sticky;
+  top: 110px;
+  padding: 24px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 15px 45px rgba(16, 24, 40, 0.08);
+}
+
+.upload-side-card h3 {
+  margin-bottom: 6px;
+  font-size: 20px;
+}
+
+.upload-side-card>p {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   รูปตัวอย่าง
+===================================================== */
+
+.image-preview,
+.upload-preview,
+#imagePreview {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background:
+    linear-gradient(45deg, #eef1f6 25%, transparent 25%),
+    linear-gradient(-45deg, #eef1f6 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #eef1f6 75%),
+    linear-gradient(-45deg, transparent 75%, #eef1f6 75%);
+  background-position:
+    0 0,
+    0 10px,
+    10px -10px,
+    -10px 0;
+  background-size: 20px 20px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  aspect-ratio: 4 / 5;
+}
+
+.image-preview img,
+.upload-preview img,
+#imagePreview img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.preview-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+  display: grid;
+  place-items: center;
+  padding: 30px;
+  color: var(--muted);
+  text-align: center;
+}
+
+
+/* รายละเอียดใต้รูปตัวอย่าง */
+
+.preview-info,
+.preview-details {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.preview-info-row,
+.preview-detail {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.preview-info-row span:first-child,
+.preview-detail span:first-child {
+  color: var(--muted);
+}
+
+.preview-info-row strong,
+.preview-detail strong {
+  max-width: 62%;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+
+/* =====================================================
+   หน้าแก้ไข
+===================================================== */
+
+.edit-current-image {
+  margin-bottom: 18px;
+}
+
+.edit-current-image p {
+  margin-bottom: 9px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.edit-current-image img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  background: #f5f7fb;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.edit-warning {
+  margin-top: 16px;
+  padding: 13px 15px;
+  color: #934a00;
+  background: #fff8eb;
+  border: 1px solid #fedf89;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   RESPONSIVE — UPLOAD & EDIT
+===================================================== */
+
+@media (max-width: 900px) {
+  .upload-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-side-card {
+    position: static;
+    max-width: 620px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+
+  .upload-page .container,
+  .edit-page .container {
+    width: min(100% - 20px, 1180px);
+  }
+
+  .upload-form-card,
+  .upload-side-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .upload-form-card h2 {
+    font-size: 23px;
+  }
+
+  .upload-form .form-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .image-upload-box,
+  .upload-dropzone,
+  .file-upload-area {
+    min-height: 175px;
+    padding: 18px;
+  }
+
+  .form-actions,
+  .upload-actions,
+  .edit-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-actions .btn,
+  .upload-actions .btn,
+  .edit-actions .btn {
+    width: 100%;
+  }
+
+  .preview-placeholder {
+    min-height: 280px;
+  }
+}
+
+/* =====================================================
+   GALLERY PAGE
+===================================================== */
+
+.page-hero {
+  padding: 75px 0;
+  color: #fff;
+  background: linear-gradient(135deg,
+      var(--navy),
+      var(--primary-dark));
+  text-align: center;
+}
+
+.page-hero h1 {
+  font-size: clamp(38px, 6vw, 62px);
+  line-height: 1.1;
+}
+
+.page-hero p {
+  max-width: 680px;
+  margin: 15px auto 0;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.admin-hero {
+  background: linear-gradient(135deg, #071329, #113d8d);
+}
+
+
+/* =====================================================
+   ช่องค้นหาและเรียงลำดับ
+===================================================== */
+
+.gallery-toolbar {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.gallery-toolbar input,
+.gallery-toolbar select {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+  outline: none;
+}
+
+.gallery-toolbar input:focus,
+.gallery-toolbar select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(11, 92, 255, 0.1);
+}
+
+
+/* =====================================================
+   ปุ่มหมวดหมู่
+===================================================== */
+
+.gallery-categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 38px;
+}
+
+.gallery-categories button {
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.gallery-categories button.active,
+.gallery-categories button:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+
+/* =====================================================
+   สรุปจำนวนแบบเสื้อ
+===================================================== */
+
+.gallery-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.gallery-summary strong {
+  color: var(--primary);
+}
+
+
+/* =====================================================
+   ตารางแบบเสื้อ
+===================================================== */
+
+.shirt-gallery,
+#shirtGallery {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+
+
+/* =====================================================
+   การ์ดแบบเสื้อ
+===================================================== */
+
+.shirt-item {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  transition: 0.25s ease;
+}
+
+.shirt-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+}
+
+
+/* รูปภาพแบบเสื้อ */
+
+.shirt-thumb {
+  position: relative;
+  overflow: hidden;
+  background: #eef2f7;
+  aspect-ratio: 4 / 5;
+}
+
+.shirt-thumb img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.shirt-item:hover .shirt-thumb img {
+  transform: scale(1.04);
+}
+
+
+/* ป้ายหมวดหมู่ */
+
+.shirt-category,
+.shirt-featured {
+  position: absolute;
+  top: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(6, 22, 49, 0.82);
+  font-size: 11px;
+  backdrop-filter: blur(5px);
+}
+
+.shirt-category {
+  left: 12px;
+}
+
+.shirt-featured {
+  right: 12px;
+  background: #f39b00;
+}
+
+
+/* ข้อมูลแบบเสื้อ */
+
+.shirt-meta {
+  padding: 18px;
+}
+
+.shirt-meta h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.shirt-code {
+  margin-top: 5px;
+  color: var(--primary);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.shirt-description {
+  min-height: 42px;
+  margin: 8px 0 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.shirt-details {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+
+/* สถานะ */
+
+.status-pill {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eaf8ef;
+  color: #18864b;
+  font-size: 10px;
+}
+
+.status-pill.draft {
+  background: #fff6dc;
+  color: #9b6800;
+}
+
+.status-pill.soldout {
+  background: #feecec;
+  color: #b42318;
+}
+
+
+/* ปุ่มแก้ไข */
+
+.shirt-actions {
+  margin-top: 12px;
+}
+
+.shirt-actions .btn {
+  width: 100%;
+}
+
+
+/* ไม่พบข้อมูล */
+
+.empty-state {
+  padding: 65px 20px;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: 20px;
+  color: var(--muted);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+/* แท็บเล็ตขนาดใหญ่: 3 คอลัมน์ */
+
+@media (max-width: 1050px) {
+
+  .shirt-gallery,
+  #shirtGallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
+
+
+/* แท็บเล็ตและมือถือ: 2 คอลัมน์ */
+
+@media (max-width: 820px) {
+
+  .shirt-gallery,
+  #shirtGallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .gallery-toolbar {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* มือถือ */
+
+@media (max-width: 560px) {
+  .gallery-page .container {
+    width: min(100% - 20px, 1180px);
+  }
+
+  .shirt-gallery,
+  #shirtGallery {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .shirt-item {
+    min-width: 0;
+    border-radius: 16px;
+  }
+
+  /*
+    คงรูปทรงเดิม 4:5
+    ไม่เปลี่ยนเป็นรูปสี่เหลี่ยมจัตุรัส
+  */
+  .shirt-thumb {
+    aspect-ratio: 4 / 5;
+  }
+
+  .shirt-meta {
+    padding: 12px;
+  }
+
+  .shirt-meta h3 {
+    font-size: 15px;
+    line-height: 1.35;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .shirt-code {
+    margin-top: 5px;
+    font-size: 11px;
+  }
+
+  /*
+    ยังแสดงคำอธิบายเหมือนเดิม
+    แต่จำกัดไม่เกิน 2 บรรทัด
+  */
+  .shirt-description {
+    min-height: 34px;
+    margin: 7px 0 10px;
+    font-size: 11px;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .shirt-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    padding-top: 9px;
+    font-size: 10px;
+  }
+
+  .shirt-category,
+  .shirt-featured {
+    top: 8px;
+    padding: 4px 7px;
+    font-size: 9px;
+  }
+
+  .shirt-category {
+    left: 8px;
+  }
+
+  .shirt-featured {
+    right: 8px;
+  }
+
+  .status-pill {
+    margin-top: 7px;
+    padding: 4px 7px;
+    font-size: 9px;
+  }
+
+  .shirt-actions .btn {
+    min-height: 38px;
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .gallery-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .gallery-summary .btn {
+    width: 100%;
+  }
+
+  /*
+    หมวดหมู่เลื่อนซ้าย–ขวาได้
+  */
+  #categoryFilters {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  #categoryFilters button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+/* =====================================================
+   UPLOAD PAGE — MATCH ACTUAL HTML
+   วางท้ายสุดของ style.css
+===================================================== */
+
+body[data-page="upload"] .upload-page {
+  background: var(--surface);
+}
+
+body[data-page="upload"] .upload-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  align-items: start;
+  gap: 28px;
+}
+
+
+/* ฟอร์มหลัก */
+
+body[data-page="upload"] #uploadForm {
+  display: grid;
+  gap: 20px;
+  padding: 34px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 15px 45px rgba(16, 24, 40, 0.08);
+}
+
+
+/* หัวข้อฟอร์ม */
+
+.form-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+body[data-page="upload"] .form-heading .section-kicker {
+  margin-bottom: 7px;
+}
+
+body[data-page="upload"] .form-heading h2 {
+  font-size: 28px;
+  line-height: 1.3;
+}
+
+body[data-page="upload"] .required-note {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  color: #b42318;
+  background: #fef3f2;
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+
+/* แถวฟอร์ม */
+
+body[data-page="upload"] #uploadForm .form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+
+/* Label ทุกช่อง */
+
+body[data-page="upload"] #uploadForm>label,
+body[data-page="upload"] #uploadForm .form-row>label {
+  display: block;
+  min-width: 0;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* Input Select Textarea */
+
+body[data-page="upload"] #uploadForm input:not([type="file"]):not([type="checkbox"]),
+body[data-page="upload"] #uploadForm select,
+body[data-page="upload"] #uploadForm textarea {
+  width: 100%;
+  min-width: 0;
+  margin-top: 7px;
+  padding: 13px 14px;
+  color: var(--text);
+  background: #fafbfc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+body[data-page="upload"] #uploadForm input:not([type="file"]):not([type="checkbox"]),
+body[data-page="upload"] #uploadForm select {
+  min-height: 50px;
+}
+
+body[data-page="upload"] #uploadForm textarea {
+  min-height: 125px;
+  resize: vertical;
+}
+
+body[data-page="upload"] #uploadForm input:focus,
+body[data-page="upload"] #uploadForm select:focus,
+body[data-page="upload"] #uploadForm textarea:focus {
+  background: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(11, 92, 255, 0.1);
+}
+
+body[data-page="upload"] #uploadForm input::placeholder,
+body[data-page="upload"] #uploadForm textarea::placeholder {
+  color: #98a2b3;
+}
+
+
+/* พื้นที่อัปโหลดรูป */
+
+body[data-page="upload"] .upload-dropzone {
+  position: relative;
+  min-height: 245px;
+  display: grid !important;
+  place-items: center;
+  overflow: hidden;
+  padding: 25px;
+  text-align: center;
+  background: #f8faff;
+  border: 2px dashed #c7d7f9;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+body[data-page="upload"] .upload-dropzone:hover {
+  background: #f0f5ff;
+  border-color: var(--primary);
+}
+
+body[data-page="upload"] .upload-dropzone input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+body[data-page="upload"] #dropzoneText {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+}
+
+body[data-page="upload"] #dropzoneText strong {
+  font-size: 16px;
+}
+
+body[data-page="upload"] #dropzoneText small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+body[data-page="upload"] .upload-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 6px;
+  color: var(--primary);
+  background: #e9f0ff;
+  border-radius: 50%;
+  font-size: 27px;
+  font-weight: 700;
+}
+
+body[data-page="upload"] #previewImage {
+  width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  border-radius: 13px;
+}
+
+body[data-page="upload"] #previewImage:not([hidden])+#dropzoneText {
+  display: none;
+}
+
+
+/* Checkbox */
+
+body[data-page="upload"] .checkbox-line {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 11px 14px;
+  background: #fafbfc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+body[data-page="upload"] .checkbox-line input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+
+/* ปุ่ม */
+
+body[data-page="upload"] .form-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 6px;
+}
+
+body[data-page="upload"] .form-actions .btn {
+  min-width: 145px;
+}
+
+body[data-page="upload"] .btn-secondary {
+  color: var(--text);
+  background: #eef1f6;
+}
+
+body[data-page="upload"] .btn-secondary:hover {
+  background: #e2e7ef;
+}
+
+body[data-page="upload"] .btn-ghost {
+  color: var(--primary);
+  background: transparent;
+  border: 1px solid #bfd0f7;
+}
+
+body[data-page="upload"] .btn-ghost:hover {
+  background: #f0f5ff;
+}
+
+
+/* ข้อความสถานะ */
+
+body[data-page="upload"] #formMessage {
+  display: none;
+  padding: 12px 15px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+body[data-page="upload"] #formMessage.show {
+  display: block;
+}
+
+body[data-page="upload"] #formMessage.success {
+  color: #067647;
+  background: #ecfdf3;
+  border: 1px solid #abefc6;
+}
+
+body[data-page="upload"] #formMessage.error {
+  color: #b42318;
+  background: #fef3f2;
+  border: 1px solid #fecdca;
+}
+
+
+/* การ์ดด้านขวา */
+
+body[data-page="upload"] .upload-side-card {
+  position: sticky;
+  top: 110px;
+  padding: 26px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 15px 45px rgba(16, 24, 40, 0.08);
+}
+
+body[data-page="upload"] .upload-side-card h3 {
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: 1.35;
+}
+
+body[data-page="upload"] .upload-side-card .check-list {
+  margin: 0;
+}
+
+
+/* กล่องหมายเหตุ */
+
+body[data-page="upload"] .storage-note {
+  margin-top: 24px;
+  padding: 16px;
+  background: #fff8e8;
+  border: 1px solid #f4d58b;
+  border-radius: 14px;
+}
+
+body[data-page="upload"] .storage-note strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #8a5700;
+}
+
+body[data-page="upload"] .storage-note p {
+  color: #77591d;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+
+/* =====================================================
+   UPLOAD RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+  body[data-page="upload"] .upload-layout {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-page="upload"] .upload-side-card {
+    position: static;
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  body[data-page="upload"] .upload-page .container {
+    width: min(100% - 20px, 1180px);
+  }
+
+  body[data-page="upload"] #uploadForm,
+  body[data-page="upload"] .upload-side-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  body[data-page="upload"] .form-heading {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  body[data-page="upload"] .form-heading h2 {
+    font-size: 23px;
+  }
+
+  body[data-page="upload"] #uploadForm .form-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  body[data-page="upload"] .upload-dropzone {
+    min-height: 190px;
+    padding: 18px;
+  }
+
+  body[data-page="upload"] .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  body[data-page="upload"] .form-actions .btn {
+    width: 100%;
+  }
+
+  body[data-page="upload"] .checkbox-line {
+    width: 100%;
+  }
+}
+
+/* =====================================================
+   EDIT PAGE — MATCH ACTUAL HTML
+===================================================== */
+
+body[data-page="edit"] .upload-page {
+  background: var(--surface);
+}
+
+body[data-page="edit"] .upload-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  align-items: start;
+  gap: 28px;
+}
+
+
+/* ฟอร์มหลัก */
+
+body[data-page="edit"] #editForm {
+  display: grid;
+  gap: 20px;
+  padding: 34px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 15px 45px rgba(16, 24, 40, 0.08);
+}
+
+
+/* หัวข้อฟอร์ม */
+
+body[data-page="edit"] .form-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+body[data-page="edit"] .form-heading .section-kicker {
+  margin-bottom: 7px;
+}
+
+body[data-page="edit"] .form-heading h2 {
+  font-size: 28px;
+  line-height: 1.3;
+}
+
+body[data-page="edit"] .required-note {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  color: #b42318;
+  background: #fef3f2;
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+
+/* แถวฟอร์ม */
+
+body[data-page="edit"] #editForm .form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+
+/* Label */
+
+body[data-page="edit"] #editForm>label,
+body[data-page="edit"] #editForm .form-row>label {
+  display: block;
+  min-width: 0;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* Input Select Textarea */
+
+body[data-page="edit"] #editForm input:not([type="file"]):not([type="checkbox"]),
+body[data-page="edit"] #editForm select,
+body[data-page="edit"] #editForm textarea {
+  width: 100%;
+  min-width: 0;
+  margin-top: 7px;
+  padding: 13px 14px;
+  color: var(--text);
+  background: #fafbfc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+body[data-page="edit"] #editForm input:not([type="file"]):not([type="checkbox"]),
+body[data-page="edit"] #editForm select {
+  min-height: 50px;
+}
+
+body[data-page="edit"] #editForm textarea {
+  min-height: 125px;
+  resize: vertical;
+}
+
+body[data-page="edit"] #editForm input:focus,
+body[data-page="edit"] #editForm select:focus,
+body[data-page="edit"] #editForm textarea:focus {
+  background: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(11, 92, 255, 0.1);
+}
+
+
+/* พื้นที่เปลี่ยนรูป */
+
+body[data-page="edit"] .upload-dropzone {
+  position: relative;
+  min-height: 245px;
+  display: grid !important;
+  place-items: center;
+  overflow: hidden;
+  padding: 25px;
+  text-align: center;
+  background: #f8faff;
+  border: 2px dashed #c7d7f9;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+body[data-page="edit"] .upload-dropzone:hover {
+  background: #f0f5ff;
+  border-color: var(--primary);
+}
+
+body[data-page="edit"] .upload-dropzone input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+body[data-page="edit"] #dropzoneText {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+}
+
+body[data-page="edit"] #dropzoneText strong {
+  font-size: 16px;
+}
+
+body[data-page="edit"] #dropzoneText small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+body[data-page="edit"] .upload-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 6px;
+  color: var(--primary);
+  background: #e9f0ff;
+  border-radius: 50%;
+  font-size: 27px;
+  font-weight: 700;
+}
+
+body[data-page="edit"] #previewImage {
+  width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  border-radius: 13px;
+}
+
+body[data-page="edit"] #previewImage:not([hidden])+#dropzoneText {
+  display: none;
+}
+
+
+/* Checkbox */
+
+body[data-page="edit"] .checkbox-line {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 11px 14px;
+  background: #fafbfc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+body[data-page="edit"] .checkbox-line input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+
+/* ปุ่ม */
+
+body[data-page="edit"] .form-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 6px;
+}
+
+body[data-page="edit"] .form-actions .btn {
+  min-width: 145px;
+}
+
+body[data-page="edit"] .btn-ghost {
+  color: var(--primary);
+  background: transparent;
+  border: 1px solid #bfd0f7;
+}
+
+body[data-page="edit"] .btn-ghost:hover {
+  background: #f0f5ff;
+}
+
+body[data-page="edit"] .btn-danger,
+body[data-page="edit"] #deleteShirt {
+  color: #fff;
+  background: #d92d20;
+  box-shadow: 0 10px 25px rgba(217, 45, 32, 0.2);
+}
+
+body[data-page="edit"] .btn-danger:hover,
+body[data-page="edit"] #deleteShirt:hover {
+  background: #b42318;
+}
+
+
+/* ข้อความสถานะ */
+
+body[data-page="edit"] #formMessage {
+  display: none;
+  padding: 12px 15px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+body[data-page="edit"] #formMessage.show {
+  display: block;
+}
+
+body[data-page="edit"] #formMessage.success {
+  color: #067647;
+  background: #ecfdf3;
+  border: 1px solid #abefc6;
+}
+
+body[data-page="edit"] #formMessage.error {
+  color: #b42318;
+  background: #fef3f2;
+  border: 1px solid #fecdca;
+}
+
+
+/* การ์ดด้านขวา */
+
+body[data-page="edit"] .upload-side-card {
+  position: sticky;
+  top: 110px;
+  padding: 26px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 15px 45px rgba(16, 24, 40, 0.08);
+}
+
+body[data-page="edit"] .upload-side-card h3 {
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: 1.35;
+}
+
+body[data-page="edit"] .upload-side-card .check-list {
+  margin: 0;
+}
+
+body[data-page="edit"] .storage-note {
+  margin-top: 24px;
+  padding: 16px;
+  background: #fff8e8;
+  border: 1px solid #f4d58b;
+  border-radius: 14px;
+}
+
+body[data-page="edit"] .storage-note strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #8a5700;
+}
+
+body[data-page="edit"] .storage-note p {
+  color: #77591d;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+
+/* =====================================================
+   EDIT RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+  body[data-page="edit"] .upload-layout {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-page="edit"] .upload-side-card {
+    position: static;
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  body[data-page="edit"] .upload-page .container {
+    width: min(100% - 20px, 1180px);
+  }
+
+  body[data-page="edit"] #editForm,
+  body[data-page="edit"] .upload-side-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  body[data-page="edit"] .form-heading {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  body[data-page="edit"] .form-heading h2 {
+    font-size: 23px;
+  }
+
+  body[data-page="edit"] #editForm .form-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  body[data-page="edit"] .upload-dropzone {
+    min-height: 190px;
+    padding: 18px;
+  }
+
+  body[data-page="edit"] .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  body[data-page="edit"] .form-actions .btn {
+    width: 100%;
+  }
+
+  body[data-page="edit"] .checkbox-line {
+    width: 100%;
+  }
+}
+
+/* =====================================================
+   GALLERY DETAIL MODAL
+===================================================== */
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.shirt-modal[hidden] {
+  display: none;
+}
+
+.shirt-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.shirt-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 10, 23, 0.82);
+  backdrop-filter: blur(5px);
+}
+
+.shirt-modal-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(1050px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  background: #fff;
+  border-radius: 26px;
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.4);
+}
+
+.shirt-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 5;
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #fff;
+  background: rgba(2, 10, 23, 0.75);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.shirt-modal-close:hover {
+  background: #d92d20;
+}
+
+.shirt-modal-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+  min-height: 620px;
+}
+
+.shirt-modal-image {
+  min-height: 620px;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #ffffff;
+}
+
+.shirt-modal-image img {
+  width: 100%;
+  height: 100%;
+  max-height: 720px;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.shirt-modal-content {
+  padding: 48px 36px 36px;
+}
+
+.shirt-modal-category {
+  display: inline-flex;
+  margin-bottom: 14px;
+  padding: 6px 12px;
+  color: var(--primary);
+  background: #edf3ff;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.shirt-modal-content h2 {
+  font-size: clamp(27px, 4vw, 38px);
+  line-height: 1.2;
+}
+
+.shirt-modal-code {
+  margin-top: 8px;
+  color: var(--primary);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.shirt-modal-details {
+  display: grid;
+  gap: 0;
+  margin-top: 25px;
+  border-top: 1px solid var(--border);
+}
+
+.shirt-modal-details > div {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 18px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.shirt-modal-details span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.shirt-modal-details strong {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  text-align: right;
+}
+
+.shirt-modal-description {
+  margin-top: 24px;
+}
+
+.shirt-modal-description h3 {
+  margin-bottom: 8px;
+  font-size: 17px;
+}
+
+.shirt-modal-description p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.75;
+  white-space: pre-line;
+}
+
+.shirt-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+  margin-top: 28px;
+}
+
+.shirt-modal-actions .btn {
+  flex: 1;
+  min-width: 160px;
+}
+
+.shirt-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.shirt-actions .btn {
+  width: 100%;
+  min-width: 0;
+  padding-right: 12px;
+  padding-left: 12px;
+  font-size: 12px;
+}
+
+@media (max-width: 820px) {
+  .shirt-modal {
+    padding: 14px;
+  }
+
+  .shirt-modal-dialog {
+    max-height: calc(100vh - 28px);
+    border-radius: 20px;
+  }
+
+  .shirt-modal-layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .shirt-modal-image {
+    min-height: 430px;
+  }
+
+  .shirt-modal-content {
+    padding: 30px 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .shirt-modal {
+    padding: 8px;
+  }
+
+  .shirt-modal-dialog {
+    max-height: calc(100vh - 16px);
+    border-radius: 16px;
+  }
+
+  .shirt-modal-image {
+    min-height: 330px;
+    padding: 12px;
+  }
+
+  .shirt-modal-content {
+    padding: 25px 18px;
+  }
+
+  .shirt-modal-details > div {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .shirt-modal-details strong {
+    text-align: left;
+  }
+
+  .shirt-modal-actions {
+    flex-direction: column;
+  }
+
+  .shirt-modal-actions .btn {
+    width: 100%;
+  }
+
+  .shirt-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .shirt-actions .btn {
+    min-height: 40px;
+    padding: 7px 8px;
+    font-size: 11px;
+  }
+}

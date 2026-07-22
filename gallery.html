@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=13">
 </head>
 
 <body data-page="gallery">
@@ -70,7 +70,69 @@
       <p>Copyright © 2026 GOLF DESIGN. All Rights Reserved.</p>
     </div>
   </footer>
-  <script src="app.js"></script>
+  <!-- Modal ดูภาพเต็มและรายละเอียด -->
+  <div class="shirt-modal" id="shirtModal" hidden>
+    <div class="shirt-modal-backdrop" data-close-modal></div>
+
+    <div class="shirt-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalShirtName">
+      <button class="shirt-modal-close" id="closeShirtModal" type="button" aria-label="ປິດ">
+        ×
+      </button>
+
+      <div class="shirt-modal-layout">
+        <div class="shirt-modal-image">
+          <img id="modalShirtImage" src="" alt="">
+        </div>
+
+        <div class="shirt-modal-content">
+          <span class="shirt-modal-category" id="modalShirtCategory"></span>
+
+          <h2 id="modalShirtName"></h2>
+
+          <p class="shirt-modal-code" id="modalShirtCode"></p>
+
+          <div class="shirt-modal-details">
+            <div>
+              <span>ວັນທີ່ອັບໂຫລດ</span>
+              <strong id="modalShirtDate"></strong>
+            </div>
+
+            <div>
+              <span>ສີຫຼັກ</span>
+              <strong id="modalShirtColor"></strong>
+            </div>
+
+            <div>
+              <span>ສະຖານະ</span>
+              <strong id="modalShirtStatus"></strong>
+            </div>
+
+            <div>
+              <span>ແທັກ</span>
+              <strong id="modalShirtTags"></strong>
+            </div>
+          </div>
+
+          <div class="shirt-modal-description">
+            <h3>ລາຍລະອຽດ</h3>
+            <p id="modalShirtDescription"></p>
+          </div>
+
+          <div class="shirt-modal-actions">
+            <a class="btn btn-primary" id="modalOpenImage" href="#" target="_blank" rel="noopener">
+              ເປີດຮູບຕົ້ນສະບັບ
+            </a>
+
+            <a class="btn btn-outline-dark" id="modalEditShirt" href="#">
+              ແກ້ໄຂ
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="cloudinary-config.js"></script>
+  <script src="app.js?v=10"></script>
 </body>
 
 </html>
