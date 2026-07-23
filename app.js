@@ -906,11 +906,33 @@ function initUpload() {
       return;
     }
 
-    if (selectedFile.size > 10 * 1024 * 1024) {
-      message.textContent =
-        "ໄຟລ໌ໃຫຍ່ເກີນ 10 MB";
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
+    if (selectedFile.size > MAX_FILE_SIZE) {
+
+      const sizeMB = (selectedFile.size / 1024 / 1024).toFixed(2);
+
+      const warning =
+        `ໄຟລຮູບມີຂະໜາດ ${sizeMB} MB\n\n` +
+        `ຂະໜາດໄຟລ໌ຕ້ອງບໍ່ເກີນ 10 MB`;
+
+      alert(warning);
+
+      message.textContent = warning;
+      message.style.color = "#dc2626";
 
       fileInput.value = "";
+
+      if (previewObjectUrl) {
+        URL.revokeObjectURL(previewObjectUrl);
+        previewObjectUrl = null;
+      }
+
+      preview.hidden = true;
+      preview.removeAttribute("src");
+      dropzoneText.hidden = false;
+      dropzone.classList.remove("has-preview");
+
       return;
     }
 
