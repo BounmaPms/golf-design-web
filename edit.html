@@ -50,7 +50,8 @@
                         <input id="shirtImage" name="shirtImage" type="file" accept="image/png,image/jpeg,image/webp">
                         <img id="previewImage" alt="ຕົວຢ່າງຮູບປະຈຸບັນ" hidden>
                         <div id="dropzoneText"><span
-                                class="upload-icon">↻</span><strong>ເລືອກຮູບໃໝ່ເມື່ອຕ້ອງການປ່ຽນ</strong><small>ຖ້າບໍ່ເລືອກລະບົບຈະໃຊ້ຮູບເກົ່າ</small></div>
+                                class="upload-icon">↻</span><strong>ເລືອກຮູບໃໝ່ເມື່ອຕ້ອງການປ່ຽນ</strong><small>ຖ້າບໍ່ເລືອກລະບົບຈະໃຊ້ຮູບເກົ່າ</small>
+                        </div>
                     </label>
                     <div class="form-row"><label>ຊື່ຮູບ *<input id="shirtName" type="text" maxlength="80"
                                 required></label><label>ໝວດໝູ່ *<select id="shirtCategory" required>
@@ -62,12 +63,145 @@
                     <div class="form-row"><label>ວັນທີ່ອັບໂຫລດ *<input id="uploadDate" type="date"
                                 required></label><label>ລະຫັດແບບ<input id="designCode" type="text"
                                 maxlength="30"></label></div>
-                    <div class="form-row"><label>ສີຫຼັກ<input id="mainColor" type="text"
-                                maxlength="40"></label><label>ສະຖານະ<select id="shirtStatus">
+                    <div class="form-row">
+                        <label>ສີຫຼັກ
+                            <input id="mainColor" type="text" maxlength="40">
+                        </label>
+                        <label>ສະຖານະ
+                            <select id="shirtStatus">
                                 <option value="available">ພ້ອມສັ່ງຜະລິດ</option>
                                 <option value="draft">ແບບຮ່າງ</option>
                                 <option value="soldout">ປິດຮັບ</option>
-                            </select></label></div>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label>
+                            ຄໍເສື້ອ *
+                            <select id="shirtCollar" required>
+                                <option value="">ເລືອກຄໍເສື້ອ</option>
+                                <optgroup label="175,000 ກີບ">
+                                    <option value="round">ຄໍມົນ</option>
+                                    <option value="v-neck">ຄໍວີ</option>
+                                    <option value="cross-v">ຄໍວີໄຂວ້</option>
+                                    <option value="cut-v">ຄໍວີຕັດ</option>
+                                    <option value="pentagon">ຄໍ 5 ຫຼ່ຽມ</option>
+                                    <option value="pentagon-placket">
+                                        ຄໍ 5 ຫຼ່ຽມມີສາບໃນ
+                                    </option>
+                                    <option value="pig-neck">ຄໍຄາງໝູ</option>
+                                    <option value="y-neck">ຄໍວາຍ</option>
+                                </optgroup>
+                                <optgroup label="195,000 ກີບ">
+                                    <option value="cross-polo-v">
+                                        ຄໍວີປົກໄຂວ້
+                                    </option>
+                                    <option value="polo-v">
+                                        ຄໍວີປົກ
+                                    </option>
+                                    <option value="polo">
+                                        ຄໍໂປໂລ
+                                    </option>
+                                    <option value="mandarin">
+                                        ຄໍຈີນ
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </label>
+                        <label>
+                            ແຂນເສື້ອ
+                            <select id="shirtSleeve">
+                                <option value="short">
+                                    ແຂນສັ້ນ
+                                </option>
+                                <option value="long">
+                                    ແຂນຍາວ (+20,000)
+                                </option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>
+                            ໄຫຼ່
+                            <select id="shirtShoulder">
+                                <option value="normal">
+                                    ໄຫຼ່ປົກກະຕິ
+                                </option>
+                                <option value="raglan">
+                                    ໄຫຼ່ສະຫຼົບ
+                                </option>
+                            </select>
+                        </label>
+
+                        <label>
+                            ລາຄາ
+                            <input type="hidden" id="shirtPrice">
+                            <div id="calculatedPrice">
+                                175,000
+                            </div>
+                        </label>
+                    </div>
+                    <label>
+                        ສີທີ່ສາມາດຜະລິດໄດ້
+                        <div class="admin-color-picker">
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="white">
+                                <span class="color-circle" style="--color:#ffffff;"></span>
+                            </label>
+
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="black">
+                                <span class="color-circle" style="--color:#111111;"></span>
+                            </label>
+
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="red">
+                                <span class="color-circle" style="--color:#e1262f;"></span>
+                            </label>
+
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="blue">
+                                <span class="color-circle" style="--color:#164dcc;"></span>
+                            </label>
+
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="sky">
+                                <span class="color-circle" style="--color:#43baf5;"></span>
+                            </label>
+
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="green">
+                                <span class="color-circle" style="--color:#199451;"></span>
+                            </label>
+
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="yellow">
+                                <span class="color-circle" style="--color:#ffd52b;"></span>
+                            </label>
+
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="orange">
+                                <span class="color-circle" style="--color:#ff7a22;"></span>
+                            </label>
+
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="pink">
+                                <span class="color-circle" style="--color:#f16aaa;"></span>
+                            </label>
+
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="purple">
+                                <span class="color-circle" style="--color:#783cbd;"></span>
+                            </label>
+
+                            <label class="color-option">
+                                <input type="checkbox" name="shirtColors" value="gray">
+                                <span class="color-circle" style="--color:#929292;"></span>
+                            </label>
+                        </div>
+                    </label>
+
                     <label>ແທັກຄົ້ນຫາ<input id="shirtTags" type="text" maxlength="120"></label>
                     <label>ລາຍລະອຽດ<textarea id="shirtDescription" rows="4" maxlength="400"></textarea></label>
                     <label class="checkbox-line"><input id="featured" type="checkbox"> ສະແດງເປັນແບບແນະນຳ</label>

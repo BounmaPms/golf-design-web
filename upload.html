@@ -16,21 +16,38 @@
   <div class="topbar">
     <div class="container topbar-inner">
       <p>ລະບົບແບບເສື້ອ GOLF DESIGN</p>
-      <div class="topbar-links"><a href="index.html">ໜ້າຫຼັກ</a><a href="upload.html">ເພິ່ມແບບເສື້ອ</a></div>
+      <div class="topbar-links">
+        <a href="index.html">ໜ້າຫຼັກ</a>
+        <a href="upload.html">ເພິ່ມແບບເສື້ອ</a>
+      </div>
     </div>
   </div>
   <header class="site-header">
-    <div class="container navbar"><a class="brand" href="index.html"><span class="brand-mark"><img
-            src="/img/GOLF DESGIN LOGO NOTEXT@4x-8.png"></span><span><strong>GOLF DESIGN</strong><small>Custom Jersey
-            Factory</small></span></a><input class="nav-toggle" type="checkbox" id="nav-toggle"><label class="hamburger"
-        for="nav-toggle"><span></span><span></span><span></span></label>
-      <nav class="nav-menu"><a href="index.html">ໜ້າຫຼັກ</a><a href="gallery.html">ແບບເສື້ອທັ້ງໝົດ</a><a
-          href="upload.html">ອັບໂຫລດແບບເສື້ອ</a><a class="nav-contact" href="index.html#contact">ຕິດຕໍ່ພວກເຮົາ</a></nav>
+    <div class="container navbar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">
+          <img src="/img/GOLF DESGIN LOGO NOTEXT@4x-8.png"></span><span>
+          <strong>GOLF DESIGN</strong>
+          <small>Custom Jersey Factory</small></span>
+      </a>
+      <input class="nav-toggle" type="checkbox" id="nav-toggle">
+      <label class="hamburger" for="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+      <nav class="nav-menu">
+        <a href="index.html">ໜ້າຫຼັກ</a>
+        <a href="gallery.html">ແບບເສື້ອທັ້ງໝົດ</a>
+        <a href="upload.html">ອັບໂຫລດແບບເສື້ອ</a>
+        <a class="nav-contact" href="index.html#contact">ຕິດຕໍ່ພວກເຮົາ</a>
+      </nav>
     </div>
   </header>
   <main>
     <section class="page-hero admin-hero">
-      <div class="container"><span class="section-kicker light">ADMIN UPLOAD</span>
+      <div class="container">
+        <span class="section-kicker light">ADMIN UPLOAD</span>
         <h1>ອັບໂຫລດແບບເສື້ອ</h1>
         <p>ເພິ່ມລາຍລະອຽດຂອງແບບເສື້ອເພື່ອຄົ້ນຫາ ແລະ ຈັດໝວດໝູ່ໄດ້ງ່າຍ</p>
       </div>
@@ -45,42 +62,176 @@
           </div>
           <label class="upload-dropzone" id="dropzone">
             <input id="shirtImage" name="shirtImage" type="file" accept="image/png,image/jpeg,image/webp" required>
-            <img id="previewImage" alt="ຕົວຢ່າງຮູບພາບ" hidden>
-            <div id="dropzoneText"><span class="upload-icon">↑</span><strong>ຄລິກ ຫຼື
-                ລາກຮູບພາບມາວາງ</strong><small>ຮອງບັບ
-                JPG, PNG, WEBP ບໍ່ເກິນ 5 MB</small></div>
+
+            <img id="previewImage" class="upload-preview-image" src="" alt="ຕົວຢ່າງຮູບພາບ" hidden>
+
+            <div id="dropzoneText">
+              <span class="upload-icon">↑</span>
+              <strong>ຄລິກ ຫຼື ລາກຮູບພາບມາວາງ</strong>
+              <small>ຮອງຮັບ JPG, PNG, WEBP ບໍ່ເກີນ 10 MB</small>
+            </div>
           </label>
           <div class="form-row">
-            <label>ຊື່ຮູບ *<input id="shirtName" type="text" maxlength="80" placeholder="เช่น เสื้อฟุตบอลมังกรแดง"
-                required></label>
-            <label>ໝວດໝູ່ *<select id="shirtCategory" required>
+            <label>ຊື່ຮູບ *
+              <input id="shirtName" type="text" maxlength="80" placeholder="ເຊັ່ນ Rohinya" required>
+            </label>
+            <label>ໝວດໝູ່ *
+              <select id="shirtCategory" required>
                 <option value="">ເລືອກໝວດໝູ່</option>
                 <option value="football">ເສື້ອກິລາ</option>
                 <option value="team">ເສື້ອທີມງານ</option>
                 <option value="company">ເສື້ອບໍລິສັດ</option>
                 <option value="meme">ເສື້ອມີມ</option>
-              </select></label>
+              </select>
+            </label>
           </div>
           <div class="form-row">
             <label>ວັນທີອັບໂຫລດ *<input id="uploadDate" type="date" required></label>
-            <label>ລະຫັດແບບ<input id="designCode" type="text" maxlength="30" placeholder="เช่น GD-FB-001"></label>
+            <label>ລະຫັດແບບ<input id="designCode" type="text" maxlength="30" placeholder="ເຊັ່ນ GD-FB-001"></label>
           </div>
           <div class="form-row">
-            <label>ສີຫຼັກ<input id="mainColor" type="text" maxlength="40" placeholder="เช่น น้ำเงินเข้ม / ทอง"></label>
+            <label>ສີຫຼັກ<input id="mainColor" type="text" maxlength="40" placeholder="ເຊັ່ນ ແດງ / ດຳ / ທອງ"></label>
             <label>ສະຖານະ<select id="shirtStatus">
                 <option value="available">ພ້ອມຜະລິດ</option>
                 <option value="draft">ແບບຮ່າງ</option>
                 <option value="soldout">ປິດຮັບ</option>
               </select></label>
           </div>
+          <div class="form-row">
+            <label>
+              ຄໍເສື້ອ *
+              <select id="shirtCollar" required>
+                <option value="">ເລືອກຄໍເສື້ອ</option>
+                <optgroup label="175,000 ກີບ">
+                  <option value="round">ຄໍມົນ</option>
+                  <option value="v-neck">ຄໍວີ</option>
+                  <option value="cross-v">ຄໍວີໄຂວ້</option>
+                  <option value="cut-v">ຄໍວີຕັດ</option>
+                  <option value="pentagon">ຄໍ 5 ຫຼ່ຽມ</option>
+                  <option value="pentagon-placket">
+                    ຄໍ 5 ຫຼ່ຽມມີສາບໃນ
+                  </option>
+                  <option value="pig-neck">ຄໍຄາງໝູ</option>
+                  <option value="y-neck">ຄໍວາຍ</option>
+                </optgroup>
+                <optgroup label="195,000 ກີບ">
+                  <option value="cross-polo-v">
+                    ຄໍວີປົກໄຂວ້
+                  </option>
+                  <option value="polo-v">
+                    ຄໍວີປົກ
+                  </option>
+                  <option value="polo">
+                    ຄໍໂປໂລ
+                  </option>
+                  <option value="mandarin">
+                    ຄໍຈີນ
+                  </option>
+                </optgroup>
+              </select>
+            </label>
+            <label>
+              ແຂນເສື້ອ
+              <select id="shirtSleeve">
+                <option value="short">
+                  ແຂນສັ້ນ
+                </option>
+                <option value="long">
+                  ແຂນຍາວ (+20,000)
+                </option>
+              </select>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              ໄຫຼ່
+              <select id="shirtShoulder">
+                <option value="normal">
+                  ໄຫຼ່ປົກກະຕິ
+                </option>
+                <option value="raglan">
+                  ໄຫຼ່ສະຫຼົບ
+                </option>
+              </select>
+            </label>
+            <label>
+              ລາຄາ
+              <input type="hidden" id="shirtPrice">
+              <div id="calculatedPrice">
+                175,000
+              </div>
+            </label>
+          </div>
+          <label>
+            ສີທີ່ສາມາດຜະລິດໄດ້
+            <div class="admin-color-picker">
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="white">
+                <span class="color-circle" style="--color:#ffffff;"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="black">
+                <span class="color-circle" style="--color:#111111;"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="red">
+                <span class="color-circle" style="--color:#e1262f;"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="blue">
+                <span class="color-circle" style="--color:#164dcc;"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="sky">
+                <span class="color-circle" style="--color:#43baf5;"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="green">
+                <span class="color-circle" style="--color:#199451;"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="yellow">
+                <span class="color-circle" style="--color:#ffd52b;"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="orange">
+                <span class="color-circle" style="--color:#ff7a22;"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="pink">
+                <span class="color-circle" style="--color:#f16aaa;"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="purple">
+                <span class="color-circle" style="--color:#783cbd;"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="gray">
+                <span class="color-circle" style="--color:#929292;"></span>
+              </label>
+            </div>
+          </label>
+
           <label>ແທັກຄົ້ນຫາ<input id="shirtTags" type="text" maxlength="120"
               placeholder="ເຊັ່ນ ມັງກອນ, ສີແດງ, ບານເຕະ, ແຂນສັ້ນ"></label>
           <label>ລາຍລະອຽດ<textarea id="shirtDescription" rows="4" maxlength="400"
               placeholder="ອະທິບາຍລາຍເສື້ອ ເນື້ອຜ້າ ຫຼື ຈຸດເດັ່ນຂອງແບບ"></textarea></label>
           <label class="checkbox-line"><input id="featured" type="checkbox"> ສະແດງເປັນແບບແນະນຳ</label>
-          <div class="form-actions"><button class="btn btn-primary" type="submit">ບັນທຶກແບບເສື້ອ</button><button
-              class="btn btn-secondary" type="reset">ລ້າງຂໍ້ມູນ</button><a class="btn btn-ghost"
-              href="gallery.html">ເບິ່ງແບບເສື້ອ</a></div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">ບັນທຶກແບບເສື້ອ</button>
+            <button class="btn btn-secondary" type="reset">ລ້າງຂໍ້ມູນ</button>
+            <a class="btn btn-ghost" href="gallery.html">ເບິ່ງແບບເສື້ອ</a>
+          </div>
           <p class="form-message" id="formMessage" role="status"></p>
         </form>
         <aside class="upload-side-card">

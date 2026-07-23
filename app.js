@@ -42,6 +42,114 @@ const statusNames = {
   soldout: "ປິດຮັບ"
 };
 
+const collarNames = {
+  round: "ຄໍມົນ",
+  "v-neck": "ຄໍວີ",
+  "cross-v": "ຄໍວີໄຂວ້",
+  "cut-v": "ຄໍວີຕັດ",
+  pentagon: "ຄໍ 5 ຫຼ່ຽມ",
+  "pentagon-placket": "ຄໍ 5 ຫຼ່ຽມມີສາບໃນ",
+  "pig-neck": "ຄໍຄາງໝູ",
+  "y-neck": "ຄໍວາຍ",
+  "cross-polo-v": "ຄໍວີປົກໄຂວ້",
+  "polo-v": "ຄໍວີປົກ",
+  polo: "ຄໍໂປໂລ",
+  mandarin: "ຄໍຈີນ"
+};
+
+const sleeveNames = {
+  short: "ແຂນສັ້ນ",
+  long: "ແຂນຍາວ"
+};
+
+const shoulderNames = {
+  normal: "ໄຫຼ່ປົກກະຕິ",
+  raglan: "ໄຫຼ່ສະຫຼົບ"
+};
+
+const colorValues = {
+  white: "#ffffff",
+  black: "#111111",
+  red: "#e1262f",
+  blue: "#164dcc",
+  sky: "#43baf5",
+  green: "#199451",
+  yellow: "#ffd52b",
+  orange: "#ff7a22",
+  pink: "#f16aaa",
+  purple: "#783cbd",
+  gray: "#929292"
+};
+
+const premiumCollars = [
+  "cross-polo-v",
+  "polo-v",
+  "polo",
+  "mandarin"
+];
+
+function calculateShirtPrice(collar, sleeve) {
+  let price = premiumCollars.includes(collar)
+    ? 195000
+    : 175000;
+
+  if (sleeve === "long") {
+    price += 20000;
+  }
+
+  return price;
+}
+
+function formatPrice(price) {
+  return Number(price || 0).toLocaleString("en-US");
+}
+
+function getSelectedShirtColors() {
+  return Array.from(
+    document.querySelectorAll(
+      'input[name="shirtColors"]:checked'
+    )
+  ).map(input => input.value);
+}
+
+function initPriceCalculator() {
+  const collarSelect =
+    document.querySelector("#shirtCollar");
+
+  const sleeveSelect =
+    document.querySelector("#shirtSleeve");
+
+  const priceInput =
+    document.querySelector("#shirtPrice");
+
+  const priceText =
+    document.querySelector("#calculatedPrice");
+
+  if (
+    !collarSelect ||
+    !sleeveSelect ||
+    !priceInput ||
+    !priceText
+  ) {
+    return;
+  }
+
+  function updatePrice() {
+    const price = calculateShirtPrice(
+      collarSelect.value,
+      sleeveSelect.value
+    );
+
+    priceInput.value = String(price);
+    priceText.textContent = formatPrice(price);
+  }
+
+  collarSelect.addEventListener("change", updatePrice);
+  sleeveSelect.addEventListener("change", updatePrice);
+
+  updatePrice();
+}
+
 /* =====================================================
    LOCAL STORAGE
 ===================================================== */
@@ -233,6 +341,21 @@ async function getCloudinaryShirts() {
       featured:
         localItem?.featured === true,
 
+      collar:
+        localItem?.collar || "",
+
+      sleeve:
+        localItem?.sleeve || "",
+
+      shoulder:
+        localItem?.shoulder || "",
+
+      colors:
+        localItem?.colors || [],
+
+      price:
+        localItem?.price || 0,
+
       image: buildCloudinaryImageUrl(
         config.cloudName,
         resource
@@ -281,6 +404,29 @@ async function initGallery() {
   let activeCategory = "all";
   let cloudinaryItems = [];
 
+  const sidebarInputs = document.querySelectorAll(
+    '.filter-sidebar input'
+  );
+
+  const resetSidebarFilters =
+    document.querySelector("#resetSidebarFilters");
+
+  sidebarInputs.forEach(input => {
+    input.addEventListener("change", render);
+  });
+
+  resetSidebarFilters?.addEventListener("click", () => {
+    document
+      .querySelectorAll(
+        '.filter-sidebar input[type="checkbox"]'
+      )
+      .forEach(input => {
+        input.checked = false;
+      });
+
+    render();
+  });
+
   grid.innerHTML = `
     <div class="empty-state">
       <h3>ກຳລັງໂຫລດຮູບ...</h3>
@@ -326,7 +472,32 @@ async function initGallery() {
       .trim()
       .toLowerCase() || "";
 
+    const selectedCollars = Array.from(
+      document.querySelectorAll(
+        'input[name="collarFilter"]:checked'
+      )
+    ).map(input => input.value);
+
+    const selectedSleeves = Array.from(
+      document.querySelectorAll(
+        'input[name="sleeveFilter"]:checked'
+      )
+    ).map(input => input.value);
+
+    const selectedShoulders = Array.from(
+      document.querySelectorAll(
+        'input[name="shoulderFilter"]:checked'
+      )
+    ).map(input => input.value);
+
+    const selectedColors = Array.from(
+      document.querySelectorAll(
+        'input[name="colorFilter"]:checked'
+      )
+    ).map(input => input.value);
+
     let items = cloudinaryItems.filter(item => {
+
       const categoryMatches =
         activeCategory === "all" ||
         item.category === activeCategory;
@@ -338,15 +509,42 @@ async function initGallery() {
         item.description,
         item.color,
         item.cloudinaryPublicId
-      ]
-        .join(" ")
-        .toLowerCase();
+      ].join(" ").toLowerCase();
 
       const searchMatches =
         !query ||
         searchableText.includes(query);
 
-      return categoryMatches && searchMatches;
+      const collarMatches =
+        selectedCollars.length === 0 ||
+        selectedCollars.includes(item.collar);
+
+      const sleeveMatches =
+        selectedSleeves.length === 0 ||
+        selectedSleeves.includes(item.sleeve);
+
+      const shoulderMatches =
+        selectedShoulders.length === 0 ||
+        selectedShoulders.includes(item.shoulder);
+
+      const itemColors = Array.isArray(item.colors)
+        ? item.colors
+        : [];
+
+      const colorMatches =
+        selectedColors.length === 0 ||
+        selectedColors.some(color =>
+          itemColors.includes(color)
+        );
+
+      return (
+        categoryMatches &&
+        searchMatches &&
+        collarMatches &&
+        sleeveMatches &&
+        shoulderMatches &&
+        colorMatches
+      );
     });
 
     items.sort((itemA, itemB) => {
@@ -439,7 +637,7 @@ async function initGallery() {
 
   <a
     class="btn btn-outline-dark"
-    href="edit.html?id=${encodeURIComponent(item.id)}"
+    href="edit.html?publicId=${encodeURIComponent(item.cloudinaryPublicId)}"
   >
     ແກ້ໄຂ
   </a>
@@ -493,7 +691,7 @@ async function initGallery() {
     modalOpenImage.href = itemImage;
 
     modalEditShirt.href =
-      `edit.html?id=${encodeURIComponent(item.id)}`;
+      `edit.html?publicId=${encodeURIComponent(item.cloudinaryPublicId)}`;
 
     modal.hidden = false;
     document.body.classList.add("modal-open");
@@ -722,9 +920,19 @@ function initUpload() {
 
     previewObjectUrl = URL.createObjectURL(selectedFile);
 
+    preview.onload = () => {
+      preview.hidden = false;
+      dropzoneText.hidden = true;
+      dropzone.classList.add("has-preview");
+    };
+
+    preview.onerror = () => {
+      message.textContent = "ไม่สามารถแสดงตัวอย่างรูปภาพนี้ได้";
+      preview.hidden = true;
+      dropzoneText.hidden = false;
+    };
+
     preview.src = previewObjectUrl;
-    preview.hidden = false;
-    dropzoneText.hidden = true;
   }
 
   fileInput.addEventListener("change", () => {
@@ -878,6 +1086,22 @@ function initUpload() {
           }
         );
 
+      const collar =
+        document.querySelector("#shirtCollar").value;
+
+      const sleeve =
+        document.querySelector("#shirtSleeve").value;
+
+      const shoulder =
+        document.querySelector("#shirtShoulder").value;
+
+      const colors = getSelectedShirtColors();
+
+      const price = calculateShirtPrice(
+        collar,
+        sleeve
+      );
+
       const item = {
         id: String(Date.now()),
         name,
@@ -889,9 +1113,15 @@ function initUpload() {
         tags,
         description,
         featured,
+
+        collar,
+        sleeve,
+        shoulder,
+        colors,
+        price,
+
         image: cloudinaryResult.secure_url,
-        cloudinaryPublicId:
-          cloudinaryResult.public_id,
+        cloudinaryPublicId: cloudinaryResult.public_id,
         width: cloudinaryResult.width,
         height: cloudinaryResult.height,
         bytes: cloudinaryResult.bytes,
@@ -994,7 +1224,7 @@ function initEdit() {
   }
 
   const params = new URLSearchParams(window.location.search);
-  const shirtId = params.get("id");
+  const publicId = params.get("publicId");
 
   const message = document.querySelector("#formMessage");
   const fileInput = document.querySelector("#shirtImage");
@@ -1004,9 +1234,12 @@ function initEdit() {
   const submitButton = form.querySelector('button[type="submit"]');
 
   let items = getShirts();
-  let itemIndex = items.findIndex(item => String(item.id) === String(shirtId));
+  let itemIndex = items.findIndex(
+    item =>
+      String(item.cloudinaryPublicId) === String(publicId)
+  );
 
-  if (!shirtId || itemIndex === -1) {
+  if (!publicId || itemIndex === -1) {
     message.textContent = "ບໍ່ພົບລາຍການທີ່ຕ້ອງແກ້ໄຂ";
     form.querySelectorAll("input, select, textarea, button")
       .forEach(element => {
@@ -1046,6 +1279,47 @@ function initEdit() {
 
   document.querySelector("#featured").checked =
     currentItem.featured === true;
+
+  const collarSelect = document.querySelector("#shirtCollar");
+  const sleeveSelect = document.querySelector("#shirtSleeve");
+  const shoulderSelect = document.querySelector("#shirtShoulder");
+  const priceInput = document.querySelector("#shirtPrice");
+  const priceText = document.querySelector("#calculatedPrice");
+
+  if (collarSelect) {
+    collarSelect.value = currentItem.collar || "round";
+  }
+
+  if (sleeveSelect) {
+    sleeveSelect.value = currentItem.sleeve || "short";
+  }
+
+  if (shoulderSelect) {
+    shoulderSelect.value = currentItem.shoulder || "normal";
+  }
+
+  const savedColors = Array.isArray(currentItem.colors)
+    ? currentItem.colors
+    : [];
+
+  document
+    .querySelectorAll('input[name="shirtColors"]')
+    .forEach(input => {
+      input.checked = savedColors.includes(input.value);
+    });
+
+  const currentPrice = calculateShirtPrice(
+    collarSelect?.value || "round",
+    sleeveSelect?.value || "short"
+  );
+
+  if (priceInput) {
+    priceInput.value = String(currentPrice);
+  }
+
+  if (priceText) {
+    priceText.textContent = formatPrice(currentPrice);
+  }
 
   if (currentItem.image) {
     preview.src = currentItem.image;
@@ -1163,6 +1437,19 @@ function initEdit() {
         };
       }
 
+      const collar =
+        document.querySelector("#shirtCollar")?.value || "round";
+
+      const sleeve =
+        document.querySelector("#shirtSleeve")?.value || "short";
+
+      const shoulder =
+        document.querySelector("#shirtShoulder")?.value || "normal";
+
+      const colors = getSelectedShirtColors();
+
+      const price = calculateShirtPrice(collar, sleeve);
+
       items[itemIndex] = {
         ...currentItem,
         name: document.querySelector("#shirtName").value.trim(),
@@ -1177,6 +1464,11 @@ function initEdit() {
           .value
           .trim(),
         featured: document.querySelector("#featured").checked,
+        collar,
+        sleeve,
+        shoulder,
+        colors,
+        price,
         ...imageData
       };
 
@@ -1234,7 +1526,7 @@ function initEdit() {
         currentItem.cloudinaryPublicId,
         deletePassword
       );
-      
+
       rememberDeletedImage(
         currentItem.cloudinaryPublicId
       );
@@ -1266,6 +1558,49 @@ function initEdit() {
 };
 
 
+function initFilterToggle() {
+  const toggleBtn = document.querySelector("#toggleFilter");
+  const sidebar = document.querySelector("#filterSidebar");
+
+  if (!toggleBtn || !sidebar) return;
+
+  function updateButtonText() {
+    const isMobile = window.innerWidth <= 992;
+
+    if (isMobile) {
+      toggleBtn.textContent = sidebar.classList.contains("show")
+        ? "✕ ปิด Filter"
+        : "☰ เปิด Filter";
+    } else {
+      toggleBtn.textContent = sidebar.classList.contains("is-hidden")
+        ? "☰ เปิด Filter"
+        : "✕ ปิด Filter";
+    }
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    if (window.innerWidth <= 992) {
+      sidebar.classList.toggle("show");
+    } else {
+      sidebar.classList.toggle("is-hidden");
+    }
+
+    updateButtonText();
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 992) {
+      sidebar.classList.remove("show");
+    } else {
+      sidebar.classList.remove("is-hidden");
+    }
+
+    updateButtonText();
+  });
+
+  updateButtonText();
+}
+
 /* =====================================================
    START
 ===================================================== */
@@ -1274,4 +1609,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initGallery();
   initUpload();
   initEdit();
+  initPriceCalculator();
+  initFilterToggle();
 });
