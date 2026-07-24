@@ -1691,7 +1691,7 @@ function initUpload() {
         price,
 
         image: cloudinaryResult.secure_url,
-        cloudinary_public_id: cloudinaryResult.public_id,
+        cloudinaryPublicId: cloudinaryResult.public_id,
         width: cloudinaryResult.width,
         height: cloudinaryResult.height,
         bytes: cloudinaryResult.bytes,
@@ -1761,7 +1761,7 @@ async function deleteCloudinaryImage(publicId, deletePassword) {
    EDIT PAGE
 ===================================================== */
 
-function initEdit() {
+async function initEdit() {
   const form = document.querySelector("#editForm");
 
   if (!form) {
@@ -1778,23 +1778,83 @@ function initEdit() {
   const deleteButton = document.querySelector("#deleteShirt");
   const submitButton = form.querySelector('button[type="submit"]');
 
-  let items = getShirts();
-  let itemIndex = items.findIndex(
-    item =>
-      String(item.cloudinaryPublicId) === String(publicId)
-  );
+  let currentItem;
 
-  if (!publicId || itemIndex === -1) {
-    message.textContent = "ບໍ່ພົບລາຍການທີ່ຕ້ອງແກ້ໄຂ";
-    form.querySelectorAll("input, select, textarea, button")
-      .forEach(element => {
-        element.disabled = true;
-      });
+  try {
+    const { data, error } = await window.supabaseClient
+      .from("shirts")
+      .select("*")
+      .eq("cloudinary_public_id", publicId)
+      .maybeSingle();
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data) {
+      message.textContent =
+        "ບໍ່ພົບລາຍການໃນ Supabase";
+
+      console.warn(
+        "ไม่พบ cloudinary_public_id:",
+        publicId
+      );
+
+      return;
+    }
+
+    currentItem = {
+      id: data.id,
+      name: data.name || "",
+      category: data.category || "football",
+
+      date: data.upload_date || "",
+      code: data.design_code || "",
+      color: data.main_color || "",
+
+      tags: data.tags || "",
+      description: data.description || "",
+      featured: data.featured === true,
+
+      collar: data.collar || "round",
+      sleeve: data.sleeve || "short",
+      shoulder: data.shoulder || "normal",
+
+      colors: Array.isArray(data.colors)
+        ? data.colors
+        : [],
+
+      price: Number(data.price || 0),
+
+      image: data.image || "",
+      cloudinaryPublicId:
+        data.cloudinary_public_id || "",
+
+      width: data.width,
+      height: data.height,
+      bytes: data.bytes,
+      format: data.format
+    };
+
+  } catch (error) {
+    console.error(
+      "โหลดข้อมูลหน้า Edit ไม่สำเร็จ:",
+      error
+    );
+
+    message.textContent =
+      "ດຶງຂໍ້ມູນຈາກ Supabase ບໍ່ສຳເລັດ";
 
     return;
   }
 
-  let currentItem = items[itemIndex];
+  if (!publicId) {
+    message.textContent =
+      "ບໍ່ພົບ Cloudinary Public ID";
+
+    return;
+  }
+
   let previewObjectUrl = null;
 
   // นำข้อมูลเดิมใส่ในฟอร์ม
@@ -1907,18 +1967,23 @@ function initEdit() {
       document.querySelector("#uploadDate").value
     ).getFullYear();
 
-    const duplicateCode = items.some(item => {
-      const itemYear = item.date
-        ? new Date(item.date).getFullYear()
+    const { data: duplicateItems, error: duplicateError } =
+      await window.supabaseClient
+        .from("shirts")
+        .select("id, upload_date, design_code")
+        .eq("design_code", newCode)
+        .neq("id", currentItem.id);
+
+    if (duplicateError) {
+      throw duplicateError;
+    }
+
+    const duplicateCode = (duplicateItems || []).some(item => {
+      const itemYear = item.upload_date
+        ? new Date(item.upload_date).getFullYear()
         : 0;
 
-      return (
-        String(item.cloudinaryPublicId) !== String(publicId) &&
-        itemYear === editYear &&
-        String(item.code || "")
-          .trim()
-          .toLowerCase() === newCode.toLowerCase()
-      );
+      return itemYear === editYear;
     });
 
     if (newCode && duplicateCode) {
@@ -1996,28 +2061,40 @@ function initEdit() {
 
       const price = calculateShirtPrice(collar, sleeve);
 
-      items[itemIndex] = {
-        ...currentItem,
+      const updatedItem = {
         name: document.querySelector("#shirtName").value.trim(),
         category: document.querySelector("#shirtCategory").value,
-        date: document.querySelector("#uploadDate").value,
-        code: document.querySelector("#designCode").value.trim(),
-        color: document.querySelector("#mainColor").value.trim(),
+
+        upload_date: document.querySelector("#uploadDate").value,
+        design_code: document.querySelector("#designCode").value.trim(),
+        main_color: document.querySelector("#mainColor").value.trim(),
+
         tags: document.querySelector("#shirtTags").value.trim(),
-        description: document
-          .querySelector("#shirtDescription")
-          .value
-          .trim(),
+        description: document.querySelector("#shirtDescription").value.trim(),
+
         featured: document.querySelector("#featured").checked,
+
         collar,
         sleeve,
         shoulder,
         colors,
         price,
-        ...imageData
+
+        image: imageData.image,
+        cloudinary_public_id: imageData.cloudinaryPublicId,
+
+        width: imageData.width,
+        height: imageData.height,
+        bytes: imageData.bytes,
+        format: imageData.format
       };
 
-      saveShirts(items);
+      const { error } = await window.supabaseClient
+        .from("shirts")
+        .update(updatedItem)
+        .eq("id", currentItem.id);
+
+      if (error) throw error;
 
       message.textContent = "ບັນທຶກການແກ້ໄຂສຳເລັດ";
 
@@ -2075,12 +2152,12 @@ function initEdit() {
         currentItem.cloudinaryPublicId
       );
 
-      items = items.filter(
-        item =>
-          String(item.cloudinaryPublicId) !== String(publicId)
-      );
+      const { error } = await window.supabaseClient
+        .from("shirts")
+        .delete()
+        .eq("id", currentItem.id);
 
-      saveShirts(items);
+      if (error) throw error;
 
       message.textContent = "ລົບຮູບ ແລະ ຂໍ້ມູນສຳເລັດ";
 
@@ -2163,7 +2240,7 @@ async function startApp() {
     await initGallery();
 
     initUpload();
-    initEdit();
+    await initEdit();
     initPriceCalculator();
     initFilterToggle();
 
