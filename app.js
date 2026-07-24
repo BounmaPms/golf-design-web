@@ -732,7 +732,7 @@ async function initGallery() {
     type="button"
     data-shirt-id="${escapeHtml(String(item.id))}"
   >
-    ເບິ່ງຮູບເຕັມ
+    ເບິ່ງລາຍລະອຽດ
   </button>
 
   ${isAdminGallery
