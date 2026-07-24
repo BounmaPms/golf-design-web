@@ -335,7 +335,28 @@
         </div>
     </div>
     <script src="cloudinary-config.js"></script>
-    <script src="app.js?v=10"></script>
+    <script type="module">
+        import { createClient } from
+            "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+        const SUPABASE_URL =
+            "https://joygzdofxctopnjqthnp.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_vQj2CDmkTsvZuLsMaaN3wA_Vh6kmtGO";
+
+        window.supabaseClient = createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+        console.log("Supabase SDK โหลดสำเร็จ", window.supabaseClient);
+
+        // โหลด app.js หลังจาก Supabase พร้อมแล้ว
+        const appScript = document.createElement("script");
+        appScript.src = "app.js?v=12";
+        document.body.appendChild(appScript);
+    </script>
 </body>
 
 </html>

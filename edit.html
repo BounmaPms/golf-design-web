@@ -233,7 +233,7 @@
             </div>
         </section>
     </main>
-    
+
     <footer class="footer compact-footer">
         <div class="container footer-bottom">
             <p>Copyright © 2026 GOLF DESIGN. All Rights Reserved.</p>
@@ -286,7 +286,27 @@
 
     <script src="cloudinary-config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
-    <script src="app.js"></script>
+
+    <script type="module">
+        import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+        const SUPABASE_URL =
+            "https://joygzdofxctopnjqthnp.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_vQj2CDmkTsvZuLsMaaN3wA_Vh6kmtGO";
+
+        window.supabaseClient = createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+        console.log("Supabase connected", window.supabaseClient);
+
+        const appScript = document.createElement("script");
+        appScript.src = "app.js?v=13";
+        document.body.appendChild(appScript);
+    </script>
 </body>
 
 </html>
