@@ -75,6 +75,20 @@ const colorValues = {
   gray: "#929292"
 };
 
+const colorNames = {
+  white: "ສີຂາວ",
+  black: "ສີດຳ",
+  red: "ສີແດງ",
+  blue: "ສີນ້ຳເງິນ",
+  sky: "ສີຟ້າ",
+  green: "ສີຂຽວ",
+  yellow: "ສີເຫຼືອງ",
+  orange: "ສີສົ້ມ",
+  pink: "ສີບົວ",
+  purple: "ສີມ່ວງ",
+  gray: "ສີເທົາ"
+};
+
 const premiumCollars = [
   "cross-polo-v",
   "polo-v",
@@ -104,6 +118,106 @@ function getSelectedShirtColors() {
       'input[name="shirtColors"]:checked'
     )
   ).map(input => input.value);
+}
+
+function initColorSorting(initialColors = []) {
+  const container = document.querySelector("#selectedColorOrder");
+
+  if (!container) return;
+
+  let orderedColors = Array.isArray(initialColors)
+    ? [...initialColors]
+    : [];
+
+  function getCheckedColors() {
+    return Array.from(
+      document.querySelectorAll(
+        'input[name="shirtColors"]:checked'
+      )
+    ).map(input => input.value);
+  }
+
+  function syncColorOrder() {
+    const checkedColors = getCheckedColors();
+
+    // ลบสีที่ยกเลิกเลือกออก
+    orderedColors = orderedColors.filter(color =>
+      checkedColors.includes(color)
+    );
+
+    // เพิ่มสีที่เพิ่งเลือกไว้ท้ายรายการ
+    checkedColors.forEach(color => {
+      if (!orderedColors.includes(color)) {
+        orderedColors.push(color);
+      }
+    });
+
+    renderColorOrder();
+  }
+
+  function renderColorOrder() {
+    if (orderedColors.length === 0) {
+      container.innerHTML = `
+        <span class="color-order-empty">
+          ຍັງບໍ່ໄດ້ເລືອກສີ
+        </span>
+      `;
+      return;
+    }
+
+    container.innerHTML = orderedColors.map(color => `
+      <div
+        class="sortable-color-item"
+        data-color="${escapeHtml(color)}"
+      >
+        <span
+          class="sortable-color-dot"
+          style="background:${colorValues[color] || "#cccccc"}"
+        ></span>
+
+        <span class="sortable-color-name">
+          ${colorNames[color] || escapeHtml(color)}
+        </span>
+
+        <span class="sortable-color-handle">☰</span>
+      </div>
+    `).join("");
+  }
+
+  document
+    .querySelectorAll('input[name="shirtColors"]')
+    .forEach(input => {
+      input.addEventListener("change", syncColorOrder);
+    });
+
+  if (typeof Sortable !== "undefined") {
+    new Sortable(container, {
+      animation: 150,
+      handle: ".sortable-color-handle",
+      ghostClass: "sortable-ghost",
+      chosenClass: "sortable-chosen",
+
+      onEnd() {
+        orderedColors = Array.from(
+          container.querySelectorAll(".sortable-color-item")
+        ).map(item => item.dataset.color);
+      }
+    });
+  }
+
+  window.getOrderedShirtColors = function () {
+    const items = Array.from(
+      container.querySelectorAll(".sortable-color-item")
+    );
+
+    if (items.length > 0) {
+      return items.map(item => item.dataset.color);
+    }
+
+    return [];
+  };
+
+  syncColorOrder();
 }
 
 function initPriceCalculator() {
@@ -384,7 +498,6 @@ async function initGallery() {
   const modalCode = document.querySelector("#modalShirtCode");
   const modalDate = document.querySelector("#modalShirtDate");
   const modalColor = document.querySelector("#modalShirtColor");
-  const modalStatus = document.querySelector("#modalShirtStatus");
   const modalTags = document.querySelector("#modalShirtTags");
   const modalDescription = document.querySelector("#modalShirtDescription");
   const modalOpenImage = document.querySelector("#modalOpenImage");
@@ -455,6 +568,9 @@ async function initGallery() {
 
   search?.addEventListener("input", render);
   sort?.addEventListener("change", render);
+
+  const isAdminGallery =
+    document.body.dataset.page === "gallery-admin";
 
   function render() {
     const query = search?.value
@@ -594,10 +710,10 @@ async function initGallery() {
           </p>
 
           <div class="shirt-details">
-  <span>${formatDate(item.date)}</span>
-</div>
+            <span>${formatDate(item.date)}</span>
+          </div>
 
-<div class="shirt-color-list">
+          <div class="shirt-color-list">
   ${(item.colors || [])
         .map(color => `
         <span
@@ -611,17 +727,27 @@ async function initGallery() {
 </div>
 
           <div class="shirt-actions">
-            <button class="btn btn-primary view-shirt-button" type="button" data-shirt-id="${escapeHtml(String(item.id))}"
+  <button
+    class="btn btn-primary view-shirt-button"
+    type="button"
+    data-shirt-id="${escapeHtml(String(item.id))}"
   >
     ເບິ່ງຮູບເຕັມ
   </button>
 
-  <a
-    class="btn btn-outline-dark"
-    href="edit.html?publicId=${encodeURIComponent(item.cloudinaryPublicId)}"
-  >
-    ແກ້ໄຂ
-  </a>
+  ${isAdminGallery
+        ? `
+        <a
+          class="btn btn-outline-dark"
+          href="edit.html?publicId=${encodeURIComponent(
+          item.cloudinaryPublicId
+        )}"
+        >
+          ແກ້ໄຂ
+        </a>
+      `
+        : ""
+      }
 </div>
 
         </div>
@@ -655,13 +781,18 @@ async function initGallery() {
         ? formatDate(item.date)
         : "ບໍ່ລະບຸວັນທີ່";
 
-    modalColor.textContent =
-      item.color || "ບໍ່ລະບຸສີ";
+    const colors = Array.isArray(item.colors) ? item.colors : [];
 
-    modalStatus.textContent =
-      statusNames[item.status] ||
-      item.status ||
-      "ບໍ່ລະບຸສະຖານະ";
+    modalColor.innerHTML =
+      colors.length > 0
+        ? colors.map(color => `
+        <span
+          class="modal-color-dot"
+          title="${color}"
+          style="background:${colorValues[color] || "#ccc"}"
+        ></span>
+      `).join("")
+        : '<span>ບໍ່ລະບຸສີ</span>';
 
     modalTags.textContent =
       item.tags || "ບໍ່ມີແທັກ";
@@ -671,8 +802,18 @@ async function initGallery() {
 
     modalOpenImage.href = itemImage;
 
-    modalEditShirt.href =
-      `edit.html?publicId=${encodeURIComponent(item.cloudinaryPublicId)}`;
+    if (modalEditShirt) {
+      if (isAdminGallery) {
+        modalEditShirt.href =
+          `edit.html?publicId=${encodeURIComponent(
+            item.cloudinaryPublicId
+          )}`;
+
+        modalEditShirt.hidden = false;
+      } else {
+        modalEditShirt.hidden = true;
+      }
+    }
 
     modal.hidden = false;
     document.body.classList.add("modal-open");
@@ -1087,7 +1228,10 @@ function initUpload() {
       const shoulder =
         document.querySelector("#shirtShoulder").value;
 
-      const colors = getSelectedShirtColors();
+      const colors =
+        typeof window.getOrderedShirtColors === "function"
+          ? window.getOrderedShirtColors()
+          : getSelectedShirtColors();
 
       const price = calculateShirtPrice(
         collar,
@@ -1129,7 +1273,7 @@ function initUpload() {
         "ກຳລັງເປີດໜ້າແບບເສື້ອ...";
 
       setTimeout(() => {
-        window.location.href = "gallery.html";
+        window.location.href = "admin-gallery.html";
       }, 700);
 
     } catch (error) {
@@ -1145,6 +1289,7 @@ function initUpload() {
         "ບັນທຶກແບບເສື້ອ";
     }
   });
+  initColorSorting();
 }
 
 async function deleteCloudinaryImage(publicId, deletePassword) {
@@ -1296,6 +1441,8 @@ function initEdit() {
       input.checked = savedColors.includes(input.value);
     });
 
+  initColorSorting(savedColors);
+
   const currentPrice = calculateShirtPrice(
     collarSelect?.value || "round",
     sleeveSelect?.value || "short"
@@ -1430,7 +1577,10 @@ function initEdit() {
       const shoulder =
         document.querySelector("#shirtShoulder")?.value || "normal";
 
-      const colors = getSelectedShirtColors();
+      const colors =
+        typeof window.getOrderedShirtColors === "function"
+          ? window.getOrderedShirtColors()
+          : getSelectedShirtColors();
 
       const price = calculateShirtPrice(collar, sleeve);
 
@@ -1460,7 +1610,7 @@ function initEdit() {
       message.textContent = "ບັນທຶກການແກ້ໄຂສຳເລັດ";
 
       setTimeout(() => {
-        window.location.href = "gallery.html";
+        window.location.href = "admin-gallery.html";
       }, 700);
 
     } catch (error) {
@@ -1474,7 +1624,6 @@ function initEdit() {
     }
   });
 
-  // ลบรายการ
   // ลบรายการและลบรูปจาก Cloudinary
   deleteButton.addEventListener("click", async () => {
     const confirmed = window.confirm(
@@ -1525,7 +1674,7 @@ function initEdit() {
 
       setTimeout(() => {
         window.location.href =
-          `gallery.html?deleted=${Date.now()}`;
+          `admin-gallery.html?deleted=${Date.now()}`;
       }, 700);
 
     } catch (error) {

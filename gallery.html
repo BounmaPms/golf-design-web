@@ -12,25 +12,45 @@
   <link rel="stylesheet" href="style.css?v=13">
 </head>
 
-<body data-page="gallery">
+<body data-page="gallery-public">
   <div class="topbar">
     <div class="container topbar-inner">
       <p>ລະບົບແບບເສື້ອ GOLF DESIGN</p>
-      <div class="topbar-links"><a href="index.html">ໜ້າຫຼັກ</a><a href="upload.html">ເພິ່ມແບບເສື້ອ</a></div>
+      <div class="topbar-links">
+        <a href="index.html">ໜ້າຫຼັກ</a>
+        <a href="admin-gallery.html">admin</a>
+        <a href="upload.html">ເພິ່ມແບບເສື້ອ</a>
+      </div>
     </div>
   </div>
   <header class="site-header">
-    <div class="container navbar"><a class="brand" href="index.html"><span class="brand-mark"><img
-            src="img/GOLF DESGIN LOGO.png" alt="GOLF DESIGN"></span><span><strong>GOLF
-            DESIGN</strong><small>Custom Jersey Factory</small></span></a><input class="nav-toggle" type="checkbox"
-        id="nav-toggle"><label class="hamburger" for="nav-toggle"><span></span><span></span><span></span></label>
-      <nav class="nav-menu"><a href="index.html">ໜ້າຫຼັກ</a><a href="gallery.html">ແບບເສື້ອທັ້ງຫມົດ</a><a
-          href="upload.html">ອັບໂຫລດແບບເສື້ອ</a><a class="nav-contact" href="index.html#contact">ຕິດຕໍ່ພວກເຮົາ</a></nav>
+    <div class="container navbar">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">
+          <img src="img/GOLF DESGIN LOGO.png" alt="GOLF DESIGN">
+        </span>
+        <span>
+          <strong>GOLF DESIGN</strong>
+          <small>Custom Jersey Factory</small>
+        </span>
+      </a>
+      <input class="nav-toggle" type="checkbox" id="nav-toggle">
+      <label class="hamburger" for="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+      <nav class="nav-menu">
+        <a href="index.html">ໜ້າຫຼັກ</a>
+        <a href="gallery.html">ແບບເສື້ອທັ້ງຫມົດ</a>
+        <a class="nav-contact" href="index.html#contact">ຕິດຕໍ່ພວກເຮົາ</a>
+      </nav>
     </div>
   </header>
   <main>
     <section class="page-hero">
-      <div class="container"><span class="section-kicker light">SHIRT COLLECTION</span>
+      <div class="container">
+        <span class="section-kicker light">SHIRT COLLECTION</span>
         <h1>ແບບເສື້ອທັ້ງຫມົດ</h1>
         <p>ຄົ້ນຫາ ແລະ ເລືອກເບິ່ງແບບເສື້ອຕາມໝວດໝູ່ ພ້ອມຂໍ້ມູນວັນທີ່ ແລະ ລະຫັດແບບ</p>
       </div>
@@ -38,8 +58,9 @@
     <section class="section gallery-page">
       <div class="container">
         <div class="gallery-toolbar">
-          <div class="search-box"><input id="gallerySearch" type="search"
-              placeholder="ຄົ້ນຫາຊື່ຮູບ ລະຫັດແບບ ຫຼື ຄຳອະທິບາຍ..."></div>
+          <div class="search-box">
+            <input id="gallerySearch" type="search" placeholder="ຄົ້ນຫາຊື່ຮູບ ລະຫັດແບບ ຫຼື ຄຳອະທິບາຍ...">
+          </div>
           <select id="sortSelect" aria-label="ຮຽງລຳດັບ">
             <option value="newest">ໃໝ່ລ່າສຸດ</option>
             <option value="oldest">ເກົ່າທີ່ສຸດ</option>
@@ -53,18 +74,16 @@
           <button data-category="company">ເສື້ອບໍລິສັດ</button>
           <button data-category="meme">ເສື້ອມີມ</button>
         </div>
+
         <div class="gallery-summary">
-          <p>ພົບເຫັນ <strong id="resultCount">0</strong> ແບບ</p><a class="btn btn-primary" href="upload.html">+
-            ອັບໂຫລດແບບເສື້ອ</a>
+          <p>ພົບເຫັນ<strong id="resultCount">0</strong>ແບບ</p>
         </div>
-        <button id="toggleFilter" class="filter-toggle-btn">
-          ☰ Filter
-        </button>
+        <button id="toggleFilter" class="filter-toggle-btn">☰ Filter</button>
+
         <div class="gallery-layout">
           <aside class="filter-sidebar" id="filterSidebar">
             <div class="filter-sidebar-header">
               <h2>ຕົວກອງແບບເສື້ອ</h2>
-
               <button type="button" id="resetSidebarFilters" class="reset-filter-button">
                 ລ້າງຕົວກອງ
               </button>
@@ -244,9 +263,10 @@
           </main>
         </div>
       </div>
-      </div>
-    </section>
+    </div>
+  </section>
   </main>
+
   <footer class="footer compact-footer">
     <div class="container footer-bottom">
       <p>Copyright © 2026 GOLF DESIGN. All Rights Reserved.</p>
@@ -283,11 +303,6 @@
             <div>
               <span>ສີຫຼັກ</span>
               <strong id="modalShirtColor"></strong>
-            </div>
-
-            <div>
-              <span>ສະຖານະ</span>
-              <strong id="modalShirtStatus"></strong>
             </div>
 
             <div>

@@ -91,7 +91,7 @@
           </div>
           <div class="form-row">
             <label>ສີຫຼັກ<input id="mainColor" type="text" maxlength="40" placeholder="ເຊັ່ນ ແດງ / ດຳ / ທອງ"></label>
-          
+
           </div>
           <div class="form-row">
             <label>
@@ -216,6 +216,13 @@
                 <span class="color-circle" style="--color:#929292;"></span>
               </label>
             </div>
+            <div class="color-order-section">
+              <p class="color-order-title">
+                ລາກສີເພື່ອຈັດລຳດັບ
+              </p>
+
+              <div id="selectedColorOrder" class="selected-color-order"></div>
+            </div>
           </label>
 
           <label>ແທັກຄົ້ນຫາ<input id="shirtTags" type="text" maxlength="120"
@@ -226,7 +233,9 @@
           <div class="form-actions">
             <button class="btn btn-primary" type="submit">ບັນທຶກແບບເສື້ອ</button>
             <button class="btn btn-secondary" type="reset">ລ້າງຂໍ້ມູນ</button>
-            <a class="btn btn-ghost" href="gallery.html">ເບິ່ງແບບເສື້ອ</a>
+            <a class="btn btn-ghost" href="admin-gallery.html">
+              ກັບໄປໜ້າຈັດການ
+            </a>
           </div>
           <p class="form-message" id="formMessage" role="status"></p>
         </form>
@@ -252,6 +261,7 @@
     </div>
   </footer>
   <script src="cloudinary-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
   <script src="app.js?v=10"></script>
 </body>
 

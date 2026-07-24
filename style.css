@@ -3519,3 +3519,87 @@ body.modal-open {
     border:2px solid #ddd;
     box-shadow:0 1px 3px rgba(0,0,0,.15);
 }
+
+.modal-color-dot{
+  width:20px;
+  height:20px;
+  display:inline-block;
+  flex:0 0 20px;
+  border-radius:50%;
+  border:2px solid #d8dce3;
+  box-shadow:0 1px 4px rgba(0,0,0,.15);
+}
+
+#modalShirtColor{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  width:100%;
+  text-align:right;
+}
+
+.color-order-section {
+  margin-top: 18px;
+}
+
+.color-order-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.selected-color-order {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 50px;
+  padding: 12px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.sortable-color-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 11px;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  background: #fff;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+}
+
+.sortable-color-item:active {
+  cursor: grabbing;
+}
+
+.sortable-color-dot {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+}
+
+.sortable-color-name {
+  font-size: 14px;
+}
+
+.sortable-color-handle {
+  font-size: 17px;
+  color: #64748b;
+  cursor: grab;
+}
+
+.sortable-ghost {
+  opacity: 0.35;
+}
+
+.sortable-chosen {
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.16);
+}

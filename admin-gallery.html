@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ແບບເສື້ອທັ້ງຫມົດ | GOLF DESIGN</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=13">
+</head>
+
+<body data-page="gallery-admin">
+    <div class="topbar">
+        <div class="container topbar-inner">
+            <p>ລະບົບແບບເສື້ອ GOLF DESIGN</p>
+            <div class="topbar-links">
+                <a href="index.html">ໜ້າຫຼັກ</a>
+                <a href="upload.html">ເພິ່ມແບບເສື້ອ</a>
+            </div>
+        </div>
+    </div>
+    <header class="site-header">
+        <div class="container navbar">
+            <a class="brand" href="index.html">
+                <span class="brand-mark">
+                    <img src="img/GOLF DESGIN LOGO.png" alt="GOLF DESIGN">
+                </span>
+                <span><strong>GOLF DESIGN</strong><small>Custom Jersey Factory</small></span>
+            </a>
+            <input class="nav-toggle" type="checkbox" id="nav-toggle">
+            <label class="hamburger" for="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <nav class="nav-menu">
+                <a href="index.html">ໜ້າຫຼັກ</a>
+                <a href="gallery.html">ໜ້າລູກຄ້າ</a>
+                <a href="admin-gallery.html">ຈັດການແບບເສື້ອ</a>
+                <a href="upload.html">ອັບໂຫລດແບບເສື້ອ</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <span class="section-kicker light">ADMIN GALLERY</span>
+                <h1>ຈັດການແບບເສື້ອ</h1>
+                <p>ຄົ້ນຫາ ແກ້ໄຂ ແລະ ຈັດການແບບເສື້ອ</p>
+            </div>
+        </section>
+        <section class="section gallery-page">
+            <div class="container">
+                <div class="gallery-toolbar">
+                    <div class="search-box"><input id="gallerySearch" type="search"
+                            placeholder="ຄົ້ນຫາຊື່ຮູບ ລະຫັດແບບ ຫຼື ຄຳອະທິບາຍ..."></div>
+                    <select id="sortSelect" aria-label="ຮຽງລຳດັບ">
+                        <option value="newest">ໃໝ່ລ່າສຸດ</option>
+                        <option value="oldest">ເກົ່າທີ່ສຸດ</option>
+                        <option value="name">ຮຽງລຳດັບຕາມຊື່</option>
+                    </select>
+                </div>
+                <div class="category-tabs gallery-categories" id="categoryFilters">
+                    <button class="active" data-category="all">ແບບເສື້ອທັ້ງໝົດ</button>
+                    <button data-category="football">ເສື້ອກິລາເຕະບານ</button>
+                    <button data-category="team">ເສື້ອທີມງານ</button>
+                    <button data-category="company">ເສື້ອບໍລິສັດ</button>
+                    <button data-category="meme">ເສື້ອມີມ</button>
+                </div>
+                <div class="gallery-summary">
+                    <p>ພົບເຫັນ <strong id="resultCount">0</strong> ແບບ</p><a class="btn btn-primary"
+                        href="upload.html">+
+                        ອັບໂຫລດແບບເສື້ອ</a>
+                </div>
+                <button id="toggleFilter" class="filter-toggle-btn">
+                    ☰ Filter
+                </button>
+                <div class="gallery-layout">
+                    <aside class="filter-sidebar" id="filterSidebar">
+                        <div class="filter-sidebar-header">
+                            <h2>ຕົວກອງແບບເສື້ອ</h2>
+
+                            <button type="button" id="resetSidebarFilters" class="reset-filter-button">
+                                ລ້າງຕົວກອງ
+                            </button>
+                        </div>
+
+                        <div class="filter-group">
+                            <h3>ຄໍເສື້ອ</h3>
+                            <h3>ລາຄາ 175,000 ກີບ / ຜືນ</h3>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="round">
+                                <span>ຄໍມົນ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="v-neck">
+                                <span>ຄໍວີ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="cross-v">
+                                <span>ຄໍວີໄຂວ້</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="cut-v">
+                                <span>ຄໍວີຕັດ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="pentagon">
+                                <span>ຄໍ 5 ຫຼ່ຽມ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="pentagon-placket">
+                                <span>ຄໍ 5 ຫຼ່ຽມມີສາບໃນ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="pig-neck">
+                                <span>ຄໍຄາງໝູ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="y-neck">
+                                <span>ຄໍວາຍ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="cross-polo-v">
+                                <span>ຄໍວີປົກໄຂວ້</span>
+                            </label>
+
+                            <h3>ລາຄາ 195,000 ກີບ / ຜືນ</h3>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="polo-v">
+                                <span>ຄໍວີປົກ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="polo">
+                                <span>ຄໍໂປໂລ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="mandarin">
+                                <span>ຄໍຈີນ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="collarFilter" value="y-polo">
+                                <span>ຄໍວາຍປົກ</span>
+                            </label>
+                        </div>
+
+                        <div class="filter-group">
+                            <h3>ແຂນເສື້ອ</h3>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="sleeveFilter" value="short">
+                                <span>ແຂນສັ້ນ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="sleeveFilter" value="long">
+                                <span>ແຂນຍາວ +20,000</span>
+                            </label>
+                        </div>
+
+                        <div class="filter-group">
+                            <h3>ຮູບແບບໄຫຼ່</h3>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="shoulderFilter" value="normal">
+                                <span>ໄຫຼ່ປົກກະຕິ</span>
+                            </label>
+
+                            <label class="filter-option">
+                                <input type="checkbox" name="shoulderFilter" value="raglan">
+                                <span>ໄຫຼ່ສະຫຼົບ</span>
+                            </label>
+                        </div>
+
+                        <div class="filter-group">
+                            <h3>ສີ</h3>
+
+                            <div class="color-filter-list">
+
+                                <label class="color-filter" title="ສີຂາວ">
+                                    <input type="checkbox" name="colorFilter" value="white">
+                                    <span style="--swatch-color:#ffffff"></span>
+                                </label>
+
+                                <label class="color-filter" title="ສີດຳ">
+                                    <input type="checkbox" name="colorFilter" value="black">
+                                    <span style="--swatch-color:#111111"></span>
+                                </label>
+
+                                <label class="color-filter" title="ສີແດງ">
+                                    <input type="checkbox" name="colorFilter" value="red">
+                                    <span style="--swatch-color:#e1262f"></span>
+                                </label>
+
+                                <label class="color-filter" title="ສີນ້ຳເງິນ">
+                                    <input type="checkbox" name="colorFilter" value="blue">
+                                    <span style="--swatch-color:#164dcc"></span>
+                                </label>
+
+                                <label class="color-filter" title="ສີຟ້າ">
+                                    <input type="checkbox" name="colorFilter" value="sky">
+                                    <span style="--swatch-color:#43baf5"></span>
+                                </label>
+
+                                <label class="color-filter" title="ສີຂຽວ">
+                                    <input type="checkbox" name="colorFilter" value="green">
+                                    <span style="--swatch-color:#199451"></span>
+                                </label>
+
+                                <label class="color-filter" title="ສີເຫຼືອງ">
+                                    <input type="checkbox" name="colorFilter" value="yellow">
+                                    <span style="--swatch-color:#ffd52b"></span>
+                                </label>
+
+                                <label class="color-filter" title="ສີສົ້ມ">
+                                    <input type="checkbox" name="colorFilter" value="orange">
+                                    <span style="--swatch-color:#ff7a22"></span>
+                                </label>
+
+                                <label class="color-filter" title="ສີບົວ">
+                                    <input type="checkbox" name="colorFilter" value="pink">
+                                    <span style="--swatch-color:#f16aaa"></span>
+                                </label>
+
+                                <label class="color-filter" title="ສີມ່ວງ">
+                                    <input type="checkbox" name="colorFilter" value="purple">
+                                    <span style="--swatch-color:#783cbd"></span>
+                                </label>
+
+                                <label class="color-filter" title="ສີເທົາ">
+                                    <input type="checkbox" name="colorFilter" value="gray">
+                                    <span style="--swatch-color:#929292"></span>
+                                </label>
+
+                            </div>
+                        </div>
+                    </aside>
+
+                    <main class="gallery-main">
+                        <div id="shirtGallery" class="shirt-gallery"></div>
+
+                        <div id="emptyState" class="empty-state" hidden>
+                            <h3>ບໍ່ພົບແບບເສື້ອ</h3>
+                            <p>ລອງປ່ຽນຕົວກອງໃໝ່</p>
+                        </div>
+                    </main>
+                </div>
+            </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer compact-footer">
+        <div class="container footer-bottom">
+            <p>Copyright © 2026 GOLF DESIGN. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal ดูภาพเต็มและรายละเอียด -->
+    <div class="shirt-modal" id="shirtModal" hidden>
+        <div class="shirt-modal-backdrop" data-close-modal></div>
+
+        <div class="shirt-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalShirtName">
+            <button class="shirt-modal-close" id="closeShirtModal" type="button" aria-label="ປິດ">
+                ×
+            </button>
+
+            <div class="shirt-modal-layout">
+                <div class="shirt-modal-image">
+                    <img id="modalShirtImage" src="" alt="">
+                </div>
+
+                <div class="shirt-modal-content">
+                    <span class="shirt-modal-category" id="modalShirtCategory"></span>
+
+                    <h2 id="modalShirtName"></h2>
+
+                    <p class="shirt-modal-code" id="modalShirtCode"></p>
+
+                    <div class="shirt-modal-details">
+                        <div>
+                            <span>ວັນທີ່ອັບໂຫລດ</span>
+                            <strong id="modalShirtDate"></strong>
+                        </div>
+
+                        <div>
+                            <span>ສີຫຼັກ</span>
+                            <strong id="modalShirtColor"></strong>
+                        </div>
+
+                        <div>
+                            <span>ສະຖານະ</span>
+                            <strong id="modalShirtStatus"></strong>
+                        </div>
+
+                        <div>
+                            <span>ແທັກ</span>
+                            <strong id="modalShirtTags"></strong>
+                        </div>
+                    </div>
+
+                    <div class="shirt-modal-description">
+                        <h3>ລາຍລະອຽດ</h3>
+                        <p id="modalShirtDescription"></p>
+                    </div>
+
+
+
+                    <div class="shirt-modal-actions">
+                        <a class="btn btn-primary" id="modalOpenImage" href="#" target="_blank" rel="noopener">
+                            ເປີດຮູບຕົ້ນສະບັບ
+                        </a>
+
+                        <a class="btn btn-outline-dark" id="modalEditShirt" href="#">
+                            ແກ້ໄຂ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="cloudinary-config.js"></script>
+    <script src="app.js?v=10"></script>
+</body>
+
+</html>

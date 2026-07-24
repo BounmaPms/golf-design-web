@@ -193,14 +193,28 @@
                                 <span class="color-circle" style="--color:#929292;"></span>
                             </label>
                         </div>
+                        <div class="color-order-section">
+                            <p class="color-order-title">
+                                ລາກສີເພື່ອຈັດລຳດັບ
+                            </p>
+
+                            <div id="selectedColorOrder" class="selected-color-order"></div>
+                        </div>
                     </label>
 
-                    <label>ແທັກຄົ້ນຫາ<input id="shirtTags" type="text" maxlength="120"></label>
-                    <label>ລາຍລະອຽດ<textarea id="shirtDescription" rows="4" maxlength="400"></textarea></label>
-                    <label class="checkbox-line"><input id="featured" type="checkbox"> ສະແດງເປັນແບບແນະນຳ</label>
-                    <div class="form-actions"><button class="btn btn-primary" type="submit">ບັນທຶກການແກ້ໄຂ</button><a
-                            class="btn btn-ghost" href="gallery.html">ຍົກເລິກ</a><button class="btn btn-danger"
-                            id="deleteShirt" type="button">ລົບລາຍການ</button></div>
+                    <label>ແທັກຄົ້ນຫາ
+                        <input id="shirtTags" type="text" maxlength="120">
+                    </label>
+                    <label>ລາຍລະອຽດ
+                        <textarea id="shirtDescription" rows="4" maxlength="400"></textarea></label>
+                    <label class="checkbox-line">
+                        <input id="featured" type="checkbox"> ສະແດງເປັນແບບແນະນຳ
+                    </label>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" type="submit">ບັນທຶກການແກ້ໄຂ</button>
+                        <a class="btn btn-ghost" href="admin-gallery.html">ຍົກເລິກ</a>
+                        <button class="btn btn-danger" id="deleteShirt" type="button">ລົບລາຍການ</button>
+                    </div>
                     <p class="form-message" id="formMessage" role="status"></p>
                 </form>
                 <aside class="upload-side-card">
@@ -225,6 +239,7 @@
         </div>
     </footer>
     <script src="cloudinary-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
     <script src="app.js"></script>
 </body>
 
