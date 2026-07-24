@@ -300,6 +300,100 @@ async function getShirtsFromSupabase() {
   return Array.isArray(data) ? data : [];
 }
 
+async function saveShirtToSupabase(item) {
+
+  const { data, error } = await window.supabaseClient
+    .from("shirts")
+    .insert([{
+      name: item.name,
+      category: item.category,
+
+      upload_date: item.date,
+      design_code: item.code,
+      main_color: item.color,
+
+      tags: item.tags,
+      description: item.description,
+
+      featured: item.featured,
+
+      collar: item.collar,
+      sleeve: item.sleeve,
+      shoulder: item.shoulder,
+
+      colors: item.colors,
+      price: item.price,
+
+      image: item.image,
+
+      cloudinary_public_id: item.cloudinaryPublicId,
+
+      width: item.width,
+      height: item.height,
+      bytes: item.bytes,
+      format: item.format
+    }])
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  return data;
+}
+
+async function importCloudinaryImagesToSupabase() {
+  const cloudinaryItems = await getCloudinaryShirts();
+  const supabaseItems = await getShirtsFromSupabase();
+
+  const existingPublicIds = new Set(
+    supabaseItems
+      .map(item => item.cloudinary_public_id)
+      .filter(Boolean)
+  );
+
+  const missingItems = cloudinaryItems.filter(item =>
+    item.cloudinaryPublicId &&
+    !existingPublicIds.has(item.cloudinaryPublicId)
+  );
+
+  console.log("รูปที่ต้องนำเข้า:", missingItems.length);
+
+  for (const item of missingItems) {
+    try {
+      await saveShirtToSupabase({
+        name: item.name || "ไม่มีชื่อ",
+        category: item.category || "football",
+        date: item.date || new Date().toISOString().slice(0, 10),
+        code: item.code || "",
+        color: item.color || "",
+        tags: item.tags || "",
+        description: item.description || "",
+        featured: item.featured === true,
+
+        collar: item.collar || "round",
+        sleeve: item.sleeve || "short",
+        shoulder: item.shoulder || "normal",
+        colors: Array.isArray(item.colors) ? item.colors : [],
+        price: Number(item.price || 0),
+
+        image: item.image,
+        cloudinaryPublicId: item.cloudinaryPublicId,
+
+        width: item.width || null,
+        height: item.height || null,
+        bytes: item.bytes || null,
+        format: item.format || ""
+      });
+
+      console.log("นำเข้าสำเร็จ:", item.name);
+    } catch (error) {
+      console.error("นำเข้าไม่สำเร็จ:", item.name, error);
+    }
+  }
+
+  console.log("นำเข้ารูปเก่าเสร็จแล้ว");
+}
+
 /* =====================================================
    HELPERS
 ===================================================== */
@@ -631,7 +725,7 @@ async function initGallery() {
         item.tags,
         item.description,
         item.color,
-        item.cloudinaryPublicId
+        item.cloudinary_public_id
       ].join(" ").toLowerCase();
 
       const searchMatches =
@@ -1597,17 +1691,14 @@ function initUpload() {
         price,
 
         image: cloudinaryResult.secure_url,
-        cloudinaryPublicId: cloudinaryResult.public_id,
+        cloudinary_public_id: cloudinaryResult.public_id,
         width: cloudinaryResult.width,
         height: cloudinaryResult.height,
         bytes: cloudinaryResult.bytes,
         format: cloudinaryResult.format
       };
 
-      const items = getShirts();
-
-      items.unshift(item);
-      saveShirts(items);
+      await saveShirtToSupabase(item);
 
       message.textContent =
         "ອັບໂຫລດສຳເລັດ " +
@@ -1881,7 +1972,7 @@ function initEdit() {
 
         imageData = {
           image: cloudinaryResult.secure_url,
-          cloudinaryPublicId: cloudinaryResult.public_id,
+          cloudinary_public_id: cloudinaryResult.public_id,
           width: cloudinaryResult.width,
           height: cloudinaryResult.height,
           bytes: cloudinaryResult.bytes,
