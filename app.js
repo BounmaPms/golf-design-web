@@ -501,7 +501,7 @@ async function getCloudinaryShirts() {
 
   return resources.map((resource, index) => {
     const localItem = localItems.find(item =>
-      item.cloudinaryPublicId === resource.public_id ||
+      item.cloudinary_public_id === resource.public_id ||
       item.image === resource.secure_url
     );
 
@@ -525,20 +525,11 @@ async function getCloudinaryShirts() {
         resource.context?.custom?.category ||
         "football",
 
-      date:
-        localItem?.date ||
-        createdDate,
+      date: localItem?.upload_date || createdDate,
 
-      code:
-        localItem?.code ||
-        resource.context?.custom?.code ||
-        resource.public_id ||
-        "",
+      code: localItem?.design_code || resource.context?.custom?.code || "",
 
-      color:
-        localItem?.color ||
-        resource.context?.custom?.color ||
-        "",
+      color: localItem?.main_color || resource.context?.custom?.color || "",
 
       tags:
         localItem?.tags ||
