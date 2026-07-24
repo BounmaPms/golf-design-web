@@ -867,6 +867,227 @@ async function initGallery() {
   render();
 }
 
+async function resizeImage(file, maxSize = 1600, quality = 0.85) {
+  const bitmap = await createImageBitmap(file);
+
+  let width = bitmap.width;
+  let height = bitmap.height;
+
+  if (width <= maxSize && height <= maxSize) {
+    bitmap.close?.();
+    return file;
+  }
+
+  const scale = Math.min(
+    maxSize / width,
+    maxSize / height
+  );
+
+  width = Math.round(width * scale);
+  height = Math.round(height * scale);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+
+  const context = canvas.getContext("2d");
+
+  if (!context) {
+    bitmap.close?.();
+    throw new Error("ບໍ່ສາມາດຫຍໍ້ຮູບພາບໄດ້");
+  }
+
+  context.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close?.();
+
+  const blob = await new Promise((resolve, reject) => {
+    canvas.toBlob(
+      result => {
+        if (result) {
+          resolve(result);
+        } else {
+          reject(new Error("ไม่สามารถสร้างไฟล์รูปที่ย่อแล้วได้"));
+        }
+      },
+      "image/webp",
+      quality
+    );
+  });
+
+  const originalName =
+    file.name.replace(/\.[^/.]+$/, "");
+
+  return new File(
+    [blob],
+    `${originalName}.webp`,
+    {
+      type: "image/webp",
+      lastModified: Date.now()
+    }
+  );
+}
+
+function formatFileSize(bytes) {
+  if (!Number.isFinite(bytes) || bytes <= 0) {
+    return "0 MB";
+  }
+
+  return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+}
+
+async function prepareResizedImage(
+  file,
+  maxSize = 1600,
+  quality = 0.85
+) {
+  const bitmap = await createImageBitmap(file);
+
+  const originalWidth = bitmap.width;
+  const originalHeight = bitmap.height;
+
+  // รูปไม่เกินขนาดที่กำหนด ไม่ต้องปรับ
+  if (
+    originalWidth <= maxSize &&
+    originalHeight <= maxSize
+  ) {
+    bitmap.close?.();
+
+    return {
+      originalFile: file,
+      resizedFile: file,
+      needsResize: false,
+      originalWidth,
+      originalHeight,
+      resizedWidth: originalWidth,
+      resizedHeight: originalHeight,
+      originalBytes: file.size,
+      resizedBytes: file.size
+    };
+  }
+
+  const scale = Math.min(
+    maxSize / originalWidth,
+    maxSize / originalHeight
+  );
+
+  const resizedWidth = Math.round(originalWidth * scale);
+  const resizedHeight = Math.round(originalHeight * scale);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = resizedWidth;
+  canvas.height = resizedHeight;
+
+  const context = canvas.getContext("2d");
+
+  if (!context) {
+    bitmap.close?.();
+    throw new Error("ບໍ່ສາມາດປັບຂະໜາດຮູບພາບໄດ້");
+  }
+
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = "high";
+
+  context.drawImage(
+    bitmap,
+    0,
+    0,
+    resizedWidth,
+    resizedHeight
+  );
+
+  bitmap.close?.();
+
+  const resizedBlob = await new Promise((resolve, reject) => {
+    canvas.toBlob(
+      blob => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(
+            new Error("ບໍ່ສາມາດສ້າງໄຟລທີ່ປັບຂະໜາດແລ້ວໄດ້")
+          );
+        }
+      },
+      "image/webp",
+      quality
+    );
+  });
+
+  const originalName = file.name.replace(/\.[^/.]+$/, "");
+
+  const resizedFile = new File(
+    [resizedBlob],
+    `${originalName}-1600.webp`,
+    {
+      type: "image/webp",
+      lastModified: Date.now()
+    }
+  );
+
+  return {
+    originalFile: file,
+    resizedFile,
+    needsResize: true,
+    originalWidth,
+    originalHeight,
+    resizedWidth,
+    resizedHeight,
+    originalBytes: file.size,
+    resizedBytes: resizedFile.size
+  };
+}
+
+async function chooseUploadImage(file, messageElement) {
+  if (messageElement) {
+    messageElement.textContent =
+      "ກຳລັງກວດສອບ ແລະ ທົດລອງປັບຂະໜາດຮູບພາບ...";
+  }
+
+  const result = await prepareResizedImage(
+    file,
+    1600,
+    0.85
+  );
+
+  // ภาพเล็กกว่า 1600px อยู่แล้ว
+  if (!result.needsResize) {
+    return result.originalFile;
+  }
+
+  const savedBytes =
+    result.originalBytes - result.resizedBytes;
+
+  const savedPercent =
+    result.originalBytes > 0
+      ? Math.max(
+        0,
+        Math.round(
+          (savedBytes / result.originalBytes) * 100
+        )
+      )
+      : 0;
+
+  const confirmationMessage =
+    `ຕ້ອງການປັບຂະໜາດຮູບພາບກ່ອນອັບໂຫລດ ຫຼື ບໍ່?\n\n` +
+    `ຮູບຕົ້ນສະບັບ\n` +
+    `ຂະໜາດ: ${result.originalWidth} × ${result.originalHeight} px\n` +
+    `ໄຟລ: ${formatFileSize(result.originalBytes)}\n\n` +
+    `ຮູບຫຼັງປັບ\n` +
+    `ຂະໜາດ: ${result.resizedWidth} × ${result.resizedHeight} px\n` +
+    `ໄຟລ: ${formatFileSize(result.resizedBytes)}\n\n` +
+    `ປະຢັດພື້ນທີ່ປະມານ ${savedPercent}%\n\n` +
+    `ກົດ ຕົກລົງ = ໃຊ້ຮູບທີ່ປັບຂະໜາດແລ້ວ\n` +
+    `ກົດ ຍົກເລີກ = ໃຊ້ຮູບຕົ້ນສະບັບ`;
+
+  const useResizedImage = window.confirm(
+    confirmationMessage
+  );
+
+  return useResizedImage
+    ? result.resizedFile
+    : result.originalFile;
+}
+
 /* =====================================================
    UPLOAD TO CLOUDINARY
 ===================================================== */
@@ -1022,35 +1243,6 @@ function initUpload() {
       return;
     }
 
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
-
-    if (selectedFile.size > MAX_FILE_SIZE) {
-
-      const sizeMB = (selectedFile.size / 1024 / 1024).toFixed(2);
-
-      const warning =
-        `ໄຟລຮູບມີຂະໜາດ ${sizeMB} MB\n\n` +
-        `ຂະໜາດໄຟລ໌ຕ້ອງບໍ່ເກີນ 10 MB`;
-
-      alert(warning);
-
-      message.textContent = warning;
-      message.style.color = "#dc2626";
-
-      fileInput.value = "";
-
-      if (previewObjectUrl) {
-        URL.revokeObjectURL(previewObjectUrl);
-        previewObjectUrl = null;
-      }
-
-      preview.hidden = true;
-      preview.removeAttribute("src");
-      dropzoneText.hidden = false;
-      dropzone.classList.remove("has-preview");
-
-      return;
-    }
 
     if (previewObjectUrl) {
       URL.revokeObjectURL(previewObjectUrl);
@@ -1206,9 +1398,19 @@ function initUpload() {
       "ກະລຸນາຢ່າປິດໜ້ານີ້";
 
     try {
+      const uploadFile = await chooseUploadImage(
+        selectedFile,
+        message
+      );
+
+      message.textContent =
+        uploadFile === selectedFile
+          ? "ກຳລັງອັບໂຫລດຮູບພາບຕົ້ນສະບັບຂື້ນ Cloudinary..."
+          : "ກຳລັງອັບໂຫລດຮູບພາບທີ່ປັບຂະໜາດແລ້ວຂື້ນ Cloudinary...";
+
       const cloudinaryResult =
         await uploadToCloudinary(
-          selectedFile,
+          uploadFile,
           {
             name,
             category,
@@ -1475,12 +1677,6 @@ function initEdit() {
       return;
     }
 
-    if (selectedFile.size > 10 * 1024 * 1024) {
-      message.textContent = "ໄຟລໃຫຍ່ເກີນ 10 MB";
-      fileInput.value = "";
-      return;
-    }
-
     if (previewObjectUrl) {
       URL.revokeObjectURL(previewObjectUrl);
     }
@@ -1543,8 +1739,18 @@ function initEdit() {
 
       // ถ้าเลือกรูปใหม่ ให้อัปโหลดรูปใหม่ขึ้น Cloudinary
       if (selectedFile) {
-        const cloudinaryResult = await uploadToCloudinary(
+        const uploadFile = await chooseUploadImage(
           selectedFile,
+          message
+        );
+
+        message.textContent =
+          uploadFile === selectedFile
+            ? "ກຳລັງອັບໂຫລດຮູບພາບຕົ້ນສະບັບຂື້ນ Cloudinary..."
+            : "ກຳລັງອັບໂຫລດຮູບພາບທີ່ປັບຂະໜາດແລ້ວຂື້ນ Cloudinary...";
+
+        const cloudinaryResult = await uploadToCloudinary(
+          uploadFile,
           {
             name: document.querySelector("#shirtName").value.trim(),
             category: document.querySelector("#shirtCategory").value,
@@ -1555,8 +1761,7 @@ function initEdit() {
               .querySelector("#shirtDescription")
               .value
               .trim()
-          }
-        );
+          });
 
         imageData = {
           image: cloudinaryResult.secure_url,
@@ -1732,6 +1937,58 @@ function initFilterToggle() {
   });
 
   updateButtonText();
+}
+
+async function resizeImage(file, maxSize = 1600, quality = 0.9) {
+
+  const bitmap = await createImageBitmap(file);
+
+  let width = bitmap.width;
+  let height = bitmap.height;
+
+  if (width > height) {
+
+    if (width > maxSize) {
+      height *= maxSize / width;
+      width = maxSize;
+    }
+
+  } else {
+
+    if (height > maxSize) {
+      width *= maxSize / height;
+      height = maxSize;
+    }
+
+  }
+
+  const canvas = document.createElement("canvas");
+
+  canvas.width = Math.round(width);
+  canvas.height = Math.round(height);
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+
+  return await new Promise(resolve => {
+
+    canvas.toBlob(blob => {
+
+      resolve(
+        new File(
+          [blob],
+          file.name,
+          {
+            type: "image/jpeg"
+          }
+        )
+      );
+
+    }, "image/jpeg", quality);
+
+  });
+
 }
 
 /* =====================================================
