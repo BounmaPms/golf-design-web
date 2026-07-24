@@ -260,9 +260,55 @@
       <p>Copyright © 2026 GOLF DESIGN. All Rights Reserved.</p>
     </div>
   </footer>
+
+  <div id="resizeModal" class="resize-confirm-modal" hidden>
+    <div class="resize-confirm-backdrop"></div>
+
+    <div class="resize-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="resizeModalTitle">
+      <h2 id="resizeModalTitle">ປັບຂະໜາດຮູບພາບ</h2>
+
+      <p class="resize-confirm-subtitle">
+        ເລືອກຮູບທີ່ຕ້ອງການອັບໂຫລດ
+      </p>
+
+      <div class="resize-compare">
+        <div class="resize-compare-card">
+          <span class="resize-compare-label">ຮູບຕົ້ນສະບັບ</span>
+          <strong id="resizeOriginalDimensions">-</strong>
+          <p id="resizeOriginalFileSize">-</p>
+        </div>
+
+        <div class="resize-compare-arrow">→</div>
+
+        <div class="resize-compare-card recommended">
+          <span class="resize-recommended-badge">ແນະນຳ</span>
+          <span class="resize-compare-label">ຮູບຫຼັງປັບ</span>
+          <strong id="resizeNewDimensions">-</strong>
+          <p id="resizeNewFileSize">-</p>
+        </div>
+      </div>
+
+      <div class="resize-saving-box">
+        ປະຢັດພື້ນທີ່
+        <strong id="resizeSavingPercent">0%</strong>
+      </div>
+
+      <div class="resize-confirm-actions">
+        <button type="button" id="resizeUseOriginal" class="btn btn-secondary">
+          ໃຊ້ຮູບຕົ້ນສະບັບ
+        </button>
+
+        <button type="button" id="resizeUseOptimized" class="btn btn-primary">
+          ໃຊ້ຮູບທີ່ປັບແລ້ວ
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="cloudinary-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
   <script src="app.js?v=10"></script>
+
 </body>
 
 </html>

@@ -1037,6 +1037,153 @@ async function prepareResizedImage(
   };
 }
 
+function showResizeConfirmation(result) {
+  return new Promise(resolve => {
+    const modal = document.querySelector("#resizeModal");
+
+    const originalDimensions =
+      document.querySelector("#resizeOriginalDimensions");
+
+    const originalFileSize =
+      document.querySelector("#resizeOriginalFileSize");
+
+    const newDimensions =
+      document.querySelector("#resizeNewDimensions");
+
+    const newFileSize =
+      document.querySelector("#resizeNewFileSize");
+
+    const savingPercent =
+      document.querySelector("#resizeSavingPercent");
+
+    const useOriginalButton =
+      document.querySelector("#resizeUseOriginal");
+
+    const useOptimizedButton =
+      document.querySelector("#resizeUseOptimized");
+
+    const backdrop =
+      modal?.querySelector(".resize-confirm-backdrop");
+
+    if (
+      !modal ||
+      !originalDimensions ||
+      !originalFileSize ||
+      !newDimensions ||
+      !newFileSize ||
+      !savingPercent ||
+      !useOriginalButton ||
+      !useOptimizedButton
+    ) {
+      console.error("Resize modal HTML ไม่ครบ", {
+        modal,
+        originalDimensions,
+        originalFileSize,
+        newDimensions,
+        newFileSize,
+        savingPercent,
+        useOriginalButton,
+        useOptimizedButton
+      });
+
+      throw new Error(
+        "ບໍ່ເຫັນ Resize Modal ກະລຸນາກວດສອບ HTML ໃນ upload.html ຫຼື edit.html"
+      );
+    }
+
+    const savedBytes =
+      result.originalBytes - result.resizedBytes;
+
+    const percent =
+      result.originalBytes > 0
+        ? Math.max(
+          0,
+          Math.round(
+            (savedBytes / result.originalBytes) * 100
+          )
+        )
+        : 0;
+
+    originalDimensions.textContent =
+      `${result.originalWidth} × ${result.originalHeight} px`;
+
+    originalFileSize.textContent =
+      formatFileSize(result.originalBytes);
+
+    newDimensions.textContent =
+      `${result.resizedWidth} × ${result.resizedHeight} px`;
+
+    newFileSize.textContent =
+      formatFileSize(result.resizedBytes);
+
+    savingPercent.textContent = `${percent}%`;
+
+    modal.hidden = false;
+    document.body.classList.add("resize-modal-open");
+
+    function closeModal(useOptimized) {
+      modal.hidden = true;
+      document.body.classList.remove("resize-modal-open");
+
+      useOriginalButton.removeEventListener(
+        "click",
+        selectOriginal
+      );
+
+      useOptimizedButton.removeEventListener(
+        "click",
+        selectOptimized
+      );
+
+      backdrop?.removeEventListener(
+        "click",
+        selectOriginal
+      );
+
+      document.removeEventListener(
+        "keydown",
+        handleKeyboard
+      );
+
+      resolve(useOptimized);
+    }
+
+    function selectOriginal() {
+      closeModal(false);
+    }
+
+    function selectOptimized() {
+      closeModal(true);
+    }
+
+    function handleKeyboard(event) {
+      if (event.key === "Escape") {
+        closeModal(false);
+      }
+    }
+
+    useOriginalButton.addEventListener(
+      "click",
+      selectOriginal
+    );
+
+    useOptimizedButton.addEventListener(
+      "click",
+      selectOptimized
+    );
+
+    backdrop?.addEventListener(
+      "click",
+      selectOriginal
+    );
+
+    document.addEventListener(
+      "keydown",
+      handleKeyboard
+    );
+  });
+}
+
 async function chooseUploadImage(file, messageElement) {
   if (messageElement) {
     messageElement.textContent =
@@ -1049,41 +1196,15 @@ async function chooseUploadImage(file, messageElement) {
     0.85
   );
 
-  // ภาพเล็กกว่า 1600px อยู่แล้ว
+  // ถ้ารูปไม่เกิน 1600px ให้อัปโหลดไฟล์เดิมทันที
   if (!result.needsResize) {
     return result.originalFile;
   }
 
-  const savedBytes =
-    result.originalBytes - result.resizedBytes;
+  const useOptimized =
+    await showResizeConfirmation(result);
 
-  const savedPercent =
-    result.originalBytes > 0
-      ? Math.max(
-        0,
-        Math.round(
-          (savedBytes / result.originalBytes) * 100
-        )
-      )
-      : 0;
-
-  const confirmationMessage =
-    `ຕ້ອງການປັບຂະໜາດຮູບພາບກ່ອນອັບໂຫລດ ຫຼື ບໍ່?\n\n` +
-    `ຮູບຕົ້ນສະບັບ\n` +
-    `ຂະໜາດ: ${result.originalWidth} × ${result.originalHeight} px\n` +
-    `ໄຟລ: ${formatFileSize(result.originalBytes)}\n\n` +
-    `ຮູບຫຼັງປັບ\n` +
-    `ຂະໜາດ: ${result.resizedWidth} × ${result.resizedHeight} px\n` +
-    `ໄຟລ: ${formatFileSize(result.resizedBytes)}\n\n` +
-    `ປະຢັດພື້ນທີ່ປະມານ ${savedPercent}%\n\n` +
-    `ກົດ ຕົກລົງ = ໃຊ້ຮູບທີ່ປັບຂະໜາດແລ້ວ\n` +
-    `ກົດ ຍົກເລີກ = ໃຊ້ຮູບຕົ້ນສະບັບ`;
-
-  const useResizedImage = window.confirm(
-    confirmationMessage
-  );
-
-  return useResizedImage
+  return useOptimized
     ? result.resizedFile
     : result.originalFile;
 }
@@ -1492,29 +1613,6 @@ function initUpload() {
     }
   });
   initColorSorting();
-}
-
-async function deleteCloudinaryImage(publicId, deletePassword) {
-  const config = window.CLOUDINARY_CONFIG || {};
-
-  const response = await fetch(config.deleteApiUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      publicId,
-      deletePassword
-    })
-  });
-
-  const result = await response.json();
-
-  if (!response.ok || !result.success) {
-    throw new Error(result.message || "Delete failed");
-  }
-
-  return result;
 }
 
 async function deleteCloudinaryImage(publicId, deletePassword) {
@@ -1939,57 +2037,6 @@ function initFilterToggle() {
   updateButtonText();
 }
 
-async function resizeImage(file, maxSize = 1600, quality = 0.9) {
-
-  const bitmap = await createImageBitmap(file);
-
-  let width = bitmap.width;
-  let height = bitmap.height;
-
-  if (width > height) {
-
-    if (width > maxSize) {
-      height *= maxSize / width;
-      width = maxSize;
-    }
-
-  } else {
-
-    if (height > maxSize) {
-      width *= maxSize / height;
-      height = maxSize;
-    }
-
-  }
-
-  const canvas = document.createElement("canvas");
-
-  canvas.width = Math.round(width);
-  canvas.height = Math.round(height);
-
-  const ctx = canvas.getContext("2d");
-
-  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-
-  return await new Promise(resolve => {
-
-    canvas.toBlob(blob => {
-
-      resolve(
-        new File(
-          [blob],
-          file.name,
-          {
-            type: "image/jpeg"
-          }
-        )
-      );
-
-    }, "image/jpeg", quality);
-
-  });
-
-}
 
 /* =====================================================
    START
