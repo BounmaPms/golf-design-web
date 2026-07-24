@@ -1976,29 +1976,6 @@ textarea {
 }
 
 
-/* สถานะ */
-
-.status-pill {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 5px 9px;
-  border-radius: 999px;
-  background: #eaf8ef;
-  color: #18864b;
-  font-size: 10px;
-}
-
-.status-pill.draft {
-  background: #fff6dc;
-  color: #9b6800;
-}
-
-.status-pill.soldout {
-  background: #feecec;
-  color: #b42318;
-}
-
-
 /* ปุ่มแก้ไข */
 
 .shirt-actions {
@@ -3526,4 +3503,19 @@ body.modal-open {
   position: relative;
   z-index: 1;
   text-align: center;
+}
+
+.shirt-color-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:12px 0;
+}
+
+.shirt-color-dot{
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    border:2px solid #ddd;
+    box-shadow:0 1px 3px rgba(0,0,0,.15);
 }

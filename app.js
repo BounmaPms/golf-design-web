@@ -36,12 +36,6 @@ const categoryNames = {
   meme: "ເສື້ອມີມ"
 };
 
-const statusNames = {
-  available: "ພ້ອມຜະລິດ",
-  draft: "ແບບຮ່າງ",
-  soldout: "ປິດຮັບ"
-};
-
 const collarNames = {
   round: "ຄໍມົນ",
   "v-neck": "ຄໍວີ",
@@ -319,11 +313,6 @@ async function getCloudinaryShirts() {
         localItem?.color ||
         resource.context?.custom?.color ||
         "",
-
-      status:
-        localItem?.status ||
-        resource.context?.custom?.status ||
-        "available",
 
       tags:
         localItem?.tags ||
@@ -604,30 +593,22 @@ async function initGallery() {
       }
           </p>
 
-          <p class="shirt-description">
-            ${escapeHtml(
-        item.description ||
-        "ບໍ່ມີລາຍລະອຽດ"
-      )
-      }
-          </p>
-
           <div class="shirt-details">
-            <span>${formatDate(item.date)}</span>
-            <span>
-              ${escapeHtml(
-        item.color ||
-        "ບໍ່ລະບຸສີ"
-      )
-      }
-            </span>
-          </div>
+  <span>${formatDate(item.date)}</span>
+</div>
 
-          <span class="status-pill ${escapeHtml(item.status)}">
-            ${statusNames[item.status] ||
-      escapeHtml(item.status)
+<div class="shirt-color-list">
+  ${(item.colors || [])
+        .map(color => `
+        <span
+          class="shirt-color-dot"
+          title="${color}"
+          style="background:${colorValues[color] || "#ccc"}"
+        ></span>
+      `)
+        .join("")
       }
-          </span>
+</div>
 
           <div class="shirt-actions">
             <button class="btn btn-primary view-shirt-button" type="button" data-shirt-id="${escapeHtml(String(item.id))}"
@@ -823,12 +804,6 @@ async function uploadToCloudinary(file, metadata = {}) {
   if (metadata.color) {
     contextValues.push(
       `color=${String(metadata.color).replace(/[|=]/g, " ")}`
-    );
-  }
-
-  if (metadata.status) {
-    contextValues.push(
-      `status=${String(metadata.status).replace(/[|=]/g, " ")}`
     );
   }
 
@@ -1040,10 +1015,6 @@ function initUpload() {
       .value
       .trim();
 
-    const status = document
-      .querySelector("#shirtStatus")
-      .value;
-
     const tags = document
       .querySelector("#shirtTags")
       .value
@@ -1102,7 +1073,6 @@ function initUpload() {
             category,
             code,
             color,
-            status,
             tags,
             description
           }
@@ -1131,7 +1101,6 @@ function initUpload() {
         date: dateInput.value,
         code,
         color,
-        status,
         tags,
         description,
         featured,
@@ -1290,9 +1259,6 @@ function initEdit() {
   document.querySelector("#mainColor").value =
     currentItem.color || "";
 
-  document.querySelector("#shirtStatus").value =
-    currentItem.status || "available";
-
   document.querySelector("#shirtTags").value =
     currentItem.tags || "";
 
@@ -1392,20 +1358,17 @@ function initEdit() {
     ).getFullYear();
 
     const duplicateCode = items.some(item => {
-
       const itemYear = item.date
         ? new Date(item.date).getFullYear()
         : 0;
 
       return (
-        String(item.id) !== String(shirtId) &&
+        String(item.cloudinaryPublicId) !== String(publicId) &&
         itemYear === editYear &&
         String(item.code || "")
           .trim()
-          .toLowerCase() ===
-        newCode.toLowerCase()
+          .toLowerCase() === newCode.toLowerCase()
       );
-
     });
 
     if (newCode && duplicateCode) {
@@ -1440,7 +1403,6 @@ function initEdit() {
             category: document.querySelector("#shirtCategory").value,
             code: document.querySelector("#designCode").value.trim(),
             color: document.querySelector("#mainColor").value.trim(),
-            status: document.querySelector("#shirtStatus").value,
             tags: document.querySelector("#shirtTags").value.trim(),
             description: document
               .querySelector("#shirtDescription")
@@ -1479,7 +1441,6 @@ function initEdit() {
         date: document.querySelector("#uploadDate").value,
         code: document.querySelector("#designCode").value.trim(),
         color: document.querySelector("#mainColor").value.trim(),
-        status: document.querySelector("#shirtStatus").value,
         tags: document.querySelector("#shirtTags").value.trim(),
         description: document
           .querySelector("#shirtDescription")
@@ -1554,7 +1515,8 @@ function initEdit() {
       );
 
       items = items.filter(
-        item => String(item.id) !== String(shirtId)
+        item =>
+          String(item.cloudinaryPublicId) !== String(publicId)
       );
 
       saveShirts(items);
