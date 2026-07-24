@@ -282,6 +282,24 @@ function saveShirts(items) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
 }
 
+async function getShirtsFromSupabase() {
+  if (!window.supabaseClient) {
+    throw new Error("Supabase ยังไม่เชื่อมต่อ");
+  }
+
+  const { data, error } = await window.supabaseClient
+    .from("shirts")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("ดึงข้อมูลจาก Supabase ไม่สำเร็จ:", error);
+    throw error;
+  }
+
+  return Array.isArray(data) ? data : [];
+}
+
 /* =====================================================
    HELPERS
 ===================================================== */
@@ -385,7 +403,7 @@ async function getCloudinaryShirts() {
     )
     : [];
 
-  const localItems = getShirts();
+  const localItems = await getShirtsFromSupabase();
 
   return resources.map((resource, index) => {
     const localItem = localItems.find(item =>
@@ -2042,10 +2060,29 @@ function initFilterToggle() {
    START
 ===================================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
-  initGallery();
-  initUpload();
-  initEdit();
-  initPriceCalculator();
-  initFilterToggle();
-});
+async function startApp() {
+  try {
+    let attempts = 0;
+
+    while (!window.supabaseClient && attempts < 100) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
+
+    await initGallery();
+
+    initUpload();
+    initEdit();
+    initPriceCalculator();
+    initFilterToggle();
+
+  } catch (error) {
+    console.error("เริ่มระบบไม่สำเร็จ:", error);
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startApp);
+} else {
+  startApp();
+}
