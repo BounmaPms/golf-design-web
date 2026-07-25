@@ -3790,3 +3790,20 @@ body.resize-modal-open {
 .logout-btn:hover{
     background:#c62828;
 }
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #18a957;
+  color: #ffffff;
+  background: #25d366;
+  text-decoration: none;
+}
+
+.btn-whatsapp:hover {
+  color: #ffffff;
+  background: #1ebd5a;
+  border-color: #1ebd5a;
+}

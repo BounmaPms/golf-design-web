@@ -1,5 +1,6 @@
 const CLOUDINARY_LIST_TAG = "golf-design-shirts";
 const DELETED_IMAGES_KEY = "deletedCloudinaryImages";
+const WHATSAPP_NUMBER = "8562093529729";
 
 function getDeletedImageIds() {
   try {
@@ -523,6 +524,29 @@ async function getCloudinaryShirts() {
   });
 }
 
+function createWhatsAppOrderUrl(item) {
+  const phone = String(WHATSAPP_NUMBER || "").replace(/\D/g, "");
+
+  const shirtKey = item.cloudinaryPublicId || item.id;
+
+  const modalUrl = new URL("gallery.html", window.location.href);
+  modalUrl.searchParams.set("shirt", shirtKey);
+
+  const message = [
+    "ສະບາຍດີ GOLF DESIGN",
+    "",
+    "ຂ້ອຍສົນໃຈແບບເສື້ອນີ້",
+    `ຊື່ແບບ: ${item.name || "-"}`,
+    `ລະຫັດແບບ: ${item.code || "-"}`,
+    `ປະເພດ: ${categoryNames[item.category] || item.category || "-"}`,
+    `ເບິ່ງແບບເສື້ອ: ${modalUrl.href}`,
+    "",
+    "ກະລຸນາແຈ້ງລາຄາ ແລະ ລາຍລະອຽດໃຫ້ແດ່",
+  ].join("\n");
+
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+}
+
 /* =====================================================
    GALLERY
 ===================================================== */
@@ -552,6 +576,7 @@ async function initGallery() {
   const modalDescription = document.querySelector("#modalShirtDescription");
   const modalOpenImage = document.querySelector("#modalOpenImage");
   const modalEditShirt = document.querySelector("#modalEditShirt");
+  const modalWhatsApp = document.querySelector("#modalWhatsApp");
 
   let activeCategory = "all";
   let cloudinaryItems = [];
@@ -745,28 +770,33 @@ async function initGallery() {
 </div>
 
           <div class="shirt-actions">
-  <button
-    class="btn btn-primary view-shirt-button"
-    type="button"
-    data-shirt-id="${escapeHtml(String(item.id))}"
-  >
-    ເບິ່ງລາຍລະອຽດ
-  </button>
 
-  ${
-    isAdminGallery
-      ? `
+    <button
+        class="btn btn-primary view-shirt-button"
+        type="button"
+        data-shirt-id="${item.id}">
+        ເບິ່ງລາຍລະອຽດ
+    </button>
+
+    ${
+      isAdminGallery
+        ? `
         <a
-          class="btn btn-outline-dark"
-          href="edit.html?publicId=${encodeURIComponent(
-            item.cloudinaryPublicId,
-          )}"
-        >
-          ແກ້ໄຂ
+            class="btn btn-outline-dark"
+            href="edit.html?publicId=${encodeURIComponent(item.cloudinaryPublicId)}">
+            ແກ້ໄຂ
         </a>
-      `
-      : ""
-  }
+        `
+        : `
+        <a
+            class="btn btn-whatsapp"
+            href="${createWhatsAppOrderUrl(item)}"
+            target="_blank">
+            WhatsApp
+        </a>
+        `
+    }
+
 </div>
 
         </div>
@@ -783,6 +813,10 @@ async function initGallery() {
 
     const itemName = item.name || "ບໍ່ມີຊື່";
     const itemImage = item.image || "";
+
+    if (modalOpenImage) {
+      modalOpenImage.href = itemImage;
+    }
 
     modalImage.src = itemImage;
     modalImage.alt = itemName;
@@ -817,8 +851,6 @@ async function initGallery() {
 
     modalDescription.textContent = item.description || "ບໍ່ມີລາຍລະອຽດ";
 
-    modalOpenImage.href = itemImage;
-
     if (modalEditShirt) {
       if (isAdminGallery) {
         modalEditShirt.href = `edit.html?publicId=${encodeURIComponent(
@@ -829,6 +861,11 @@ async function initGallery() {
       } else {
         modalEditShirt.hidden = true;
       }
+    }
+
+    if (modalWhatsApp) {
+      modalWhatsApp.href = createWhatsAppOrderUrl(item);
+      modalWhatsApp.hidden = isAdminGallery;
     }
 
     modal.hidden = false;
@@ -880,7 +917,19 @@ async function initGallery() {
     }
   });
 
-  render();
+  const shirtFromUrl = new URLSearchParams(window.location.search).get("shirt");
+
+  if (shirtFromUrl) {
+    const selectedItem = cloudinaryItems.find(
+      (item) =>
+        String(item.cloudinaryPublicId) === String(shirtFromUrl) ||
+        String(item.id) === String(shirtFromUrl),
+    );
+
+    if (selectedItem) {
+      openShirtModal(selectedItem);
+    }
+  }
 }
 
 async function resizeImage(file, maxSize = 1600, quality = 0.85) {
