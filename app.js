@@ -917,6 +917,10 @@ async function initGallery() {
     }
   });
 
+  // ต้องเรียก render ทุกครั้ง ไม่ว่าจะมี shirt ใน URL หรือไม่
+  render();
+
+  // ตรวจสอบลิงก์สำหรับเปิด Modal
   const shirtFromUrl = new URLSearchParams(window.location.search).get("shirt");
 
   if (shirtFromUrl) {
@@ -927,7 +931,10 @@ async function initGallery() {
     );
 
     if (selectedItem) {
-      openShirtModal(selectedItem);
+      // รอให้รายการเสื้อแสดงเสร็จก่อน แล้วค่อยเปิด Modal
+      requestAnimationFrame(() => {
+        openShirtModal(selectedItem);
+      });
     }
   }
 }
