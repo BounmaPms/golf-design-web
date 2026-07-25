@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Admin Login | GOLF DESIGN</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="login.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="supabase-config.js"></script>
+</head>
+
+<body class="login-page">
+  <main class="login-container">
+    <section class="login-card">
+      <div class="login-logo">
+        <span>GD</span>
+      </div>
+
+      <h1>Admin Login</h1>
+
+      <p class="login-description">
+        ເຂົ້າສູ່ລະບົບສຳລັບຜູ້ຈັດການ
+      </p>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="adminEmail">ອີເມວ</label>
+
+          <input
+            id="adminEmail"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="admin@example.com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="adminPassword">ລະຫັດຜ່ານ</label>
+
+          <div class="password-field">
+            <input
+              id="adminPassword"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="••••••••"
+              required
+            />
+
+            <button
+              id="togglePassword"
+              class="password-toggle"
+              type="button"
+              aria-label="แสดงรหัสผ่าน"
+            >
+              👁
+            </button>
+          </div>
+        </div>
+
+        <p id="loginMessage" class="login-message"></p>
+
+        <button
+          id="loginButton"
+          class="login-button"
+          type="submit"
+        >
+          ເຂົ້າສູ່ລະບົບ
+        </button>
+      </form>
+
+      <a class="back-gallery" href="gallery.html">
+        ← ກັບໄປໜ້າ Gallery
+      </a>
+    </section>
+  </main>
+
+  <script src="login.js?v=1"></script>
+</body>
+</html>

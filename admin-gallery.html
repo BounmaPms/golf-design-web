@@ -10,6 +10,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=13">
+    <style>
+  html.auth-checking body {
+    visibility: hidden;
+  }
+</style>
+
 </head>
 
 <body data-page="gallery-admin">
@@ -43,6 +49,13 @@
                 <a href="upload.html">ອັບໂຫລດແບບເສື້ອ</a>
             </nav>
         </div>
+        <div class="admin-user">
+    <span id="adminEmailDisplay"></span>
+
+    <button id="logoutAdmin" class="logout-btn">
+        🚪 Logout
+    </button>
+</div>
     </header>
     <main>
         <section class="page-hero">
@@ -357,6 +370,13 @@
         appScript.src = "app.js?v=12";
         document.body.appendChild(appScript);
     </script>
+    <script src="admin-auth.js?v=1"></script>
+
+<script>
+  document.documentElement.classList.add("auth-checking");
+
+  protectAdminPage();
+</script>
 </body>
 
 </html>

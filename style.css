@@ -3758,3 +3758,35 @@ body.resize-modal-open {
     width: 100%;
   }
 }
+.admin-user-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+#adminEmailDisplay {
+  color: #475467;
+  font-size: 14px;
+  font-weight: 600;
+}
+.admin-user{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logout-btn{
+    background:#e53935;
+    color:#fff;
+    border:none;
+    padding:8px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.logout-btn:hover{
+    background:#c62828;
+}
