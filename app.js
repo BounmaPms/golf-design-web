@@ -1962,12 +1962,12 @@ function initFilterToggle() {
 
     if (isMobile) {
       toggleBtn.textContent = sidebar.classList.contains("show")
-        ? "✕ ปิด Filter"
-        : "☰ เปิด Filter";
+        ? "✕ ປິດ Filter"
+        : "☰ ເປີດ Filter";
     } else {
       toggleBtn.textContent = sidebar.classList.contains("is-hidden")
-        ? "☰ เปิด Filter"
-        : "✕ ปิด Filter";
+        ? "☰ ເປີດ Filter"
+        : "✕ ປິດ Filter";
     }
   }
 
