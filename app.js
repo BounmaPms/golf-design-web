@@ -46,6 +46,7 @@ const collarNames = {
   "polo-v": "ຄໍວີປົກ",
   polo: "ຄໍໂປໂລ",
   mandarin: "ຄໍຈີນ",
+  "y-polo": "ຄໍວາຍປົກ"
 };
 
 const sleeveNames = {
@@ -86,7 +87,7 @@ const colorNames = {
   gray: "ສີເທົາ",
 };
 
-const premiumCollars = ["cross-polo-v", "polo-v", "polo", "mandarin"];
+const premiumCollars = ["cross-polo-v", "polo-v", "polo", "mandarin", "y-polo"];
 
 function calculateShirtPrice(collar, sleeve) {
   let price = premiumCollars.includes(collar) ? 195000 : 175000;
