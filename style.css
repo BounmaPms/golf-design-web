@@ -1896,17 +1896,20 @@ textarea {
 
 .shirt-thumb {
   position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: #eef2f7;
-  aspect-ratio: 4 / 5;
+  background: #f3f4f6;
+  border-radius: 12px;
 }
 
 .shirt-thumb img {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
-  transition: transform 0.4s ease;
+
+  object-fit: c;
+  object-position: center;
 }
 
 .shirt-item:hover .shirt-thumb img {
