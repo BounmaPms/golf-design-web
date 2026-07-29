@@ -46,7 +46,7 @@ const collarNames = {
   "polo-v": "ຄໍວີປົກ",
   polo: "ຄໍໂປໂລ",
   mandarin: "ຄໍຈີນ",
-  "y-polo": "ຄໍວາຍປົກ"
+  "y-polo": "ຄໍວາຍປົກ",
 };
 
 const sleeveNames = {
@@ -548,6 +548,39 @@ function createWhatsAppOrderUrl(item) {
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
+async function trackAnalyticsEvent(eventType, item) {
+  if (!window.supabaseClient) {
+    console.warn("ບໍ່ເຫັນ Supabase Client");
+    return;
+  }
+
+  if (!eventType || !item) {
+    return;
+  }
+
+  try {
+    const eventData = {
+      event_type: eventType,
+
+      shirt_id:
+        item.id !== undefined && item.id !== null ? String(item.id) : null,
+
+      shirt_name: item.name || null,
+    };
+
+    const { error } = await window.supabaseClient
+      .from("analytics_events")
+      .insert(eventData);
+
+    if (error) {
+      throw error;
+    }
+  } catch (error) {
+    // การนับสถิติล้มเหลวต้องไม่ทำให้ Gallery ใช้งานไม่ได้
+    console.warn("ບັນທຶກ Analytics ບໍ່ສຳເລັດ:", eventType, error);
+  }
+}
+
 /* =====================================================
    GALLERY
 ===================================================== */
@@ -579,6 +612,7 @@ async function initGallery() {
   const modalEditShirt = document.querySelector("#modalEditShirt");
   const modalWhatsApp = document.querySelector("#modalWhatsApp");
 
+  let activeModalItem = null;
   let activeCategory = "all";
   let cloudinaryItems = [];
 
@@ -790,11 +824,14 @@ async function initGallery() {
         `
         : `
         <a
-            class="btn btn-whatsapp"
-            href="${createWhatsAppOrderUrl(item)}"
-            target="_blank">
-            WhatsApp
-        </a>
+  class="btn btn-whatsapp card-whatsapp-button"
+  href="${createWhatsAppOrderUrl(item)}"
+  target="_blank"
+  rel="noopener noreferrer"
+  data-shirt-id="${escapeHtml(String(item.id))}"
+>
+  WhatsApp
+</a>
         `
     }
 
@@ -812,45 +849,71 @@ async function initGallery() {
       return;
     }
 
+    activeModalItem = item;
+
+    // ไม่นับการเปิดจากหน้า Admin
+    if (!isAdminGallery) {
+      void trackAnalyticsEvent("modal_open", item);
+    }
+
     const itemName = item.name || "ບໍ່ມີຊື່";
+
     const itemImage = item.image || "";
 
     if (modalOpenImage) {
       modalOpenImage.href = itemImage;
     }
 
-    modalImage.src = itemImage;
-    modalImage.alt = itemName;
+    if (modalImage) {
+      modalImage.src = itemImage;
+      modalImage.alt = itemName;
+    }
 
-    modalName.textContent = itemName;
+    if (modalName) {
+      modalName.textContent = itemName;
+    }
 
-    modalCategory.textContent =
-      categoryNames[item.category] || item.category || "ບໍ່ລະບຸໝວດໝູ່";
+    if (modalCategory) {
+      modalCategory.textContent =
+        categoryNames[item.category] || item.category || "ບໍ່ລະບຸໝວດໝູ່";
+    }
 
-    modalCode.textContent = item.code || "ບໍ່ມີລະຫັດແບບ";
+    if (modalCode) {
+      modalCode.textContent = item.code || "ບໍ່ມີລະຫັດແບບ";
+    }
 
-    modalDate.textContent = item.date ? formatDate(item.date) : "ບໍ່ລະບຸວັນທີ່";
+    if (modalDate) {
+      modalDate.textContent = item.date
+        ? formatDate(item.date)
+        : "ບໍ່ລະບຸວັນທີ່";
+    }
 
     const colors = Array.isArray(item.colors) ? item.colors : [];
 
-    modalColor.innerHTML =
-      colors.length > 0
-        ? colors
-            .map(
-              (color) => `
-        <span
-          class="modal-color-dot"
-          title="${color}"
-          style="background:${colorValues[color] || "#ccc"}"
-        ></span>
-      `,
-            )
-            .join("")
-        : "<span>ບໍ່ລະບຸສີ</span>";
+    if (modalColor) {
+      modalColor.innerHTML =
+        colors.length > 0
+          ? colors
+              .map(
+                (color) => `
+                <span
+                  class="modal-color-dot"
+                  title="${escapeHtml(color)}"
+                  style="background:${colorValues[color] || "#cccccc"}"
+                ></span>
+              `,
+              )
+              .join("")
+          : "<span>ບໍ່ລະບຸສີ</span>";
+    }
 
-    modalTags.textContent = item.tags || "ບໍ່ມີແທັກ";
+    if (modalTags) {
+      modalTags.textContent = item.tags || "ບໍ່ມີແທັກ";
+    }
 
-    modalDescription.textContent = item.description || "ບໍ່ມີລາຍລະອຽດ";
+    if (modalDescription) {
+      modalDescription.textContent = item.description || "ບໍ່ມີລາຍລະອຽດ";
+    }
 
     if (modalEditShirt) {
       if (isAdminGallery) {
@@ -866,10 +929,12 @@ async function initGallery() {
 
     if (modalWhatsApp) {
       modalWhatsApp.href = createWhatsAppOrderUrl(item);
+
       modalWhatsApp.hidden = isAdminGallery;
     }
 
     modal.hidden = false;
+
     document.body.classList.add("modal-open");
   }
 
@@ -882,6 +947,8 @@ async function initGallery() {
     document.body.classList.remove("modal-open");
 
     modalImage.src = "";
+
+    activeModalItem = null;
   }
 
   grid.addEventListener("click", (event) => {
@@ -902,6 +969,56 @@ async function initGallery() {
     }
 
     openShirtModal(selectedItem);
+  });
+
+  grid.addEventListener("click", (event) => {
+  const whatsappButton =
+    event.target.closest(
+      ".card-whatsapp-button"
+    );
+
+  if (!whatsappButton) {
+    return;
+  }
+
+  if (isAdminGallery) {
+    return;
+  }
+
+  const shirtId =
+    whatsappButton.dataset.shirtId;
+
+  const selectedItem =
+    cloudinaryItems.find(
+      (item) =>
+        String(item.id) ===
+        String(shirtId)
+    );
+
+  if (!selectedItem) {
+    return;
+  }
+
+  void trackAnalyticsEvent(
+    "whatsapp_click",
+    selectedItem
+  );
+});
+
+  modalOpenImage?.addEventListener("click", () => {
+    if (isAdminGallery || !activeModalItem) {
+      return;
+    }
+
+    void trackAnalyticsEvent("full_image_open", activeModalItem);
+  });
+
+  modalWhatsApp?.addEventListener("click", () => {
+    if (isAdminGallery || !activeModalItem) {
+      return;
+    }
+
+    void trackAnalyticsEvent("whatsapp_click", activeModalItem);
   });
 
   modalCloseButton?.addEventListener("click", closeShirtModal);

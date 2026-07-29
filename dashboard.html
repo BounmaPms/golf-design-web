@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Dashboard | GOLF DESIGN</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="dashboard.css?v=1"
+  >
+</head>
+
+<body class="dashboard-body">
+
+  <header class="dashboard-topbar">
+    <div class="dashboard-brand">
+      <strong>GOLF DESIGN</strong>
+      <span>Admin Dashboard</span>
+    </div>
+
+    <nav class="dashboard-nav">
+      <a href="admin-gallery.html">
+        ແບບເສື້ອ
+      </a>
+
+      <a href="upload.html">
+        ເພີ່ມແບບ
+      </a>
+
+      <a
+        href="dashboard.html"
+        class="active"
+      >
+        Dashboard
+      </a>
+
+      <button
+        id="dashboardLogout"
+        type="button"
+        class="dashboard-logout"
+      >
+        ອອກຈາກລະບົບ
+      </button>
+    </nav>
+  </header>
+
+  <main class="dashboard-page">
+    <section class="dashboard-heading">
+      <div>
+        <p class="dashboard-eyebrow">
+          ANALYTICS
+        </p>
+
+        <h1>Dashboard</h1>
+
+        <p>
+          ສະຫຼຸບການເຂົ້າເບິ່ງ
+          ແລະ ຄວາມສົນໃຈແບບເສື້ອ
+        </p>
+      </div>
+
+      <div class="dashboard-heading-actions">
+        <span id="lastUpdated">
+          -
+        </span>
+
+        <button
+          id="refreshDashboard"
+          class="dashboard-refresh"
+          type="button"
+        >
+          ໂຫຼດຂໍ້ມູນໃໝ່
+        </button>
+      </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="overview-grid">
+      <article class="stat-card">
+        <span class="stat-icon">👕</span>
+
+        <div>
+          <span class="stat-label">
+            ແບບເສື້ອທັງໝົດ
+          </span>
+
+          <strong
+            id="totalShirts"
+            class="stat-value"
+          >
+            0
+          </strong>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <span class="stat-icon">👀</span>
+
+        <div>
+          <span class="stat-label">
+            ເປີດເບິ່ງລາຍລະອຽດ
+          </span>
+
+          <strong
+            id="modalOpens"
+            class="stat-value"
+          >
+            0
+          </strong>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <span class="stat-icon">🖼️</span>
+
+        <div>
+          <span class="stat-label">
+            ເປີດຮູບເຕັມ
+          </span>
+
+          <strong
+            id="fullImageOpens"
+            class="stat-value"
+          >
+            0
+          </strong>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <span class="stat-icon">💬</span>
+
+        <div>
+          <span class="stat-label">
+            ກົດ WhatsApp
+          </span>
+
+          <strong
+            id="whatsappClicks"
+            class="stat-value"
+          >
+            0
+          </strong>
+        </div>
+      </article>
+
+      <article class="stat-card stat-card-highlight">
+        <span class="stat-icon">📈</span>
+
+        <div>
+          <span class="stat-label">
+            Conversion
+          </span>
+
+          <strong
+            id="conversionRate"
+            class="stat-value"
+          >
+            0%
+          </strong>
+        </div>
+      </article>
+    </section>
+
+    <!-- Top tables -->
+    <section class="dashboard-two-column">
+      <article class="dashboard-panel">
+        <header class="panel-header">
+          <div>
+            <h2>🔥 Top 10 ແບບເສື້ອ</h2>
+
+            <p>
+              ຈັດອັນດັບຈາກການເປີດ Modal
+            </p>
+          </div>
+        </header>
+
+        <div class="table-scroll">
+          <table class="dashboard-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>ແບບເສື້ອ</th>
+                <th>ເປີດເບິ່ງລາຍລະອຽດ</th>
+                <th>ເປີດຮູບເຕັມ</th>
+                <th>WhatsApp</th>
+              </tr>
+            </thead>
+
+            <tbody id="popularShirtsBody">
+              <tr>
+                <td colspan="5">
+                  ກຳລັງໂຫລດ...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="dashboard-panel">
+        <header class="panel-header">
+          <div>
+            <h2>💬 Top 10 WhatsApp</h2>
+
+            <p>
+              ແບບທີ່ລູກຄ້າກົດສອບຖາມຫຼາຍທີ່ສຸດ
+            </p>
+          </div>
+        </header>
+
+        <div
+          id="whatsappRanking"
+          class="ranking-list"
+        >
+          <p class="panel-empty">
+            ກຳລັງໂຫລດ...
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Charts -->
+    <section class="dashboard-chart-grid">
+      <article class="dashboard-panel">
+        <header class="panel-header">
+          <h2>🎨 ສີເສື້ອ</h2>
+        </header>
+
+        <div
+          id="colorChart"
+          class="bar-chart"
+        ></div>
+      </article>
+
+      <article class="dashboard-panel">
+        <header class="panel-header">
+          <h2>👕 ຄໍເສື້ອ</h2>
+        </header>
+
+        <div
+          id="collarChart"
+          class="bar-chart"
+        ></div>
+      </article>
+
+      <article class="dashboard-panel">
+        <header class="panel-header">
+          <h2>💪 ແຂນເສື້ອ</h2>
+        </header>
+
+        <div
+          id="sleeveChart"
+          class="bar-chart"
+        ></div>
+      </article>
+
+      <article class="dashboard-panel">
+        <header class="panel-header">
+          <h2>🧵 ໄຫຼ່ເສື້ອ</h2>
+        </header>
+
+        <div
+          id="shoulderChart"
+          class="bar-chart"
+        ></div>
+      </article>
+
+      <article class="dashboard-panel">
+        <header class="panel-header">
+          <h2>📦 ໝວດໝູ່</h2>
+        </header>
+
+        <div
+          id="categoryChart"
+          class="bar-chart"
+        ></div>
+      </article>
+
+      <article class="dashboard-panel">
+        <header class="panel-header">
+          <h2>💰 ລາຄາ</h2>
+        </header>
+
+        <div
+          id="priceChart"
+          class="bar-chart"
+        ></div>
+      </article>
+    </section>
+
+    <!-- Upload stats -->
+    <section class="dashboard-two-column">
+      <article class="dashboard-panel">
+        <header class="panel-header">
+          <div>
+            <h2>📤 ການເພີ່ມແບບເສື້ອ</h2>
+
+            <p>
+              ປຽບທຽບເດືອນນີ້ກັບເດືອນກ່ອນ
+            </p>
+          </div>
+        </header>
+
+        <div class="upload-comparison">
+          <div class="upload-stat">
+            <span>ເດືອນນີ້</span>
+
+            <strong id="uploadsThisMonth">
+              0
+            </strong>
+          </div>
+
+          <div class="upload-stat">
+            <span>ເດືອນກ່ອນ</span>
+
+            <strong id="uploadsLastMonth">
+              0
+            </strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="dashboard-panel">
+        <header class="panel-header">
+          <div>
+            <h2>📅 ສະຖິຕິ 30 ວັນ</h2>
+
+            <p>
+              ຈຳນວນການເປີດ Modal ລາຍວັນ
+            </p>
+          </div>
+        </header>
+
+        <div
+          id="dailyChart"
+          class="daily-chart"
+        ></div>
+      </article>
+    </section>
+
+    <p
+      id="dashboardMessage"
+      class="dashboard-message"
+    >
+      ກຳລັງໂຫຼດຂໍ້ມູນ...
+    </p>
+  </main>
+
+  <!-- ต้องโหลด Supabase SDK ก่อน -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- แล้วจึงโหลด config -->
+  <script src="supabase-config.js?v=2"></script>
+
+  <!-- Dashboard ต้องอยู่หลัง config -->
+  <script src="dashboard.js?v=2"></script>
+</body>
+</html>
