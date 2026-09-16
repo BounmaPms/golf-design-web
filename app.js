@@ -273,6 +273,9 @@ async function getGalleryShirtsFromSupabase() {
       shoulder: item.shoulder || "",
       colors: Array.isArray(item.colors) ? item.colors : [],
       price: Number(item.price || 0),
+      relatedShirtIds: Array.isArray(item.related_shirt_ids)
+        ? item.related_shirt_ids.map(String)
+        : [],
       image: item.image || "",
       cloudinaryPublicId: item.cloudinary_public_id || "",
       width: item.width || null,
@@ -300,6 +303,9 @@ async function saveShirtToSupabase(item) {
         shoulder: item.shoulder,
         colors: item.colors,
         price: item.price,
+        related_shirt_ids: Array.isArray(item.relatedShirtIds)
+          ? item.relatedShirtIds
+          : [],
         image: item.image,
         cloudinary_public_id: item.cloudinaryPublicId,
         width: item.width,
@@ -352,6 +358,10 @@ async function importCloudinaryImagesToSupabase() {
         shoulder: item.shoulder || "normal",
         colors: Array.isArray(item.colors) ? item.colors : [],
         price: Number(item.price || 0),
+
+        relatedShirtIds: Array.isArray(item.related_shirt_ids)
+          ? item.related_shirt_ids.map(String)
+          : [],
 
         image: item.image,
         cloudinaryPublicId: item.cloudinaryPublicId,
@@ -449,7 +459,7 @@ async function getCloudinaryShirts() {
     if (response.status === 404) {
       throw new Error(
         `ບໍ່ພົບລາຍການຮູບ Cloudinary ທີ່ມີ Tag "${CLOUDINARY_LIST_TAG}". ` +
-          "ກວດສອບວ່າເປີດ Client-side asset lists ແລ້ວ ແລະ ຮູບມີ Tag ນີ້",
+        "ກວດສອບວ່າເປີດ Client-side asset lists ແລ້ວ ແລະ ຮູບມີ Tag ນີ້",
       );
     }
 
@@ -461,8 +471,8 @@ async function getCloudinaryShirts() {
 
   const resources = Array.isArray(result.resources)
     ? result.resources.filter(
-        (resource) => !deletedIds.includes(resource.public_id),
-      )
+      (resource) => !deletedIds.includes(resource.public_id),
+    )
     : [];
 
   const localItems = await getShirtsFromSupabase();
@@ -607,7 +617,7 @@ async function initGallery() {
   const modalDate = document.querySelector("#modalShirtDate");
   const modalColor = document.querySelector("#modalShirtColor");
   const modalTags = document.querySelector("#modalShirtTags");
-  const modalDescription = document.querySelector("#modalShirtDescription");
+  const relatedShirts = document.querySelector("#relatedShirts");
   const modalOpenImage = document.querySelector("#modalOpenImage");
   const modalEditShirt = document.querySelector("#modalEditShirt");
   const modalWhatsApp = document.querySelector("#modalWhatsApp");
@@ -792,16 +802,16 @@ async function initGallery() {
 
           <div class="shirt-color-list">
   ${(item.colors || [])
-    .map(
-      (color) => `
+            .map(
+              (color) => `
         <span
           class="shirt-color-dot"
           title="${color}"
           style="background:${colorValues[color] || "#ccc"}"
         ></span>
       `,
-    )
-    .join("")}
+            )
+            .join("")}
 </div>
 
           <div class="shirt-actions">
@@ -813,16 +823,15 @@ async function initGallery() {
         ເບິ່ງລາຍລະອຽດ
     </button>
 
-    ${
-      isAdminGallery
-        ? `
+    ${isAdminGallery
+            ? `
         <a
             class="btn btn-outline-dark"
             href="edit.html?publicId=${encodeURIComponent(item.cloudinaryPublicId)}">
             ແກ້ໄຂ
         </a>
         `
-        : `
+            : `
         <a
   class="btn btn-whatsapp card-whatsapp-button"
   href="${createWhatsAppOrderUrl(item)}"
@@ -833,7 +842,7 @@ async function initGallery() {
   WhatsApp
 </a>
         `
-    }
+          }
 
 </div>
 
@@ -844,6 +853,76 @@ async function initGallery() {
       )
       .join("");
   }
+
+  function renderRelatedShirts(currentItem) {
+    const relatedShirts =
+      document.querySelector("#relatedShirts");
+
+    if (!relatedShirts || !currentItem) {
+      return;
+    }
+
+    // ID เสื้อที่เราเลือกเองจาก Upload/Edit
+    const selectedIds =
+      Array.isArray(currentItem.relatedShirtIds)
+        ? currentItem.relatedShirtIds.map(String)
+        : [];
+
+    // เอา ID ที่เลือก ไปหาเสื้อจริงจาก Gallery
+    const items = selectedIds
+      .map((id) =>
+        cloudinaryItems.find(
+          (shirt) =>
+            String(shirt.id) === String(id)
+        )
+      )
+      .filter(Boolean);
+
+    // ถ้ายังไม่ได้เลือกเสื้อแนะนำ
+    if (items.length === 0) {
+      relatedShirts.innerHTML = `
+      <p class="related-shirts-empty">
+        ຍັງບໍ່ມີແບບເສື້ອແນະນຳ
+      </p>
+    `;
+
+      return;
+    }
+
+    // แสดงเฉพาะเสื้อที่เราเลือกเอง
+    relatedShirts.innerHTML = items
+      .map(
+        (item) => `
+        <button
+          type="button"
+          class="related-shirt-card"
+          data-related-shirt-id="${escapeHtml(
+          String(item.id)
+        )}"
+        >
+          <div class="related-shirt-image">
+            <img
+              src="${escapeHtml(item.image)}"
+              alt="${escapeHtml(item.name)}"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="related-shirt-content">
+            <strong>
+              ${escapeHtml(item.name)}
+            </strong>
+
+            <span>
+              ${escapeHtml(item.code || "")}
+            </span>
+          </div>
+        </button>
+      `
+      )
+      .join("");
+  }
+
   function openShirtModal(item) {
     if (!modal || !item) {
       return;
@@ -894,16 +973,16 @@ async function initGallery() {
       modalColor.innerHTML =
         colors.length > 0
           ? colors
-              .map(
-                (color) => `
+            .map(
+              (color) => `
                 <span
                   class="modal-color-dot"
                   title="${escapeHtml(color)}"
                   style="background:${colorValues[color] || "#cccccc"}"
                 ></span>
               `,
-              )
-              .join("")
+            )
+            .join("")
           : "<span>ບໍ່ລະບຸສີ</span>";
     }
 
@@ -911,9 +990,8 @@ async function initGallery() {
       modalTags.textContent = item.tags || "ບໍ່ມີແທັກ";
     }
 
-    if (modalDescription) {
-      modalDescription.textContent = item.description || "ບໍ່ມີລາຍລະອຽດ";
-    }
+    /* แสดงเสื้อที่คล้ายกัน */
+    renderRelatedShirts(item);
 
     if (modalEditShirt) {
       if (isAdminGallery) {
@@ -937,6 +1015,38 @@ async function initGallery() {
 
     document.body.classList.add("modal-open");
   }
+
+  relatedShirts?.addEventListener("click", (event) => {
+    const card = event.target.closest(
+      ".related-shirt-card"
+    );
+
+    if (!card) return;
+
+    const shirtId =
+      card.dataset.relatedShirtId;
+
+    const selectedItem =
+      cloudinaryItems.find(
+        (item) =>
+          String(item.id) === String(shirtId)
+      );
+
+    if (!selectedItem) return;
+
+    openShirtModal(selectedItem);
+
+    const modalContent =
+      modal?.querySelector(
+        ".shirt-modal-content"
+      );
+
+    modalContent?.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+
 
   function closeShirtModal() {
     if (!modal) {
@@ -972,38 +1082,38 @@ async function initGallery() {
   });
 
   grid.addEventListener("click", (event) => {
-  const whatsappButton =
-    event.target.closest(
-      ".card-whatsapp-button"
+    const whatsappButton =
+      event.target.closest(
+        ".card-whatsapp-button"
+      );
+
+    if (!whatsappButton) {
+      return;
+    }
+
+    if (isAdminGallery) {
+      return;
+    }
+
+    const shirtId =
+      whatsappButton.dataset.shirtId;
+
+    const selectedItem =
+      cloudinaryItems.find(
+        (item) =>
+          String(item.id) ===
+          String(shirtId)
+      );
+
+    if (!selectedItem) {
+      return;
+    }
+
+    void trackAnalyticsEvent(
+      "whatsapp_click",
+      selectedItem
     );
-
-  if (!whatsappButton) {
-    return;
-  }
-
-  if (isAdminGallery) {
-    return;
-  }
-
-  const shirtId =
-    whatsappButton.dataset.shirtId;
-
-  const selectedItem =
-    cloudinaryItems.find(
-      (item) =>
-        String(item.id) ===
-        String(shirtId)
-    );
-
-  if (!selectedItem) {
-    return;
-  }
-
-  void trackAnalyticsEvent(
-    "whatsapp_click",
-    selectedItem
-  );
-});
+  });
 
   modalOpenImage?.addEventListener("click", () => {
     if (isAdminGallery || !activeModalItem) {
@@ -1413,6 +1523,128 @@ async function uploadToCloudinary(file, metadata = {}) {
   return result;
 }
 
+async function initRelatedShirtPicker(initialIds = [], currentShirtId = null) {
+  const container = document.querySelector("#relatedShirtPicker");
+  const searchInput = document.querySelector("#relatedShirtSearch");
+  const countElement = document.querySelector("#relatedSelectedCount");
+
+  if (!container) return;
+
+  let shirts = [];
+
+  try {
+    shirts = await getGalleryShirtsFromSupabase();
+  } catch (error) {
+    console.error("ໂຫລດລາຍການເສື້ອແນະນຳບໍ່ສຳເລັດ:", error);
+
+    container.innerHTML = `
+      <p>ບໍ່ສາມາດໂຫຼດແບບເສື້ອໄດ້</p>
+    `;
+
+    return;
+  }
+
+  const selectedIds = new Set(
+    initialIds.map(String)
+  );
+
+  function updateCount() {
+    if (countElement) {
+      countElement.textContent = String(selectedIds.size);
+    }
+  }
+
+  function renderPicker() {
+    const query =
+      searchInput?.value.trim().toLowerCase() || "";
+
+    const filtered = shirts.filter((shirt) => {
+      // หน้า Edit ไม่ให้เลือกตัวเอง
+      if (
+        currentShirtId !== null &&
+        String(shirt.id) === String(currentShirtId)
+      ) {
+        return false;
+      }
+
+      const searchable = [
+        shirt.name,
+        shirt.code
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return !query || searchable.includes(query);
+    });
+
+    container.innerHTML = filtered
+      .map((shirt) => {
+        const id = String(shirt.id);
+        const selected = selectedIds.has(id);
+
+        return `
+          <button
+            type="button"
+            class="related-picker-card ${selected ? "selected" : ""
+          }"
+            data-related-id="${escapeHtml(id)}"
+          >
+            <div class="related-picker-image">
+              <img
+                src="${escapeHtml(shirt.image)}"
+                alt="${escapeHtml(shirt.name)}"
+                loading="lazy"
+              >
+
+              <span class="related-picker-check">
+                ✓
+              </span>
+            </div>
+
+            <strong>
+              ${escapeHtml(shirt.name)}
+            </strong>
+
+            <small>
+              ${escapeHtml(
+            shirt.code || "ບໍ່ມີລະຫັດ"
+          )}
+            </small>
+          </button>
+        `;
+      })
+      .join("");
+
+    updateCount();
+  }
+
+  container.addEventListener("click", (event) => {
+    const card = event.target.closest(
+      ".related-picker-card"
+    );
+
+    if (!card) return;
+
+    const id = String(card.dataset.relatedId);
+
+    if (selectedIds.has(id)) {
+      selectedIds.delete(id);
+    } else {
+      selectedIds.add(id);
+    }
+
+    renderPicker();
+  });
+
+  searchInput?.addEventListener("input", renderPicker);
+
+  window.getSelectedRelatedShirtIds = function () {
+    return Array.from(selectedIds);
+  };
+
+  renderPicker();
+}
+
 /* =====================================================
    UPLOAD PAGE
 ===================================================== */
@@ -1618,6 +1850,11 @@ function initUpload() {
 
       const price = calculateShirtPrice(collar, sleeve);
 
+      const relatedShirtIds =
+        typeof window.getSelectedRelatedShirtIds === "function"
+          ? window.getSelectedRelatedShirtIds()
+          : [];
+
       const item = {
         id: String(Date.now()),
         name,
@@ -1634,6 +1871,8 @@ function initUpload() {
         shoulder,
         colors,
         price,
+
+        relatedShirtIds,
 
         image: cloudinaryResult.secure_url,
         cloudinaryPublicId: cloudinaryResult.public_id,
@@ -1659,6 +1898,7 @@ function initUpload() {
       submitButton.textContent = "ບັນທຶກແບບເສື້ອ";
     }
   });
+  initRelatedShirtPicker();
   initColorSorting();
 }
 
