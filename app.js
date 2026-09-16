@@ -542,6 +542,7 @@ function createWhatsAppOrderUrl(item) {
 
   const modalUrl = new URL("gallery.html", window.location.href);
   modalUrl.searchParams.set("shirt", shirtKey);
+  modalUrl.searchParams.set("source", "whatsapp");
 
   const message = [
     "ສະບາຍດີ GOLF DESIGN",
@@ -549,7 +550,6 @@ function createWhatsAppOrderUrl(item) {
     "ຂ້ອຍສົນໃຈແບບເສື້ອນີ້",
     `ຊື່ແບບ: ${item.name || "-"}`,
     `ລະຫັດແບບ: ${item.code || "-"}`,
-    `ປະເພດ: ${categoryNames[item.category] || item.category || "-"}`,
     `ເບິ່ງແບບເສື້ອ: ${modalUrl.href}`,
     "",
     "ກະລຸນາແຈ້ງລາຄາ ແລະ ລາຍລະອຽດໃຫ້ແດ່",
@@ -625,6 +625,16 @@ async function initGallery() {
   let activeModalItem = null;
   let activeCategory = "all";
   let cloudinaryItems = [];
+
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const whatsappSource =
+    urlParams.get("source") === "whatsapp";
+
+  const deepLinkShirt =
+    urlParams.get("shirt");
+
+  let skipDeepLinkModalAnalytics = whatsappSource && !!deepLinkShirt;
 
   const sidebarInputs = document.querySelectorAll(".filter-sidebar input");
 
@@ -747,21 +757,52 @@ async function initGallery() {
     });
 
     items.sort((itemA, itemB) => {
-      const dateA = itemA.date || "";
-      const dateB = itemB.date || "";
-      const nameA = itemA.name || "";
-      const nameB = itemB.name || "";
+  // ==========================================
+  // ถ้าเลือก Filter สี
+  // ให้เสื้อที่มีสีที่เลือกเป็น "สีหลัก" ขึ้นก่อน
+  // ==========================================
+  if (selectedColors.length > 0) {
+    const colorsA = Array.isArray(itemA.colors) ? itemA.colors : [];
+    const colorsB = Array.isArray(itemB.colors) ? itemB.colors : [];
 
-      if (sort?.value === "oldest") {
-        return dateA.localeCompare(dateB);
-      }
+    // colors[0] = สีหลัก
+    const mainColorA = colorsA[0] || "";
+    const mainColorB = colorsB[0] || "";
 
-      if (sort?.value === "name") {
-        return nameA.localeCompare(nameB, "th");
-      }
+    const aIsMainColor = selectedColors.includes(mainColorA);
+    const bIsMainColor = selectedColors.includes(mainColorB);
 
-      return dateB.localeCompare(dateA);
-    });
+    // A เป็นสีหลัก แต่ B ไม่ใช่ → A ขึ้นก่อน
+    if (aIsMainColor && !bIsMainColor) {
+      return -1;
+    }
+
+    // B เป็นสีหลัก แต่ A ไม่ใช่ → B ขึ้นก่อน
+    if (!aIsMainColor && bIsMainColor) {
+      return 1;
+    }
+  }
+
+  // ==========================================
+  // ถ้า priority สีเท่ากัน
+  // ใช้ระบบ Sort เดิม
+  // ==========================================
+  const dateA = itemA.date || "";
+  const dateB = itemB.date || "";
+  const nameA = itemA.name || "";
+  const nameB = itemB.name || "";
+
+  if (sort?.value === "oldest") {
+    return dateA.localeCompare(dateB);
+  }
+
+  if (sort?.value === "name") {
+    return nameA.localeCompare(nameB, "th");
+  }
+
+  // default = ใหม่ล่าสุด
+  return dateB.localeCompare(dateA);
+});
 
     count.textContent = String(items.length);
     empty.hidden = items.length > 0;
@@ -931,8 +972,30 @@ async function initGallery() {
     activeModalItem = item;
 
     // ไม่นับการเปิดจากหน้า Admin
+    // นับการเปิด Modal
+    // ยกเว้นครั้งแรกที่เปิดจากลิงก์ WhatsApp
     if (!isAdminGallery) {
-      void trackAnalyticsEvent("modal_open", item);
+
+      const isWhatsAppDeepLinkOpen =
+        skipDeepLinkModalAnalytics &&
+        (
+          String(item.cloudinaryPublicId) === String(deepLinkShirt) ||
+          String(item.id) === String(deepLinkShirt)
+        );
+
+      if (isWhatsAppDeepLinkOpen) {
+
+        // ข้ามการนับเฉพาะครั้งแรก
+        skipDeepLinkModalAnalytics = false;
+
+      } else {
+
+        void trackAnalyticsEvent(
+          "modal_open",
+          item
+        );
+
+      }
     }
 
     const itemName = item.name || "ບໍ່ມີຊື່";
@@ -2000,6 +2063,10 @@ async function initEdit() {
 
       price: Number(data.price || 0),
 
+      relatedShirtIds: Array.isArray(data.related_shirt_ids)
+        ? data.related_shirt_ids.map(String)
+        : [],
+
       image: data.image || "",
       cloudinaryPublicId: data.cloudinary_public_id || "",
 
@@ -2009,12 +2076,17 @@ async function initEdit() {
       format: data.format,
     };
   } catch (error) {
-    console.error("โหลดข้อมูลหน้า Edit ไม่สำเร็จ:", error);
+    console.error("ໂຫລດໜ້າຂໍ້ມູນ Edit ບໍ່ສຳເລັດ:", error);
 
     message.textContent = "ດຶງຂໍ້ມູນຈາກ Supabase ບໍ່ສຳເລັດ";
 
     return;
   }
+
+  await initRelatedShirtPicker(
+    currentItem.relatedShirtIds || [],
+    currentItem.id
+  );
 
   let previewObjectUrl = null;
 
@@ -2208,6 +2280,11 @@ async function initEdit() {
 
       const price = calculateShirtPrice(collar, sleeve);
 
+      const relatedShirtIds =
+        typeof window.getSelectedRelatedShirtIds === "function"
+          ? window.getSelectedRelatedShirtIds()
+          : currentItem.relatedShirtIds || [];
+
       const updatedItem = {
         name: document.querySelector("#shirtName").value.trim(),
         category: document.querySelector("#shirtCategory").value,
@@ -2222,6 +2299,7 @@ async function initEdit() {
         shoulder,
         colors,
         price,
+        related_shirt_ids: relatedShirtIds,
         image: imageData.image,
         cloudinary_public_id: imageData.cloudinaryPublicId,
         width: imageData.width,
@@ -2315,17 +2393,24 @@ function initFilterToggle() {
 
   if (!toggleBtn || !sidebar) return;
 
+  // เริ่มต้นให้ Filter ปิด
+  if (window.innerWidth > 992) {
+    sidebar.classList.add("is-hidden");
+  } else {
+    sidebar.classList.remove("show");
+  }
+
   function updateButtonText() {
     const isMobile = window.innerWidth <= 992;
 
     if (isMobile) {
       toggleBtn.textContent = sidebar.classList.contains("show")
-        ? "✕ ປິດ Filter"
-        : "☰ ເປີດ Filter";
+        ? "✕ ປິດຕົວກອງ"
+        : "☰ ເປີດຕົວກອງ";
     } else {
       toggleBtn.textContent = sidebar.classList.contains("is-hidden")
-        ? "☰ ເປີດ Filter"
-        : "✕ ປິດ Filter";
+        ? "☰ ເປີດຕົວກອງ"
+        : "✕ ປິດຕົວກອງ";
     }
   }
 

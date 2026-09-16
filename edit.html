@@ -1,361 +1,344 @@
 <!doctype html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ແກ້ໄຂແບບເສື້ອ | GOLF DESIGN</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css?v=13" />
-    <style>
-      html.auth-checking body {
-        visibility: hidden;
-      }
-    </style>
-  </head>
 
-  <body data-page="edit">
-    <div class="topbar">
-      <div class="container topbar-inner">
-        <p>ລະບົບແບບເສື້ອ GOLF DESIGN</p>
-        <div class="topbar-links">
-          <!-- <a href="index.html">ໜ້າຫຼັກ</a> -->
-          <a href="gallery.html">ແບບເສື້ອທັ້ງໝົດ</a>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ແກ້ໄຂແບບເສື້ອ | GOLF DESIGN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=13" />
+  <style>
+    html.auth-checking body {
+      visibility: hidden;
+    }
+  </style>
+</head>
+
+<body data-page="edit">
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <p>ລະບົບແບບເສື້ອ GOLF DESIGN</p>
+      <div class="topbar-links">
+        <!-- <a href="index.html">ໜ້າຫຼັກ</a> -->
+        <a href="gallery.html">ແບບເສື້ອທັ້ງໝົດ</a>
       </div>
     </div>
-    <header class="site-header">
-      <div class="container navbar">
-        <a class="brand" href="index.html"
-          ><span class="brand-mark"><img src="img/GOLF DESGIN LOGO.png" /></span
-          ><span
-            ><strong>GOLF DESIGN</strong
-            ><small>Custom Jersey Factory</small></span
-          ></a
-        ><input class="nav-toggle" type="checkbox" id="nav-toggle" /><label
-          class="hamburger"
-          for="nav-toggle"
-          ><span></span><span></span><span></span
-        ></label>
-        <nav class="nav-menu">
-          <a href="index.html">ໜ້າຫຼັກ</a>
-          <a href="gallery.html">ແບບເສື້ອທັ້ງໝົດ</a>
-          <a href="admin-gallery.html">ຈັດການແບບເສື້ອ</a>
-          <a href="dashboard.html">Dashboard</a>
-          <a href="upload.html">ອັບໂຫລດແບບເສື້ອ</a>
-          <a class="nav-contact" href="gallery.html">ກັບໄປແບບເສື້ອທັ້ງໝົດ</a>
-        </nav>
+  </div>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html"><span class="brand-mark"><img
+            src="img/GOLF DESGIN LOGO.png" /></span><span><strong>GOLF DESIGN</strong><small>Custom Jersey
+            Factory</small></span></a><input class="nav-toggle" type="checkbox" id="nav-toggle" /><label
+        class="hamburger" for="nav-toggle"><span></span><span></span><span></span></label>
+      <nav class="nav-menu">
+        <a href="index.html">ໜ້າຫຼັກ</a>
+        <a href="gallery.html">ແບບເສື້ອທັ້ງໝົດ</a>
+        <a href="admin-gallery.html">ຈັດການແບບເສື້ອ</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="upload.html">ອັບໂຫລດແບບເສື້ອ</a>
+        <a class="nav-contact" href="gallery.html">ກັບໄປແບບເສື້ອທັ້ງໝົດ</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero admin-hero">
+      <div class="container">
+        <span class="section-kicker light">EDIT SHIRT</span>
+        <h1>ແກ້ໄຂຮູບ ແລະ ແບບເສື້ອ</h1>
+        <p>ປັບຂໍ້ມູນເກົ່າ ຫຼື ເລືອກຮູບໃໝ່ເພື່ອອັບໂຫລດແທນຮູບເກົ່າ</p>
       </div>
-    </header>
-    <main>
-      <section class="page-hero admin-hero">
-        <div class="container">
-          <span class="section-kicker light">EDIT SHIRT</span>
-          <h1>ແກ້ໄຂຮູບ ແລະ ແບບເສື້ອ</h1>
-          <p>ປັບຂໍ້ມູນເກົ່າ ຫຼື ເລືອກຮູບໃໝ່ເພື່ອອັບໂຫລດແທນຮູບເກົ່າ</p>
-        </div>
-      </section>
-      <section class="section upload-page">
-        <div class="container upload-layout">
-          <form class="upload-form-card" id="editForm">
-            <div class="form-heading">
-              <div>
-                <span class="section-kicker">ແກ້ໄຂລາຍການ</span>
-                <h2>ຂໍ້ມູນແບບເສື້ອ</h2>
-              </div>
-              <span class="required-note">* ຈຳເປັນ</span>
+    </section>
+    <section class="section upload-page">
+      <div class="container upload-layout">
+        <form class="upload-form-card" id="editForm">
+          <div class="form-heading">
+            <div>
+              <span class="section-kicker">ແກ້ໄຂລາຍການ</span>
+              <h2>ຂໍ້ມູນແບບເສື້ອ</h2>
             </div>
-            <label class="upload-dropzone" id="dropzone">
-              <input
-                id="shirtImage"
-                name="shirtImage"
-                type="file"
-                accept="image/png,image/jpeg,image/webp"
-              />
-              <img id="previewImage" alt="ຕົວຢ່າງຮູບປະຈຸບັນ" hidden />
-              <div id="dropzoneText">
-                <span class="upload-icon">↻</span
-                ><strong>ເລືອກຮູບໃໝ່ເມື່ອຕ້ອງການປ່ຽນ</strong
-                ><small>ຖ້າບໍ່ເລືອກລະບົບຈະໃຊ້ຮູບເກົ່າ</small>
-              </div>
+            <span class="required-note">* ຈຳເປັນ</span>
+          </div>
+          <label class="upload-dropzone" id="dropzone">
+            <input id="shirtImage" name="shirtImage" type="file" accept="image/png,image/jpeg,image/webp" />
+            <img id="previewImage" alt="ຕົວຢ່າງຮູບປະຈຸບັນ" hidden />
+            <div id="dropzoneText">
+              <span
+                class="upload-icon">↻</span><strong>ເລືອກຮູບໃໝ່ເມື່ອຕ້ອງການປ່ຽນ</strong><small>ຖ້າບໍ່ເລືອກລະບົບຈະໃຊ້ຮູບເກົ່າ</small>
+            </div>
+          </label>
+          <div class="form-row">
+            <label>ຊື່ຮູບ *<input id="shirtName" type="text" maxlength="80" required /></label><label>ໝວດໝູ່ *<select
+                id="shirtCategory" required>
+                <option value="football">ເສື້ອກິລາ</option>
+                <option value="team">ເສື້ອທີມງານ</option>
+                <option value="company">ເສື້ອບໍລິສັດ</option>
+                <option value="meme">ເສື້ອມີມ</option>
+              </select></label>
+          </div>
+          <div class="form-row">
+            <label>ວັນທີ່ອັບໂຫລດ *<input id="uploadDate" type="date" required /></label><label>ລະຫັດແບບ<input
+                id="designCode" type="text" maxlength="30" /></label>
+          </div>
+          <div class="form-row">
+            <label>ສີຫຼັກ
+              <input id="mainColor" type="text" maxlength="40" />
             </label>
-            <div class="form-row">
-              <label
-                >ຊື່ຮູບ *<input
-                  id="shirtName"
-                  type="text"
-                  maxlength="80"
-                  required /></label
-              ><label
-                >ໝວດໝູ່ *<select id="shirtCategory" required>
-                  <option value="football">ເສື້ອກິລາ</option>
-                  <option value="team">ເສື້ອທີມງານ</option>
-                  <option value="company">ເສື້ອບໍລິສັດ</option>
-                  <option value="meme">ເສື້ອມີມ</option>
-                </select></label
-              >
-            </div>
-            <div class="form-row">
-              <label
-                >ວັນທີ່ອັບໂຫລດ *<input
-                  id="uploadDate"
-                  type="date"
-                  required /></label
-              ><label
-                >ລະຫັດແບບ<input id="designCode" type="text" maxlength="30"
-              /></label>
-            </div>
-            <div class="form-row">
-              <label
-                >ສີຫຼັກ
-                <input id="mainColor" type="text" maxlength="40" />
-              </label>
-            </div>
+          </div>
 
-            <div class="form-row">
-              <label>
-                ຄໍເສື້ອ *
-                <select id="shirtCollar" required>
-                  <option value="">ເລືອກຄໍເສື້ອ</option>
-                  <optgroup label="ປະເພດຄໍທົ່ວໄປ">
-                    <option value="round">ຄໍມົນ</option>
-                    <option value="v-neck">ຄໍວີ</option>
-                    <option value="cross-v">ຄໍວີໄຂວ້</option>
-                    <option value="cut-v">ຄໍວີຕັດ</option>
-                    <option value="pentagon">ຄໍ 5 ຫຼ່ຽມ</option>
-                    <option value="pentagon-placket">ຄໍ 5 ຫຼ່ຽມມີສາບໃນ</option>
-                    <option value="pig-neck">ຄໍຄາງໝູ</option>
-                    <option value="y-neck">ຄໍວາຍ</option>
-                  </optgroup>
-                  <optgroup label="ປະເພດຄໍປົກ">
-                    <option value="cross-polo-v">ຄໍວີປົກໄຂວ້</option>
-                    <option value="polo-v">ຄໍວີປົກ</option>
-                    <option value="polo">ຄໍໂປໂລ</option>
-                    <option value="mandarin">ຄໍຈີນ</option>
-                    <option value="y-polo">ຄໍວາຍປົກ</option>
-                  </optgroup>
-                </select>
-              </label>
-              <label>
-                ແຂນເສື້ອ
-                <select id="shirtSleeve">
-                  <option value="short">ແຂນສັ້ນ</option>
-                  <option value="long">ແຂນຍາວ (+20,000)</option>
-                </select>
-              </label>
-            </div>
-            <div class="form-row">
-              <label>
-                ໄຫຼ່
-                <select id="shirtShoulder">
-                  <option value="normal">ໄຫຼ່ປົກກະຕິ</option>
-                  <option value="raglan">ໄຫຼ່ສະຫຼົບ</option>
-                </select>
-              </label>
-
-              <label>
-                ລາຄາ
-                <input type="hidden" id="shirtPrice" />
-                <div id="calculatedPrice">175,000</div>
-              </label>
-            </div>
+          <div class="form-row">
             <label>
-              ສີຂອງເສື້ອ
-              <div class="admin-color-picker">
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="white" />
-                  <span class="color-circle" style="--color: #ffffff"></span>
-                </label>
-
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="black" />
-                  <span class="color-circle" style="--color: #111111"></span>
-                </label>
-
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="red" />
-                  <span class="color-circle" style="--color: #e1262f"></span>
-                </label>
-
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="blue" />
-                  <span class="color-circle" style="--color: #164dcc"></span>
-                </label>
-
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="sky" />
-                  <span class="color-circle" style="--color: #43baf5"></span>
-                </label>
-
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="green" />
-                  <span class="color-circle" style="--color: #199451"></span>
-                </label>
-
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="yellow" />
-                  <span class="color-circle" style="--color: #ffd52b"></span>
-                </label>
-
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="orange" />
-                  <span class="color-circle" style="--color: #ff7a22"></span>
-                </label>
-
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="pink" />
-                  <span class="color-circle" style="--color: #f16aaa"></span>
-                </label>
-
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="purple" />
-                  <span class="color-circle" style="--color: #783cbd"></span>
-                </label>
-
-                <label class="color-option">
-                  <input type="checkbox" name="shirtColors" value="gray" />
-                  <span class="color-circle" style="--color: #929292"></span>
-                </label>
-              </div>
-              <div class="color-order-section">
-                <p class="color-order-title">ລາກສີເພື່ອຈັດລຳດັບ</p>
-
-                <div id="selectedColorOrder" class="selected-color-order"></div>
-              </div>
+              ຄໍເສື້ອ *
+              <select id="shirtCollar" required>
+                <option value="">ເລືອກຄໍເສື້ອ</option>
+                <optgroup label="ປະເພດຄໍທົ່ວໄປ">
+                  <option value="round">ຄໍມົນ</option>
+                  <option value="v-neck">ຄໍວີ</option>
+                  <option value="cross-v">ຄໍວີໄຂວ້</option>
+                  <option value="cut-v">ຄໍວີຕັດ</option>
+                  <option value="pentagon">ຄໍ 5 ຫຼ່ຽມ</option>
+                  <option value="pentagon-placket">ຄໍ 5 ຫຼ່ຽມມີສາບໃນ</option>
+                  <option value="pig-neck">ຄໍຄາງໝູ</option>
+                  <option value="y-neck">ຄໍວາຍ</option>
+                </optgroup>
+                <optgroup label="ປະເພດຄໍປົກ">
+                  <option value="cross-polo-v">ຄໍວີປົກໄຂວ້</option>
+                  <option value="polo-v">ຄໍວີປົກ</option>
+                  <option value="polo">ຄໍໂປໂລ</option>
+                  <option value="mandarin">ຄໍຈີນ</option>
+                  <option value="y-polo">ຄໍວາຍປົກ</option>
+                </optgroup>
+              </select>
+            </label>
+            <label>
+              ແຂນເສື້ອ
+              <select id="shirtSleeve">
+                <option value="short">ແຂນສັ້ນ</option>
+                <option value="long">ແຂນຍາວ (+20,000)</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              ໄຫຼ່
+              <select id="shirtShoulder">
+                <option value="normal">ໄຫຼ່ປົກກະຕິ</option>
+                <option value="raglan">ໄຫຼ່ສະຫຼົບ</option>
+              </select>
             </label>
 
-            <label
-              >ແທັກຄົ້ນຫາ
-              <input id="shirtTags" type="text" maxlength="120" />
+            <label>
+              ລາຄາ
+              <input type="hidden" id="shirtPrice" />
+              <div id="calculatedPrice">175,000</div>
             </label>
-            <label
-              >ລາຍລະອຽດ
-              <textarea
-                id="shirtDescription"
-                rows="4"
-                maxlength="400"
-              ></textarea>
-            </label>
-            <label class="checkbox-line">
-              <input id="featured" type="checkbox" /> ສະແດງເປັນແບບແນະນຳ
-            </label>
-            <div class="form-actions">
-              <button class="btn btn-primary" type="submit">
-                ບັນທຶກການແກ້ໄຂ
-              </button>
-              <a class="btn btn-ghost" href="admin-gallery.html">ຍົກເລິກ</a>
-              <button class="btn btn-danger" id="deleteShirt" type="button">
-                ລົບລາຍການ
-              </button>
+          </div>
+          <label>
+            ສີຂອງເສື້ອ
+            <div class="admin-color-picker">
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="white" />
+                <span class="color-circle" style="--color: #ffffff"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="black" />
+                <span class="color-circle" style="--color: #111111"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="red" />
+                <span class="color-circle" style="--color: #e1262f"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="blue" />
+                <span class="color-circle" style="--color: #164dcc"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="sky" />
+                <span class="color-circle" style="--color: #43baf5"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="green" />
+                <span class="color-circle" style="--color: #199451"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="yellow" />
+                <span class="color-circle" style="--color: #ffd52b"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="orange" />
+                <span class="color-circle" style="--color: #ff7a22"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="pink" />
+                <span class="color-circle" style="--color: #f16aaa"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="purple" />
+                <span class="color-circle" style="--color: #783cbd"></span>
+              </label>
+
+              <label class="color-option">
+                <input type="checkbox" name="shirtColors" value="gray" />
+                <span class="color-circle" style="--color: #929292"></span>
+              </label>
             </div>
-            <p class="form-message" id="formMessage" role="status"></p>
-          </form>
-          <aside class="upload-side-card">
-            <h3>ການປ່ຽນຮູບ</h3>
-            <ul class="check-list">
-              <li>ຖ້າບໍ່ເລືອກຮູບໃໝ່ ຈະຍັງໃຊ້ຮູບເກົ່າ</li>
-              <li>ເລືອກຮູບໃໝ່ ລະບົບຈະອັບໂຫລດຂື້ນ Cloudinary</li>
-              <li>ແກ້ໄຂຊື່ ໝວດໝູ່ ວັນທີ່ ແລະ ລາຍລະອຽດ</li>
-              <li>ປຸ່ມລົບລາຍການຈາກຈາກແບບທັ້ງໝົດ</li>
-            </ul>
-            <div class="storage-note">
-              <strong>ໝາຍເຫດ</strong>
-              <p>
-                ການລົບລາຍການຈະນຳອອກຈາກ LocalStorage ແຈ່ຈະບໍລົບໄຟລເດິມຈາກ
-                Cloudinary ເພາະການລົບໄຟລຢ່າງປອດໄພຕ້ອງໃຊ້ API Secret
-                ຜ່ານລະບົບຫຼັງບ້ານ
-              </p>
-            </div>
-          </aside>
-        </div>
-      </section>
-    </main>
+            <div class="color-order-section">
+              <p class="color-order-title">ລາກສີເພື່ອຈັດລຳດັບ</p>
 
-    <footer class="footer compact-footer">
-      <div class="container footer-bottom">
-        <p>Copyright © 2026 GOLF DESIGN. All Rights Reserved.</p>
+              <div id="selectedColorOrder" class="selected-color-order"></div>
+            </div>
+          </label>
+
+          <label>ແທັກຄົ້ນຫາ
+            <input id="shirtTags" type="text" maxlength="120" />
+          </label>
+          <label>ລາຍລະອຽດ
+            <textarea id="shirtDescription" rows="4" maxlength="400"></textarea>
+          </label>
+          <label class="checkbox-line">
+            <input id="featured" type="checkbox" /> ສະແດງເປັນແບບແນະນຳ
+          </label>
+
+          <!-- =========================
+     RELATED SHIRTS
+========================= -->
+          <div class="form-group related-picker-section">
+
+            <label>
+              ເລືອກແບບເສື້ອທີ່ຄ້າຍກັນ
+            </label>
+
+            <p class="form-help">
+              ເລືອກແບບທີ່ຕ້ອງການໃຫ້ສະແດງໃນ Modal
+            </p>
+
+            <input type="search" id="relatedShirtSearch" placeholder="ຄົ້ນຫາຊື່ ຫຼື ລະຫັດແບບ..." />
+
+            <div id="relatedShirtPicker" class="related-shirt-picker"></div>
+
+            <div class="related-selected-info">
+              ເລືອກແລ້ວ
+              <strong id="relatedSelectedCount">0</strong>
+              ແບບ
+            </div>
+
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">
+              ບັນທຶກການແກ້ໄຂ
+            </button>
+            <a class="btn btn-ghost" href="admin-gallery.html">ຍົກເລິກ</a>
+            <button class="btn btn-danger" id="deleteShirt" type="button">
+              ລົບລາຍການ
+            </button>
+          </div>
+          <p class="form-message" id="formMessage" role="status"></p>
+        </form>
+        <aside class="upload-side-card">
+          <h3>ການປ່ຽນຮູບ</h3>
+          <ul class="check-list">
+            <li>ຖ້າບໍ່ເລືອກຮູບໃໝ່ ຈະຍັງໃຊ້ຮູບເກົ່າ</li>
+            <li>ເລືອກຮູບໃໝ່ ລະບົບຈະອັບໂຫລດຂື້ນ Cloudinary</li>
+            <li>ແກ້ໄຂຊື່ ໝວດໝູ່ ວັນທີ່ ແລະ ລາຍລະອຽດ</li>
+            <li>ປຸ່ມລົບລາຍການຈາກຈາກແບບທັ້ງໝົດ</li>
+          </ul>
+          <div class="storage-note">
+            <strong>ໝາຍເຫດ</strong>
+            <p>
+              ການລົບລາຍການຈະນຳອອກຈາກ LocalStorage ແຈ່ຈະບໍລົບໄຟລເດິມຈາກ
+              Cloudinary ເພາະການລົບໄຟລຢ່າງປອດໄພຕ້ອງໃຊ້ API Secret
+              ຜ່ານລະບົບຫຼັງບ້ານ
+            </p>
+          </div>
+        </aside>
       </div>
-    </footer>
+    </section>
+  </main>
 
-    <div id="resizeModal" class="resize-confirm-modal" hidden>
-      <div class="resize-confirm-backdrop"></div>
+  <footer class="footer compact-footer">
+    <div class="container footer-bottom">
+      <p>Copyright © 2026 GOLF DESIGN. All Rights Reserved.</p>
+    </div>
+  </footer>
 
-      <div
-        class="resize-confirm-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="resizeModalTitle"
-      >
-        <h2 id="resizeModalTitle">ປັບຂະໜາດຮູບພາບ</h2>
+  <div id="resizeModal" class="resize-confirm-modal" hidden>
+    <div class="resize-confirm-backdrop"></div>
 
-        <p class="resize-confirm-subtitle">ເລືອກຮູບທີ່ຕ້ອງການອັບໂຫລດ</p>
+    <div class="resize-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="resizeModalTitle">
+      <h2 id="resizeModalTitle">ປັບຂະໜາດຮູບພາບ</h2>
 
-        <div class="resize-compare">
-          <div class="resize-compare-card">
-            <span class="resize-compare-label">ຮູບຕົ້ນສະບັບ</span>
-            <strong id="resizeOriginalDimensions">-</strong>
-            <p id="resizeOriginalFileSize">-</p>
-          </div>
+      <p class="resize-confirm-subtitle">ເລືອກຮູບທີ່ຕ້ອງການອັບໂຫລດ</p>
 
-          <div class="resize-compare-arrow">→</div>
-
-          <div class="resize-compare-card recommended">
-            <span class="resize-recommended-badge">ແນະນຳ</span>
-            <span class="resize-compare-label">ຮູບຫຼັງປັບ</span>
-            <strong id="resizeNewDimensions">-</strong>
-            <p id="resizeNewFileSize">-</p>
-          </div>
+      <div class="resize-compare">
+        <div class="resize-compare-card">
+          <span class="resize-compare-label">ຮູບຕົ້ນສະບັບ</span>
+          <strong id="resizeOriginalDimensions">-</strong>
+          <p id="resizeOriginalFileSize">-</p>
         </div>
 
-        <div class="resize-saving-box">
-          ປະຢັດພື້ນທີ່
-          <strong id="resizeSavingPercent">0%</strong>
-        </div>
+        <div class="resize-compare-arrow">→</div>
 
-        <div class="resize-confirm-actions">
-          <button
-            type="button"
-            id="resizeUseOriginal"
-            class="btn btn-secondary"
-          >
-            ໃຊ້ຮູບຕົ້ນສະບັບ
-          </button>
-
-          <button type="button" id="resizeUseOptimized" class="btn btn-primary">
-            ໃຊ້ຮູບທີ່ປັບແລ້ວ
-          </button>
+        <div class="resize-compare-card recommended">
+          <span class="resize-recommended-badge">ແນະນຳ</span>
+          <span class="resize-compare-label">ຮູບຫຼັງປັບ</span>
+          <strong id="resizeNewDimensions">-</strong>
+          <p id="resizeNewFileSize">-</p>
         </div>
+      </div>
+
+      <div class="resize-saving-box">
+        ປະຢັດພື້ນທີ່
+        <strong id="resizeSavingPercent">0%</strong>
+      </div>
+
+      <div class="resize-confirm-actions">
+        <button type="button" id="resizeUseOriginal" class="btn btn-secondary">
+          ໃຊ້ຮູບຕົ້ນສະບັບ
+        </button>
+
+        <button type="button" id="resizeUseOptimized" class="btn btn-primary">
+          ໃຊ້ຮູບທີ່ປັບແລ້ວ
+        </button>
       </div>
     </div>
+  </div>
 
-    <script src="cloudinary-config.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+  <script src="cloudinary-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
 
-    <script type="module">
-      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-      const SUPABASE_URL = "https://joygzdofxctopnjqthnp.supabase.co";
+    const SUPABASE_URL = "https://joygzdofxctopnjqthnp.supabase.co";
 
-      const SUPABASE_KEY = "sb_publishable_vQj2CDmkTsvZuLsMaaN3wA_Vh6kmtGO";
+    const SUPABASE_KEY = "sb_publishable_vQj2CDmkTsvZuLsMaaN3wA_Vh6kmtGO";
 
-      window.supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+    window.supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      console.log("Supabase connected", window.supabaseClient);
+    console.log("Supabase connected", window.supabaseClient);
 
-      const appScript = document.createElement("script");
-      appScript.src = "app.js?v=13";
-      document.body.appendChild(appScript);
-    </script>
-    <script src="admin-auth.js?v=1"></script>
+    const appScript = document.createElement("script");
+    appScript.src = "app.js?v=13";
+    document.body.appendChild(appScript);
+  </script>
+  <script src="admin-auth.js?v=1"></script>
 
-    <script>
-      document.documentElement.classList.add("auth-checking");
+  <script>
+    document.documentElement.classList.add("auth-checking");
 
-      protectAdminPage();
-    </script>
-  </body>
+    protectAdminPage();
+  </script>
+</body>
+
 </html>
