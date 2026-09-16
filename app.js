@@ -757,52 +757,52 @@ async function initGallery() {
     });
 
     items.sort((itemA, itemB) => {
-  // ==========================================
-  // ถ้าเลือก Filter สี
-  // ให้เสื้อที่มีสีที่เลือกเป็น "สีหลัก" ขึ้นก่อน
-  // ==========================================
-  if (selectedColors.length > 0) {
-    const colorsA = Array.isArray(itemA.colors) ? itemA.colors : [];
-    const colorsB = Array.isArray(itemB.colors) ? itemB.colors : [];
+      // ==========================================
+      // ถ้าเลือก Filter สี
+      // ให้เสื้อที่มีสีที่เลือกเป็น "สีหลัก" ขึ้นก่อน
+      // ==========================================
+      if (selectedColors.length > 0) {
+        const colorsA = Array.isArray(itemA.colors) ? itemA.colors : [];
+        const colorsB = Array.isArray(itemB.colors) ? itemB.colors : [];
 
-    // colors[0] = สีหลัก
-    const mainColorA = colorsA[0] || "";
-    const mainColorB = colorsB[0] || "";
+        // colors[0] = สีหลัก
+        const mainColorA = colorsA[0] || "";
+        const mainColorB = colorsB[0] || "";
 
-    const aIsMainColor = selectedColors.includes(mainColorA);
-    const bIsMainColor = selectedColors.includes(mainColorB);
+        const aIsMainColor = selectedColors.includes(mainColorA);
+        const bIsMainColor = selectedColors.includes(mainColorB);
 
-    // A เป็นสีหลัก แต่ B ไม่ใช่ → A ขึ้นก่อน
-    if (aIsMainColor && !bIsMainColor) {
-      return -1;
-    }
+        // A เป็นสีหลัก แต่ B ไม่ใช่ → A ขึ้นก่อน
+        if (aIsMainColor && !bIsMainColor) {
+          return -1;
+        }
 
-    // B เป็นสีหลัก แต่ A ไม่ใช่ → B ขึ้นก่อน
-    if (!aIsMainColor && bIsMainColor) {
-      return 1;
-    }
-  }
+        // B เป็นสีหลัก แต่ A ไม่ใช่ → B ขึ้นก่อน
+        if (!aIsMainColor && bIsMainColor) {
+          return 1;
+        }
+      }
 
-  // ==========================================
-  // ถ้า priority สีเท่ากัน
-  // ใช้ระบบ Sort เดิม
-  // ==========================================
-  const dateA = itemA.date || "";
-  const dateB = itemB.date || "";
-  const nameA = itemA.name || "";
-  const nameB = itemB.name || "";
+      // ==========================================
+      // ถ้า priority สีเท่ากัน
+      // ใช้ระบบ Sort เดิม
+      // ==========================================
+      const dateA = itemA.date || "";
+      const dateB = itemB.date || "";
+      const nameA = itemA.name || "";
+      const nameB = itemB.name || "";
 
-  if (sort?.value === "oldest") {
-    return dateA.localeCompare(dateB);
-  }
+      if (sort?.value === "oldest") {
+        return dateA.localeCompare(dateB);
+      }
 
-  if (sort?.value === "name") {
-    return nameA.localeCompare(nameB, "th");
-  }
+      if (sort?.value === "name") {
+        return nameA.localeCompare(nameB, "th");
+      }
 
-  // default = ใหม่ล่าสุด
-  return dateB.localeCompare(dateA);
-});
+      // default = ใหม่ล่าสุด
+      return dateB.localeCompare(dateA);
+    });
 
     count.textContent = String(items.length);
     empty.hidden = items.length > 0;
@@ -1845,13 +1845,29 @@ function initUpload() {
 
     const featured = document.querySelector("#featured").checked;
 
-    // ตรวจสอบรหัสซ้ำเฉพาะปีเดียวกัน
+    // ==========================================
+    // ตรวจรหัสซ้ำ:
+    // ปี + ID + แขน + คอ + ไหล่
+    // ถ้าเหมือนกันทั้งหมด = ห้ามซ้ำ
+    // ==========================================
+
     const currentYear = new Date(dateInput.value).getFullYear();
+
+    const currentCollar =
+      document.querySelector("#shirtCollar")?.value || "round";
+
+    const currentSleeve =
+      document.querySelector("#shirtSleeve")?.value || "short";
+
+    const currentShoulder =
+      document.querySelector("#shirtShoulder")?.value || "normal";
 
     const { data: duplicateItems, error: duplicateError } =
       await window.supabaseClient
         .from("shirts")
-        .select("id, upload_date, design_code")
+        .select(
+          "id, upload_date, design_code, collar, sleeve, shoulder"
+        )
         .eq("design_code", code);
 
     if (duplicateError) {
@@ -1859,17 +1875,36 @@ function initUpload() {
     }
 
     const duplicateCode = (duplicateItems || []).some((item) => {
+
       const itemYear = item.upload_date
         ? new Date(item.upload_date).getFullYear()
         : 0;
 
-      return itemYear === currentYear;
+      const sameYear = itemYear === currentYear;
+
+      const sameCollar =
+        (item.collar || "round") === currentCollar;
+
+      const sameSleeve =
+        (item.sleeve || "short") === currentSleeve;
+
+      const sameShoulder =
+        (item.shoulder || "normal") === currentShoulder;
+
+      return (
+        sameYear &&
+        sameCollar &&
+        sameSleeve &&
+        sameShoulder
+      );
     });
 
     if (code && duplicateCode) {
-      message.textContent = `ລະຫັດ ${code} ຖືກໃຊ້ງານແລ້ວໃນປີ ${currentYear}`;
+      message.textContent =
+        `ລະຫັດ ${code} ມີແບບແຂນ + ຄໍ + ໄຫຼ່ ນີ້ແລ້ວ`;
 
       document.querySelector("#designCode").focus();
+
       return;
     }
 
@@ -2183,16 +2218,28 @@ async function initEdit() {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const newCode = document.querySelector("#designCode").value.trim();
+    const newCode =
+      document.querySelector("#designCode").value.trim();
 
     const editYear = new Date(
-      document.querySelector("#uploadDate").value,
+      document.querySelector("#uploadDate").value
     ).getFullYear();
+
+    const currentCollar =
+      document.querySelector("#shirtCollar")?.value || "round";
+
+    const currentSleeve =
+      document.querySelector("#shirtSleeve")?.value || "short";
+
+    const currentShoulder =
+      document.querySelector("#shirtShoulder")?.value || "normal";
 
     const { data: duplicateItems, error: duplicateError } =
       await window.supabaseClient
         .from("shirts")
-        .select("id, upload_date, design_code")
+        .select(
+          "id, upload_date, design_code, collar, sleeve, shoulder"
+        )
         .eq("design_code", newCode)
         .neq("id", currentItem.id);
 
@@ -2201,19 +2248,40 @@ async function initEdit() {
     }
 
     const duplicateCode = (duplicateItems || []).some((item) => {
+
       const itemYear = item.upload_date
         ? new Date(item.upload_date).getFullYear()
         : 0;
 
-      return itemYear === editYear;
+      const sameYear = itemYear === editYear;
+
+      const sameCollar =
+        (item.collar || "round") === currentCollar;
+
+      const sameSleeve =
+        (item.sleeve || "short") === currentSleeve;
+
+      const sameShoulder =
+        (item.shoulder || "normal") === currentShoulder;
+
+      return (
+        sameYear &&
+        sameCollar &&
+        sameSleeve &&
+        sameShoulder
+      );
     });
 
     if (newCode && duplicateCode) {
-      message.textContent = `ລະຫັດ ${newCode} ຖືກໃຊ້ງານແລ້ວໃນປີ ${editYear}`;
+
+      message.textContent =
+        `ລະຫັດ ${newCode} ມີແບບແຂນ + ຄໍ + ໄຫຼ່ ນີ້ແລ້ວ`;
 
       document.querySelector("#designCode").focus();
+
       return;
     }
+    
     submitButton.disabled = true;
     submitButton.textContent = "ກຳລັງບັນທຶກ...";
     message.textContent = "ກຳລັງບັນທຶກຂໍ້ມູນ";
