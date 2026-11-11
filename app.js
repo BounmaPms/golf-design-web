@@ -1,6 +1,6 @@
 const CLOUDINARY_LIST_TAG = "golf-design-shirts";
 const DELETED_IMAGES_KEY = "deletedCloudinaryImages";
-const WHATSAPP_NUMBER = "8562093529729";
+const WHATSAPP_NUMBER = "8562055250997";
 
 function getDeletedImageIds() {
   try {
