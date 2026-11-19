@@ -2651,4 +2651,56 @@ async function startApp() {
     }
   }
 }
+
+/* =========================================
+   DARK MODE
+========================================= */
+
+function initThemeToggle() {
+  const toggleButton = document.querySelector("#themeToggle");
+
+  if (!toggleButton) return;
+
+  const storageKey = "golfDesignTheme";
+
+  function applyTheme(isDark) {
+    document.body.classList.toggle("dark-mode", isDark);
+
+    toggleButton.textContent = isDark
+      ? "☀️ ໂໝດກາງວັນ"
+      : "🌙 ໂໝດກາງຄືນ";
+
+    toggleButton.setAttribute(
+      "aria-pressed",
+      String(isDark)
+    );
+  }
+
+  let savedTheme = null;
+
+  try {
+    savedTheme = localStorage.getItem(storageKey);
+  } catch (error) {
+    console.warn("ไม่สามารถอ่านค่าโหมดสีได้:", error);
+  }
+
+  applyTheme(savedTheme === "dark");
+
+  toggleButton.addEventListener("click", () => {
+    const isDark = !document.body.classList.contains("dark-mode");
+
+    applyTheme(isDark);
+
+    try {
+      localStorage.setItem(
+        storageKey,
+        isDark ? "dark" : "light"
+      );
+    } catch (error) {
+      console.warn("ไม่สามารถบันทึกค่าโหมดสีได้:", error);
+    }
+  });
+}
+
+initThemeToggle();
 startApp();

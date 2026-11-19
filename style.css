@@ -4231,3 +4231,99 @@ body.resize-modal-open {
   }
 
 }
+/* =========================================
+   DARK MODE - GALLERY
+========================================= */
+
+body[data-page="gallery"].dark-mode,
+body[data-page="gallery-admin"].dark-mode {
+  --text: #eef2ff;
+  --muted: #aab6ca;
+  --surface: #111827;
+  --border: #334155;
+
+  color: var(--text);
+  background: #0b1220;
+}
+
+/* พื้นหลังส่วนหลัก */
+body[data-page="gallery"].dark-mode .gallery-page,
+body[data-page="gallery-admin"].dark-mode .gallery-page {
+  background: #0b1220;
+}
+
+/* หัวเว็บ */
+body[data-page="gallery"].dark-mode .site-header,
+body[data-page="gallery-admin"].dark-mode .site-header {
+  background: #111827;
+  color: #eef2ff;
+  border-color: #334155;
+}
+
+/* การ์ดเสื้อ */
+body[data-page="gallery"].dark-mode .shirt-item,
+body[data-page="gallery-admin"].dark-mode .shirt-item {
+  background: #1e293b;
+  border-color: #334155;
+  color: #eef2ff;
+}
+
+/* Filter และหน้ารายละเอียดเสื้อ */
+body[data-page="gallery"].dark-mode .filter-sidebar,
+body[data-page="gallery-admin"].dark-mode .filter-sidebar,
+body[data-page="gallery"].dark-mode .shirt-modal-dialog,
+body[data-page="gallery-admin"].dark-mode .shirt-modal-dialog {
+  background: #1e293b;
+  border-color: #334155;
+  color: #eef2ff;
+}
+
+/* ช่องค้นหาและตัวเลือก */
+body[data-page="gallery"].dark-mode .gallery-toolbar input,
+body[data-page="gallery-admin"].dark-mode .gallery-toolbar input,
+body[data-page="gallery"].dark-mode .gallery-toolbar select,
+body[data-page="gallery-admin"].dark-mode .gallery-toolbar select {
+  background: #1e293b;
+  color: #eef2ff;
+  border-color: #475569;
+}
+
+body[data-page="gallery"].dark-mode .gallery-toolbar input::placeholder,
+body[data-page="gallery-admin"].dark-mode .gallery-toolbar input::placeholder {
+  color: #aab6ca;
+}
+
+/* ข้อความและเส้นแบ่ง */
+body[data-page="gallery"].dark-mode .shirt-details,
+body[data-page="gallery-admin"].dark-mode .shirt-details,
+body[data-page="gallery"].dark-mode .shirt-modal-details,
+body[data-page="gallery-admin"].dark-mode .shirt-modal-details,
+body[data-page="gallery"].dark-mode .shirt-modal-details > div,
+body[data-page="gallery-admin"].dark-mode .shirt-modal-details > div,
+body[data-page="gallery"].dark-mode .filter-sidebar-header,
+body[data-page="gallery-admin"].dark-mode .filter-sidebar-header {
+  border-color: #475569;
+}
+
+/* ปุ่มสลับโหมด */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid #d4dbe7;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #172033;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+body.dark-mode .theme-toggle-btn {
+  background: #263449;
+  border-color: #526176;
+  color: #ffffff;
+}
