@@ -1501,15 +1501,58 @@ async function chooseUploadImage(file, messageElement) {
 async function uploadToCloudinary(file, metadata = {}) {
   const config = window.CLOUDINARY_CONFIG || {};
 
-  if (!config.cloudName || !config.uploadPreset) {
-    throw new Error("ຍັງບໍ່ໄດ້ຕັ້ງຄ່າ Cloudinary ໃນ cloudinary-config.js");
+  if (!config.cloudName || !config.signApiUrl) {
+    throw new Error(
+      "กรุณาตั้งค่า cloudName และ signApiUrl ใน cloudinary-config.js"
+    );
   }
 
-  if (
-    config.cloudName.includes("ໃສ່-") ||
-    config.uploadPreset.includes("ໃສ່-")
-  ) {
-    throw new Error("ກະລຸນາໃສ່ Cloud Name ແລະ Upload Preset ຂອງຈິງ");
+  if (!window.supabaseClient) {
+    throw new Error("ไม่พบการเชื่อมต่อ Supabase");
+  }
+
+  // ดึง access token ของผู้ที่เข้าสู่ระบบ
+  const {
+    data: { session },
+    error: sessionError,
+  } = await window.supabaseClient.auth.getSession();
+
+  if (sessionError) {
+    throw sessionError;
+  }
+
+  if (!session?.access_token) {
+    throw new Error("กรุณาเข้าสู่ระบบ Admin ก่อนอัปโหลด");
+  }
+
+  // ขอ signature จาก Worker
+  const signResponse = await fetch(config.signApiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session.access_token}`,
+    },
+    body: JSON.stringify({}),
+  });
+
+  const signResult = await signResponse.json();
+
+  if (!signResponse.ok) {
+    throw new Error(
+      signResult.error || "ไม่สามารถขอลายเซ็นสำหรับอัปโหลดได้"
+    );
+  }
+
+  const {
+    timestamp,
+    signature,
+    apiKey,
+    folder,
+    tags,
+  } = signResult;
+
+  if (!timestamp || !signature || !apiKey || !folder || !tags) {
+    throw new Error("ข้อมูลลายเซ็นไม่ครบ");
   }
 
   const endpoint =
@@ -1519,58 +1562,11 @@ async function uploadToCloudinary(file, metadata = {}) {
   const formData = new FormData();
 
   formData.append("file", file);
-  formData.append("upload_preset", config.uploadPreset);
-
-  if (config.folder) {
-    formData.append("folder", config.folder);
-  }
-
-  const cloudinaryTags = [CLOUDINARY_LIST_TAG];
-
-  if (metadata.tags) {
-    const additionalTags = metadata.tags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter(Boolean);
-
-    cloudinaryTags.push(...additionalTags);
-  }
-
-  formData.append("tags", [...new Set(cloudinaryTags)].join(","));
-
-  /*
-    เก็บข้อมูลพื้นฐานเป็น context ใน Cloudinary
-    จะช่วยให้ Cloudinary list ส่งข้อมูลกลับมาได้
-  */
-  const contextValues = [];
-
-  if (metadata.name) {
-    contextValues.push(`name=${String(metadata.name).replace(/[|=]/g, " ")}`);
-  }
-
-  if (metadata.category) {
-    contextValues.push(
-      `category=${String(metadata.category).replace(/[|=]/g, " ")}`,
-    );
-  }
-
-  if (metadata.code) {
-    contextValues.push(`code=${String(metadata.code).replace(/[|=]/g, " ")}`);
-  }
-
-  if (metadata.color) {
-    contextValues.push(`color=${String(metadata.color).replace(/[|=]/g, " ")}`);
-  }
-
-  if (metadata.description) {
-    contextValues.push(
-      `description=${String(metadata.description).replace(/[|=]/g, " ")}`,
-    );
-  }
-
-  if (contextValues.length > 0) {
-    formData.append("context", contextValues.join("|"));
-  }
+  formData.append("api_key", apiKey);
+  formData.append("timestamp", String(timestamp));
+  formData.append("signature", signature);
+  formData.append("folder", folder);
+  formData.append("tags", tags);
 
   const response = await fetch(endpoint, {
     method: "POST",
@@ -1580,7 +1576,9 @@ async function uploadToCloudinary(file, metadata = {}) {
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(result.error?.message || "ອັບໂຫລດໄປ Cloudinary ບໍ່ສຳເລັດ");
+    throw new Error(
+      result.error?.message || "อัปโหลดไป Cloudinary ไม่สำเร็จ"
+    );
   }
 
   return result;

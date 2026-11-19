@@ -5,9 +5,11 @@
 */
 window.CLOUDINARY_CONFIG = {
   cloudName: "ruvtg4ki",
-  uploadPreset: "golf_design_unsigned",
-  folder: "golf-design-shirts",
 
+  // URL ของ Worker ตัวใหม่สำหรับสร้างลายเซ็น
+  signApiUrl: "https://ใส่-url-worker-ตัวใหม่.workers.dev",
+
+  // Worker ลบรูปตัวเดิม
   deleteApiUrl:
-    "https://golf-design-delete.bounmastudent01.workers.dev"
+    "https://golf-design-delete.bounmastudent01.workers.dev",
 };
