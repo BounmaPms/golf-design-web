@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ຖັງຂີ້ເຫຍື້ອ | GOLF DESIGN</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      background: #f4f6fa;
+      color: #172338;
+      font-family: Arial, sans-serif;
+    }
+
+    .trash-page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 30px 18px 60px;
+    }
+
+    .trash-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 24px;
+    }
+
+    .trash-header h1 {
+      margin: 0 0 8px;
+    }
+
+    .trash-header p {
+      margin: 0;
+      color: #657189;
+    }
+
+    .trash-back {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: #174fe8;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .trash-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 16px;
+    }
+
+    .trash-card {
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #e4e8ef;
+      border-radius: 14px;
+    }
+
+    .trash-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      background: #eef1f5;
+    }
+
+    .trash-card-body {
+      padding: 14px;
+    }
+
+    .trash-card h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    .trash-card p {
+      margin: 5px 0;
+      color: #657189;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .trash-restore {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
+      border: 0;
+      border-radius: 9px;
+      background: #16a568;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .trash-restore:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .trash-message {
+      padding: 14px;
+      border-radius: 10px;
+      background: #fff;
+      color: #526078;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="trash-page">
+    <div class="trash-header">
+      <div>
+        <h1>ຖັງຂີ້ເຫຍື້ອ</h1>
+        <p>ລາຍການທີ່ຖືກຍ້າຍມາຢູ່ທີ່ນີ້ສາມາດກູ້ຄືນໄດ້</p>
+      </div>
+
+      <a class="trash-back" href="admin-gallery.html">
+        ← ກັບໜ້າ Admin
+      </a>
+    </div>
+
+    <p id="trashMessage" class="trash-message">
+      ກຳລັງໂຫຼດ...
+    </p>
+
+    <div id="trashGrid" class="trash-grid"></div>
+  </main>
+
+  <!-- โหลด Supabase ก่อน config -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=2"></script>
+
+  <script>
+    const trashGrid = document.querySelector("#trashGrid");
+    const trashMessage = document.querySelector("#trashMessage");
+
+    function safeImageUrl(value) {
+      try {
+        const url = new URL(String(value || ""));
+
+        if (
+          url.protocol === "https:" &&
+          url.hostname === "res.cloudinary.com"
+        ) {
+          return url.href;
+        }
+      } catch {
+        // ถ้า URL ไม่ถูกต้อง จะไม่แสดงรูป
+      }
+
+      return "";
+    }
+
+    function formatTrashDate(value) {
+      if (!value) return "-";
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return "-";
+      }
+
+      return date.toLocaleString("th-TH", {
+        timeZone: "Asia/Vientiane",
+      });
+    }
+
+    async function loadTrash() {
+      trashGrid.replaceChildren();
+      trashMessage.hidden = false;
+      trashMessage.textContent = "ກຳລັງໂຫຼດ...";
+
+      const pageSize = 500;
+      let offset = 0;
+      const shirts = [];
+
+      while (true) {
+        const { data, error } = await window.supabaseClient
+          .from("shirts")
+          .select("id, name, design_code, image, deleted_at")
+          .not("deleted_at", "is", null)
+          .order("deleted_at", { ascending: false })
+          .order("id", { ascending: false })
+          .range(offset, offset + pageSize - 1);
+
+        if (error) throw error;
+
+        const rows = Array.isArray(data) ? data : [];
+
+        if (rows.length === 0) break;
+
+        shirts.push(...rows);
+        offset += rows.length;
+      }
+
+      if (shirts.length === 0) {
+        trashMessage.textContent =
+          "ບໍ່ມີລາຍການໃນຖັງຂີ້ເຫຍື້ອ";
+        return;
+      }
+
+      trashMessage.hidden = true;
+
+      shirts.forEach((shirt) => {
+        const card = document.createElement("article");
+        card.className = "trash-card";
+
+        const imageUrl = safeImageUrl(shirt.image);
+
+        if (imageUrl) {
+          const image = document.createElement("img");
+          image.src = imageUrl;
+          image.alt = shirt.name || "ແບບເສື້ອ";
+          image.loading = "lazy";
+          card.appendChild(image);
+        }
+
+        const body = document.createElement("div");
+        body.className = "trash-card-body";
+
+        const title = document.createElement("h2");
+        title.textContent = shirt.name || "ບໍ່ມີຊື່";
+
+        const code = document.createElement("p");
+        code.textContent =
+          `ລະຫັດ: ${shirt.design_code || "-"}`;
+
+        const date = document.createElement("p");
+        date.textContent =
+          `ຍ້າຍເມື່ອ: ${formatTrashDate(shirt.deleted_at)}`;
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "trash-restore";
+        button.textContent = "↩ ກູ້ຄືນ";
+
+        button.addEventListener("click", async () => {
+          const confirmed = window.confirm(
+            `ຕ້ອງການກູ້ຄືນ "${shirt.name || "ແບບເສື້ອ"}" ບໍ?`
+          );
+
+          if (!confirmed) return;
+
+          button.disabled = true;
+          button.textContent = "ກຳລັງກູ້ຄືນ...";
+
+          try {
+            const { data, error } = await window.supabaseClient
+              .from("shirts")
+              .update({ deleted_at: null })
+              .eq("id", shirt.id)
+              .not("deleted_at", "is", null)
+              .select("id");
+
+            if (error) throw error;
+
+            if (!Array.isArray(data) || data.length !== 1) {
+              throw new Error(
+                "ບໍ່ສາມາດກູ້ຄືນໄດ້ ຫຼື ລາຍການຖືກກູ້ຄືນແລ້ວ"
+              );
+            }
+
+            card.remove();
+
+            if (!trashGrid.children.length) {
+              trashMessage.hidden = false;
+              trashMessage.textContent =
+                "ບໍ່ມີລາຍການໃນຖັງຂີ້ເຫຍື້ອ";
+            }
+
+          } catch (error) {
+            console.error("Restore error:", error);
+            window.alert(error.message || "ກູ້ຄືນບໍ່ສຳເລັດ");
+
+            button.disabled = false;
+            button.textContent = "↩ ກູ້ຄືນ";
+          }
+        });
+
+        body.append(title, code, date, button);
+        card.appendChild(body);
+        trashGrid.appendChild(card);
+      });
+    }
+
+    async function startTrashPage() {
+      try {
+        if (!window.supabaseClient) {
+          throw new Error("ບໍ່ພົບການເຊື່ອມຕໍ່ Supabase");
+        }
+
+        // ตรวจผู้ใช้กับ Supabase Auth
+        const {
+          data: { user },
+          error: userError,
+        } = await window.supabaseClient.auth.getUser();
+
+        if (userError || !user) {
+          window.location.replace("login.html");
+          return;
+        }
+
+        // ตรวจ UID กับฟังก์ชัน Admin ใน Supabase
+        const { data: isAdmin, error: adminError } =
+          await window.supabaseClient.rpc("is_shirt_admin");
+
+        if (adminError) throw adminError;
+
+        if (isAdmin !== true) {
+          trashMessage.textContent =
+            "ບັນຊີນີ້ບໍ່ມີສິດເຂົ້າຖັງຂີ້ເຫຍື້ອ";
+          return;
+        }
+
+        await loadTrash();
+
+      } catch (error) {
+        console.error("Trash page error:", error);
+        trashMessage.hidden = false;
+        trashMessage.textContent =
+          error.message || "ໂຫຼດຖັງຂີ້ເຫຍື້ອບໍ່ສຳເລັດ";
+      }
+    }
+
+    startTrashPage();
+  </script>
+</body>
+</html>

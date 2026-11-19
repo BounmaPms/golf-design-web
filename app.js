@@ -248,6 +248,7 @@ async function getShirtsFromSupabase() {
       .select("*")
       .order("created_at", { ascending: false })
       .order("id", { ascending: false })
+      .is("deleted_at", null)
       .range(offset, offset + pageSize - 1);
 
     if (error) {
@@ -2481,92 +2482,60 @@ async function initEdit() {
   });
 
   // ลบรายการและลบรูปจาก Cloudinary
+  // ย้ายรายการเสื้อไปถังขยะ
   deleteButton.addEventListener("click", async () => {
+    if (!currentItem?.id) {
+      message.textContent = "ບໍ່ພົບລາຍການເສື້ອ";
+      return;
+    }
+
     const confirmed = window.confirm(
-      "ຕ້ອງການລົບຮູບນີ້ອອກຈາກ Cloudinary ແທ້ບໍ?",
+      "ຕ້ອງການຍ້າຍແບບເສື້ອນີ້ໄປຖັງຂີ້ເຫຍື້ອບໍ?\n" +
+      "ທ່ານສາມາດກູ້ຄືນໄດ້ພາຍຫຼັງ"
     );
 
     if (!confirmed) {
       return;
     }
 
-    const deletePassword = window.prompt("ກະລຸນາໃສ່ລະຫັດລົບ");
-
-    if (deletePassword === null) {
-      return;
-    }
-
-    if (!deletePassword.trim()) {
-      window.alert("ກະລຸນາໃສ່ລະຫັດລົບ");
-      return;
-    }
-
     const oldButtonText = deleteButton.textContent;
 
     deleteButton.disabled = true;
-    deleteButton.textContent = "ກຳລັງລົບ...";
-    message.textContent = "ກຳລັງລົບຮູບຈາກ Cloudinary...";
-
-    // จำว่าลบรูปจาก Cloudinary สำเร็จแล้วหรือยัง
-    let cloudinaryDeleted = false;
+    deleteButton.textContent = "ກຳລັງຍ້າຍ...";
+    message.textContent = "ກຳລັງຍ້າຍໄປຖັງຂີ້ເຫຍື້ອ...";
 
     try {
-      // 1. ลบรูปจาก Cloudinary
-      await deleteCloudinaryImage(
-        currentItem.cloudinaryPublicId,
-        deletePassword,
-      );
-
-      cloudinaryDeleted = true;
-
-      message.textContent =
-        "ລົບຮູບສຳເລັດ ກຳລັງລົບຂໍ້ມູນ...";
-
-      // 2. ลบรายการจาก Supabase และขอรายการที่ถูกลบกลับมา
-      const { data: deletedRows, error } =
-        await window.supabaseClient
-          .from("shirts")
-          .delete()
-          .eq("id", currentItem.id)
-          .select("id");
+      const { data, error } = await window.supabaseClient
+        .from("shirts")
+        .update({
+          deleted_at: new Date().toISOString(),
+        })
+        .eq("id", currentItem.id)
+        .is("deleted_at", null)
+        .select("id");
 
       if (error) {
         throw error;
       }
 
-      // ตรวจว่ามีรายการถูกลบจริง
-      if (!Array.isArray(deletedRows) || deletedRows.length !== 1) {
-        throw new Error("ไม่สามารถยืนยันว่าลบรายการใน Supabase สำเร็จ");
+      if (!Array.isArray(data) || data.length !== 1) {
+        throw new Error(
+          "ບໍ່ສາມາດຍ້າຍລາຍການໄດ້ ຫຼື ລາຍການຢູ່ໃນຖັງຂີ້ເຫຍື້ອແລ້ວ"
+        );
       }
 
-      // เก็บสถานะใน Browser หลังยืนยันว่าลบข้อมูลแล้ว
-      try {
-        rememberDeletedImage(currentItem.cloudinaryPublicId);
-      } catch (storageError) {
-        console.warn("บันทึกสถานะใน Browser ไม่สำเร็จ:", storageError);
-      }
-
-      message.textContent = "ລົບຮູບ ແລະ ຂໍ້ມູນສຳເລັດ";
+      message.textContent =
+        "ຍ້າຍໄປຖັງຂີ້ເຫຍື້ອສຳເລັດ";
 
       setTimeout(() => {
-        window.location.href =
-          `admin-gallery.html?deleted=${Date.now()}`;
+        window.location.href = "admin-gallery.html";
       }, 700);
 
     } catch (error) {
-      console.error("Delete error:", error);
+      console.error("Move to trash error:", error);
 
-      if (cloudinaryDeleted) {
-        message.textContent =
-          "ລົບຮູບຈາກ Cloudinary ແລ້ວ " +
-          "ແຕ່ບໍ່ສາມາດຢືນຢັນການລົບຂໍ້ມູນໃນ Supabase. " +
-          "ກະລຸນາກວດສອບກ່ອນລອງໃໝ່.";
-      } else {
-        message.textContent =
-          "ບໍ່ສາມາດຢືນຢັນການລົບຮູບໄດ້. " +
-          "ກະລຸນາກວດ Cloudinary ແລະ Supabase " +
-          "ກ່ອນລອງໃໝ່.";
-      }
+      message.textContent =
+        error.message || "ຍ້າຍໄປຖັງຂີ້ເຫຍື້ອບໍ່ສຳເລັດ";
 
       deleteButton.disabled = false;
       deleteButton.textContent = oldButtonText;
