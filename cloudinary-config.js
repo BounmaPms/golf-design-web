@@ -7,7 +7,7 @@ window.CLOUDINARY_CONFIG = {
   cloudName: "ruvtg4ki",
 
   // URL ของ Worker ตัวใหม่สำหรับสร้างลายเซ็น
-  signApiUrl: "https://ใส่-url-worker-ตัวใหม่.workers.dev",
+  signApiUrl: "golf-design-upload-sign.bounmastudent01.workers.dev",
 
   // Worker ลบรูปตัวเดิม
   deleteApiUrl:
