@@ -85,13 +85,24 @@ async function initLoginPage() {
         message.classList.add("success");
 
         const params = new URLSearchParams(window.location.search);
+        const requestedPage = params.get("next") || "";
 
-        const nextPage =
-          params.get("next") || "admin-gallery.html";
+        // หน้าที่อนุญาตให้กลับไปหลัง Login
+        const allowedPages = [
+          "admin-gallery.html",
+          "upload.html",
+          "edit.html",
+          "dashboard.html",
+        ];
+
+        // แยกชื่อหน้าออกจาก query string เช่น ?publicId=...
+        const pageName = requestedPage.split("?")[0];
+
+        const nextPage = allowedPages.includes(pageName)
+          ? requestedPage
+          : "admin-gallery.html";
 
         window.location.replace(nextPage);
-      } catch (error) {
-        console.error("Login error:", error);
 
         message.textContent =
           error.message === "Invalid login credentials"

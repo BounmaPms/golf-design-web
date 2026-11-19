@@ -188,66 +188,98 @@ async function requireDashboardSession() {
 }
 
 async function fetchDashboardData() {
-  const shirtsRequest =
-    window.supabaseClient
-      .from("shirts")
-      .select(
-        [
-          "id",
-          "name",
-          "design_code",
-          "category",
-          "collar",
-          "sleeve",
-          "shoulder",
-          "colors",
-          "price",
-          "upload_date",
-          "image",
-          "cloudinary_public_id",
-        ].join(","),
+  const supabase = window.supabaseClient;
+
+  if (!supabase) {
+    throw new Error("ไม่พบการเชื่อมต่อ Supabase");
+  }
+
+  // จำนวนรายการที่ขอในแต่ละรอบ
+  const pageSize = 500;
+
+  // ดึงข้อมูลทีละหน้า จนไม่มีรายการเหลือ
+  async function fetchAllPages(table, columns, orderColumns) {
+    const allRows = [];
+    let offset = 0;
+
+    while (true) {
+      let query = supabase
+        .from(table)
+        .select(columns);
+
+      // กำหนดลำดับให้แน่นอนก่อนแบ่งหน้า
+      for (const column of orderColumns) {
+        query = query.order(column, {
+          ascending: true,
+        });
+      }
+
+      const { data, error } = await query.range(
+        offset,
+        offset + pageSize - 1
       );
 
-  const analyticsRequest =
-    window.supabaseClient
-      .from("analytics_events")
-      .select(
-        [
-          "id",
-          "event_type",
-          "shirt_id",
-          "shirt_name",
-          "created_at",
-        ].join(","),
-      )
-      .order("created_at", {
-        ascending: true,
-      });
+      if (error) {
+        throw error;
+      }
 
-  const [
-    shirtsResult,
-    analyticsResult,
-  ] = await Promise.all([
-    shirtsRequest,
-    analyticsRequest,
+      const rows = Array.isArray(data) ? data : [];
+
+      // ไม่มีรายการเหลือแล้ว
+      if (rows.length === 0) {
+        break;
+      }
+
+      allRows.push(...rows);
+
+      // ใช้จำนวนที่ได้รับจริง เผื่อ Supabase จำกัดต่ำกว่า pageSize
+      offset += rows.length;
+    }
+
+    return allRows;
+  }
+
+  const shirtColumns = [
+    "id",
+    "name",
+    "design_code",
+    "category",
+    "collar",
+    "sleeve",
+    "shoulder",
+    "colors",
+    "price",
+    "upload_date",
+    "image",
+    "cloudinary_public_id",
+  ].join(",");
+
+  const analyticsColumns = [
+    "id",
+    "event_type",
+    "shirt_id",
+    "shirt_name",
+    "created_at",
+  ].join(",");
+
+  // ดึงข้อมูลเสื้อและสถิติพร้อมกัน
+  const [shirts, events] = await Promise.all([
+    fetchAllPages(
+      "shirts",
+      shirtColumns,
+      ["id"]
+    ),
+
+    fetchAllPages(
+      "analytics_events",
+      analyticsColumns,
+      ["created_at", "id"]
+    ),
   ]);
 
-  if (shirtsResult.error) {
-    throw shirtsResult.error;
-  }
-
-  if (analyticsResult.error) {
-    throw analyticsResult.error;
-  }
-
   return {
-    shirts: Array.isArray(shirtsResult.data)
-      ? shirtsResult.data
-      : [],
-
-    events: Array.isArray(analyticsResult.data)
-      ? analyticsResult.data
-      : [],
+    shirts,
+    events,
   };
 }
 
@@ -402,16 +434,11 @@ function buildShirtRanking(
 }
 
 function createGalleryLink(item) {
-  if (!item.cloudinaryPublicId) {
+  if (item.id === null || item.id === undefined || item.id === "") {
     return "gallery.html";
   }
 
-  return (
-    "gallery.html?shirt=" +
-    encodeURIComponent(
-      item.cloudinaryPublicId,
-    )
-  );
+  return "gallery.html?shirt=" + encodeURIComponent(String(item.id));
 }
 
 function renderPopularShirts(ranking) {

@@ -60,6 +60,11 @@ async function protectAdminPage() {
 }
 
 async function logoutAdmin() {
+  // ถามยืนยันก่อนออกจากระบบ
+  if (!window.confirm("ออกจากระบบ ?")) {
+    return;
+  }
+
   try {
     const supabase = await waitForAdminSupabase();
 
@@ -74,28 +79,8 @@ async function logoutAdmin() {
     window.location.replace("login.html");
   } catch (error) {
     console.error("Logout error:", error);
-    alert(error.message || "ออกจากระบบไม่สำเร็จ");
+    window.alert(error.message || "ออกจากระบบไม่สำเร็จ");
   }
-}
-
-async function logoutAdmin() {
-    if (!confirm("ออกจากระบบ ?")) return;
-
-    const supabase = await waitForAdminSupabase();
-
-    const { error } = await supabase.auth.signOut({
-        scope: "local"
-    });
-
-    if (error) {
-        alert(error.message);
-        return;
-    }
-
-    localStorage.clear();
-    sessionStorage.clear();
-
-    window.location.replace("login.html");
 }
 
 document.addEventListener("DOMContentLoaded", () => {

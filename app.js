@@ -238,17 +238,40 @@ async function getShirtsFromSupabase() {
     throw new Error("Supabase ຍັງບໍ່ເຊື່ອມຕໍ່");
   }
 
-  const { data, error } = await window.supabaseClient
-    .from("shirts")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const pageSize = 500;
+  const allItems = [];
+  let offset = 0;
 
-  if (error) {
-    console.error("ດຶງຂໍ້ມູນຈາກ Supabase ບໍ່ສຳເລັດ:", error);
-    throw error;
+  while (true) {
+    const { data, error } = await window.supabaseClient
+      .from("shirts")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .order("id", { ascending: false })
+      .range(offset, offset + pageSize - 1);
+
+    if (error) {
+      console.error(
+        "ດຶງຂໍ້ມູນຈາກ Supabase ບໍ່ສຳເລັດ:",
+        error
+      );
+      throw error;
+    }
+
+    const items = Array.isArray(data) ? data : [];
+
+    // ไม่มีข้อมูลเหลือแล้ว
+    if (items.length === 0) {
+      break;
+    }
+
+    allItems.push(...items);
+
+    // เพิ่มตามจำนวนที่ได้รับจริง
+    offset += items.length;
   }
 
-  return Array.isArray(data) ? data : [];
+  return allItems;
 }
 
 async function getGalleryShirtsFromSupabase() {
@@ -556,7 +579,7 @@ async function getCloudinaryShirts() {
 function createWhatsAppOrderUrl(item) {
   const phone = String(WHATSAPP_NUMBER || "").replace(/\D/g, "");
 
-  const shirtKey = item.cloudinaryPublicId || item.id;
+  const shirtKey = item.id ?? item.cloudinaryPublicId;
 
   const modalUrl = new URL("gallery.html", window.location.href);
   modalUrl.searchParams.set("shirt", shirtKey);
@@ -644,6 +667,9 @@ async function initGallery() {
   let activeCategory = "all";
   let cloudinaryItems = [];
 
+  // จำลำดับการกดสีใน Filter
+  let selectedColorOrder = [];
+
   const urlParams = new URLSearchParams(window.location.search);
 
   const whatsappSource =
@@ -658,8 +684,45 @@ async function initGallery() {
 
   const resetSidebarFilters = document.querySelector("#resetSidebarFilters");
 
+  // เก็บสีที่ถูกเลือกไว้แล้วตอนเริ่มหน้า
+  // เช่น Browser คืนค่า checkbox จากหน้าก่อน
+  selectedColorOrder = Array.from(
+    document.querySelectorAll('input[name="colorFilter"]:checked')
+  ).map((input) => input.value);
+
   sidebarInputs.forEach((input) => {
-    input.addEventListener("change", render);
+    input.addEventListener("change", () => {
+      if (input.name === "colorFilter") {
+        const color = input.value;
+
+        if (input.checked) {
+          // เลือกสีใหม่: เพิ่มท้ายลำดับ
+          if (!selectedColorOrder.includes(color)) {
+            selectedColorOrder.push(color);
+          }
+        } else {
+          // ยกเลิกสี: เอาสีนี้ออกจากลำดับ
+          selectedColorOrder = selectedColorOrder.filter(
+            (selectedColor) => selectedColor !== color
+          );
+        }
+      }
+
+      render();
+    });
+  });
+
+  resetSidebarFilters?.addEventListener("click", () => {
+    document
+      .querySelectorAll('.filter-sidebar input[type="checkbox"]')
+      .forEach((input) => {
+        input.checked = false;
+      });
+
+    // ล้างลำดับสีเมื่อกด Reset
+    selectedColorOrder = [];
+
+    render();
   });
 
   resetSidebarFilters?.addEventListener("click", () => {
@@ -775,38 +838,37 @@ async function initGallery() {
     });
 
     items.sort((itemA, itemB) => {
-      // ==========================================
-      // ถ้าเลือก Filter สี
-      // ให้เสื้อที่มีสีที่เลือกเป็น "สีหลัก" ขึ้นก่อน
-      // ==========================================
-      if (selectedColors.length > 0) {
-        const colorsA = Array.isArray(itemA.colors) ? itemA.colors : [];
-        const colorsB = Array.isArray(itemB.colors) ? itemB.colors : [];
+      // หาลำดับความสำคัญจากสีหลักของเสื้อ
+      function getColorPriority(item) {
+        const colors = Array.isArray(item.colors)
+          ? item.colors
+          : [];
 
-        // colors[0] = สีหลัก
-        const mainColorA = colorsA[0] || "";
-        const mainColorB = colorsB[0] || "";
+        const mainColor = colors[0] || "";
 
-        const aIsMainColor = selectedColors.includes(mainColorA);
-        const bIsMainColor = selectedColors.includes(mainColorB);
+        // ลำดับของสีหลักตามที่ลูกค้ากด Filter
+        const priority = selectedColorOrder.indexOf(mainColor);
 
-        // A เป็นสีหลัก แต่ B ไม่ใช่ → A ขึ้นก่อน
-        if (aIsMainColor && !bIsMainColor) {
-          return -1;
-        }
+        // ถ้าสีหลักไม่ได้อยู่ในสีที่เลือก
+        // ให้อยู่ท้ายกลุ่มสีหลักทั้งหมด
+        return priority === -1
+          ? selectedColorOrder.length
+          : priority;
+      }
 
-        // B เป็นสีหลัก แต่ A ไม่ใช่ → B ขึ้นก่อน
-        if (!aIsMainColor && bIsMainColor) {
-          return 1;
+      if (selectedColorOrder.length > 0) {
+        const priorityA = getColorPriority(itemA);
+        const priorityB = getColorPriority(itemB);
+
+        if (priorityA !== priorityB) {
+          return priorityA - priorityB;
         }
       }
 
-      // ==========================================
-      // ถ้า priority สีเท่ากัน
-      // ใช้ระบบ Sort เดิม
-      // ==========================================
+      // เมื่ออยู่ในกลุ่มสีเดียวกัน ใช้ Sort เดิม
       const dateA = itemA.date || "";
       const dateB = itemB.date || "";
+
       const nameA = itemA.name || "";
       const nameB = itemB.name || "";
 
@@ -818,7 +880,7 @@ async function initGallery() {
         return nameA.localeCompare(nameB, "th");
       }
 
-      // default = ใหม่ล่าสุด
+      // ค่าเริ่มต้น: ใหม่ล่าสุด
       return dateB.localeCompare(dateA);
     });
 
@@ -883,14 +945,14 @@ async function initGallery() {
   </button>
 
   ${isAdminGallery
-    ? `
+            ? `
       <a
         class="btn btn-outline-dark"
         href="edit.html?publicId=${encodeURIComponent(item.cloudinaryPublicId)}">
         ແກ້ໄຂ
       </a>
     `
-    : `
+            : `
       <a
         class="btn btn-whatsapp card-whatsapp-button"
         href="${createWhatsAppOrderUrl(item)}"
@@ -900,7 +962,7 @@ async function initGallery() {
         WhatsApp
       </a>
     `
-  }
+          }
 
 </div>
 
@@ -2445,30 +2507,66 @@ async function initEdit() {
     deleteButton.textContent = "ກຳລັງລົບ...";
     message.textContent = "ກຳລັງລົບຮູບຈາກ Cloudinary...";
 
+    // จำว่าลบรูปจาก Cloudinary สำเร็จแล้วหรือยัง
+    let cloudinaryDeleted = false;
+
     try {
+      // 1. ลบรูปจาก Cloudinary
       await deleteCloudinaryImage(
         currentItem.cloudinaryPublicId,
         deletePassword,
       );
 
-      rememberDeletedImage(currentItem.cloudinaryPublicId);
+      cloudinaryDeleted = true;
 
-      const { error } = await window.supabaseClient
-        .from("shirts")
-        .delete()
-        .eq("id", currentItem.id);
+      message.textContent =
+        "ລົບຮູບສຳເລັດ ກຳລັງລົບຂໍ້ມູນ...";
 
-      if (error) throw error;
+      // 2. ลบรายการจาก Supabase และขอรายการที่ถูกลบกลับมา
+      const { data: deletedRows, error } =
+        await window.supabaseClient
+          .from("shirts")
+          .delete()
+          .eq("id", currentItem.id)
+          .select("id");
+
+      if (error) {
+        throw error;
+      }
+
+      // ตรวจว่ามีรายการถูกลบจริง
+      if (!Array.isArray(deletedRows) || deletedRows.length !== 1) {
+        throw new Error("ไม่สามารถยืนยันว่าลบรายการใน Supabase สำเร็จ");
+      }
+
+      // เก็บสถานะใน Browser หลังยืนยันว่าลบข้อมูลแล้ว
+      try {
+        rememberDeletedImage(currentItem.cloudinaryPublicId);
+      } catch (storageError) {
+        console.warn("บันทึกสถานะใน Browser ไม่สำเร็จ:", storageError);
+      }
 
       message.textContent = "ລົບຮູບ ແລະ ຂໍ້ມູນສຳເລັດ";
 
       setTimeout(() => {
-        window.location.href = `admin-gallery.html?deleted=${Date.now()}`;
+        window.location.href =
+          `admin-gallery.html?deleted=${Date.now()}`;
       }, 700);
-    } catch (error) {
-      console.error(error);
 
-      message.textContent = error.message || "ລົບຮູບບໍ່ສຳເລັດ";
+    } catch (error) {
+      console.error("Delete error:", error);
+
+      if (cloudinaryDeleted) {
+        message.textContent =
+          "ລົບຮູບຈາກ Cloudinary ແລ້ວ " +
+          "ແຕ່ບໍ່ສາມາດຢືນຢັນການລົບຂໍ້ມູນໃນ Supabase. " +
+          "ກະລຸນາກວດສອບກ່ອນລອງໃໝ່.";
+      } else {
+        message.textContent =
+          "ບໍ່ສາມາດຢືນຢັນການລົບຮູບໄດ້. " +
+          "ກະລຸນາກວດ Cloudinary ແລະ Supabase " +
+          "ກ່ອນລອງໃໝ່.";
+      }
 
       deleteButton.disabled = false;
       deleteButton.textContent = oldButtonText;
