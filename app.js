@@ -276,7 +276,7 @@ async function getGalleryShirtsFromSupabase() {
       relatedShirtIds: Array.isArray(item.related_shirt_ids)
         ? item.related_shirt_ids.map(String)
         : [],
-      image: item.image || "",
+      image: safeCloudinaryImageUrl(item.image),
       cloudinaryPublicId: item.cloudinary_public_id || "",
       width: item.width || null,
       height: item.height || null,
@@ -407,6 +407,24 @@ function escapeHtml(text = "") {
         '"': "&quot;",
       })[character],
   );
+}
+
+// อนุญาตเฉพาะ URL รูปจาก Cloudinary ผ่าน HTTPS
+function safeCloudinaryImageUrl(value) {
+  try {
+    const url = new URL(String(value || ""));
+
+    if (
+      url.protocol !== "https:" ||
+      url.hostname !== "res.cloudinary.com"
+    ) {
+      return "";
+    }
+
+    return url.href;
+  } catch {
+    return "";
+  }
 }
 
 function getFileNameFromPublicId(publicId = "") {
@@ -847,7 +865,7 @@ async function initGallery() {
               (color) => `
         <span
           class="shirt-color-dot"
-          title="${color}"
+          title="${escapeHtml(color)}"
           style="background:${colorValues[color] || "#ccc"}"
         ></span>
       `,
@@ -860,7 +878,7 @@ async function initGallery() {
     <button
         class="btn btn-primary view-shirt-button"
         type="button"
-        data-shirt-id="${item.id}">
+        data-shirt-id="${escapeHtml(String(item.id))}"
         ເບິ່ງລາຍລະອຽດ
     </button>
 
@@ -1003,7 +1021,13 @@ async function initGallery() {
     const itemImage = item.image || "";
 
     if (modalOpenImage) {
-      modalOpenImage.href = itemImage;
+      modalOpenImage.hidden = !itemImage;
+
+      if (itemImage) {
+        modalOpenImage.href = itemImage;
+      } else {
+        modalOpenImage.removeAttribute("href");
+      }
     }
 
     if (modalImage) {
@@ -2100,7 +2124,7 @@ async function initEdit() {
         ? data.related_shirt_ids.map(String)
         : [],
 
-      image: data.image || "",
+      image: safeCloudinaryImageUrl(data.image),
       cloudinaryPublicId: data.cloudinary_public_id || "",
 
       width: data.width,
@@ -2279,7 +2303,7 @@ async function initEdit() {
 
       return;
     }
-    
+
     submitButton.disabled = true;
     submitButton.textContent = "ກຳລັງບັນທຶກ...";
     message.textContent = "ກຳລັງບັນທຶກຂໍ້ມູນ";
