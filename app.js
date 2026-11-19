@@ -875,33 +875,32 @@ async function initGallery() {
 
           <div class="shirt-actions">
 
-    <button
-        class="btn btn-primary view-shirt-button"
-        type="button"
-        data-shirt-id="${escapeHtml(String(item.id))}"
-        ເບິ່ງລາຍລະອຽດ
-    </button>
+  <button
+    class="btn btn-primary view-shirt-button"
+    type="button"
+    data-shirt-id="${escapeHtml(String(item.id))}">
+    ເບິ່ງລາຍລະອຽດ
+  </button>
 
-    ${isAdminGallery
-            ? `
-        <a
-            class="btn btn-outline-dark"
-            href="edit.html?publicId=${encodeURIComponent(item.cloudinaryPublicId)}">
-            ແກ້ໄຂ
-        </a>
-        `
-            : `
-        <a
-  class="btn btn-whatsapp card-whatsapp-button"
-  href="${createWhatsAppOrderUrl(item)}"
-  target="_blank"
-  rel="noopener noreferrer"
-  data-shirt-id="${escapeHtml(String(item.id))}"
->
-  WhatsApp
-</a>
-        `
-          }
+  ${isAdminGallery
+    ? `
+      <a
+        class="btn btn-outline-dark"
+        href="edit.html?publicId=${encodeURIComponent(item.cloudinaryPublicId)}">
+        ແກ້ໄຂ
+      </a>
+    `
+    : `
+      <a
+        class="btn btn-whatsapp card-whatsapp-button"
+        href="${createWhatsAppOrderUrl(item)}"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-shirt-id="${escapeHtml(String(item.id))}">
+        WhatsApp
+      </a>
+    `
+  }
 
 </div>
 
